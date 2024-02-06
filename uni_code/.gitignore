@@ -1,0 +1,22 @@
+# 忽略 npm 包管理工具生成的文件
+node_modules/
+
+# 忽略微信开发者工具缓存文件
+*.local
+
+# 忽略编译后的文件
+dist/
+
+# 忽略UniApp编译生成的小程序相关目录
+unpackage/
+
+.DS_Store
+
+
+# 忽略编辑器自动生成的文件
+.idea/
+.vscode/
+
+# 忽略npm安装的包文件
+/package-lock.json
+/yarn.lock
