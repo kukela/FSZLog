@@ -1,6 +1,6 @@
 <template>
 	<view class="box">
-		<view class="cxt_box">
+		<view class="cxt_list">
 			<view class="header_box">
 				<view class="num_box">
 					<text class="num">预算:3000</text>
@@ -10,18 +10,31 @@
 					<view class="h_bar"></view>
 				</view>
 			</view>
-			<view class="cell"></view>
-			<view class="space"></view>
-			<view class="space"></view>
-			<view class="space"></view>
-			<view class="space"></view>
-			<view class="space"></view>
-			<view class="space"></view>
+			<view class="cell">
+				<view class="main bb" hover-class="def_hover" hover-stay-time="150">
+					<text class="title">ABC</text>
+					<text class="num big">-1000</text>
+				</view>
+				<view class="sub bb" hover-class="def_hover" hover-stay-time="150">
+					<text class="title">2024-01-01</text>
+					<text class="num big">-100</text>
+				</view>
+				<view class="sub" hover-class="def_hover" hover-stay-time="150">
+					<text class="title">2024-01-01</text>
+					<text class="num big">-100</text>
+				</view>
+			</view>
+			<view class="cell">
+				<view class="main" hover-class="def_hover" hover-stay-time="150">
+					<text class="title">ABC</text>
+					<text class="num big">-1000</text>
+				</view>
+			</view>
 		</view>
 
 		<movable-area class="bottom_bar">
 			<movable-view class="bottom_bar_box">
-				<view class="add_btn" hover-class="add_btn_hover" hover-stay-time="150">添 加</view>
+				<view class="add_btn" hover-class="def_hover" hover-stay-time="150">添 加</view>
 			</movable-view>
 		</movable-area>
 	</view>
@@ -58,13 +71,6 @@ export default {
 <style lang="scss" scoped>
 @import url(../global/global.scss);
 
-.cxt_box {
-	display: flex;
-	flex-direction: column;
-	position: relative;
-	padding: 40rpx 40rpx 150rpx 40rpx;
-}
-
 .header_box {
 	height: 160rpx;
 	display: flex;
@@ -76,15 +82,6 @@ export default {
 		flex-direction: row;
 		justify-content: space-between;
 		align-items: center;
-
-		.num {
-			font-size: 24rpx;
-			color: #7d90a9;
-		}
-
-		.num.big {
-			font-size: 32rpx;
-		}
 	}
 
 	.all_bar {
@@ -107,13 +104,6 @@ export default {
 	}
 }
 
-.space {
-	height: 100rpx;
-	margin: 20rpx 0;
-	background-color: #292929;
-	border-radius: 20rpx;
-}
-
 .add_btn {
 	width: 100%;
 	height: 90rpx;
@@ -124,10 +114,5 @@ export default {
 	border-radius: 20rpx;
 	font-size: 46rpx;
 	font-weight: bold;
-}
-
-.add_btn_hover {
-	background-color: #1d1b1b;
-	color: #989fff;
 }
 </style>

@@ -1,5 +1,6 @@
 # 忽略 npm 包管理工具生成的文件
 node_modules/
+uni_modules/
 
 # 忽略微信开发者工具缓存文件
 *.local

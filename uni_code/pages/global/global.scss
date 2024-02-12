@@ -1,3 +1,44 @@
+.box {
+	background-color: #1e1e1e;
+}
+
+.cxt_list {
+	display: flex;
+	flex-direction: column;
+	position: relative;
+	padding: 40rpx 40rpx 150rpx 40rpx;
+}
+
+.def_hover {
+	opacity: 0.85;
+}
+
+.num {
+	color: #7d90a9;
+	font-size: 26rpx;
+	text-align: end;
+	padding: 3rpx 0;
+}
+
+.num.big {
+	font-size: 34rpx;
+}
+
+.num.p {
+	color: #74a800;
+}
+
+.num.l {
+	color: #fa5151;
+}
+
+.num_box {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	min-height: 120rpx;
+}
+
 .bottom_bar {
 	pointer-events: none;
 	height: 90rpx;
@@ -18,4 +59,56 @@
 	display: flex;
 	align-items: center;
 	justify-content: center;
+}
+
+.cell {
+	min-height: 100rpx;
+	margin-top: 20rpx;
+	background-color: #292929;
+	border-radius: 20rpx;
+	display: flex;
+	flex-direction: column;
+	padding: 0 30rpx;
+}
+
+.cell .main {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
+	min-height: 100rpx;
+}
+
+.cell .main .title {
+	font-size: 32rpx;
+	color: white;
+}
+
+.cell .sub {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	height: 80rpx;
+	align-items: center;
+}
+
+.cell .sub .title {
+	font-size: 26rpx;
+	color: white;
+	margin-left: 10rpx;
+}
+
+.cell .main.bb {
+	border-bottom: 2rpx solid #505050;
+}
+
+.cell .sub.bb {
+	border-bottom: 2rpx solid #505050;
+}
+
+.space {
+	height: 100rpx;
+	margin-top: 20rpx;
+	background-color: #292929;
+	border-radius: 20rpx;
 }
