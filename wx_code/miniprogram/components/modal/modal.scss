@@ -1,0 +1,92 @@
+@import "../theme.scss";
+
+$lr_padding: 30rpx;
+$def_radius: 10rpx;
+$border_height: 1rpx;
+
+/*遮罩层*/
+.modal-mask {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+}
+
+/*遮罩内容*/
+.modal-content {
+  display: flex;
+  flex-direction: column;
+  width: 90%;
+  background-color: $bgCellColor;
+  border-radius: $def_radius;
+  text-align: center;
+}
+
+.modal-header {
+  height: 100rpx;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  .title {
+    font-size: 32rpx;
+    color: $textMainColor;
+  }
+}
+
+/*中间内容*/
+.main-content {
+  flex: 1;
+  height: 100%;
+  overflow-y: hidden;
+  max-height: 80vh;
+  width: 100%;
+  /* 内容高度最高80vh 以免内容太多溢出*/
+}
+
+.cxt_box {
+  padding: 0 $lr_padding;
+}
+
+/*底部按钮*/
+.modal-footer {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin-top: 30rpx;
+
+  .border {
+    height: $border_height;
+    width: 100%;
+    background-color: $borderColor;
+    margin: 0 $lr_padding;
+  }
+}
+
+.cancel-btn,
+.confirm-btn {
+  flex: 1;
+  height: 100rpx;
+  line-height: 100rpx;
+  text-align: center;
+  font-size: 32rpx;
+}
+
+.cancel-btn {
+  color: $textMainColor;
+  border-right: $border_height solid $borderColor;
+}
+
+.confirm-btn {
+  color: $mainColor;
+}
+
+.def_hover {
+  opacity: 0.85;
+}

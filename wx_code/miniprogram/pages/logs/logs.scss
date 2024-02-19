@@ -1,0 +1,34 @@
+@import "../../components/theme.scss";
+
+.header_bar {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+
+  .copy_btn {
+    padding: 0 40rpx;
+    font-size: 32rpx;
+    color: $mainColor;
+    line-height: 120rpx;
+  }
+
+  picker {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .sel_year {
+    font-size: 48rpx;
+    text-align: end;
+    line-height: 120rpx;
+    color: $textMainColor;
+    padding: 0 40rpx;
+  }
+}
+
+.list {
+  position: absolute;
+  top: 120rpx;
+  bottom: 1rpx;
+}
