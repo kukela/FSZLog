@@ -1,0 +1,39 @@
+@import "../theme.scss";
+
+radio-group {
+  height: 80rpx;
+
+  radio {
+    display: none;
+  }
+
+  label {
+    height: 80rpx;
+    margin-right: 20rpx;
+    line-height: 80rpx;
+    display: inline-block;
+    padding: 0 16rpx;
+    font-size: 28rpx;
+    color: $textMainColor;
+    border: $border_height solid $borderColor;
+    border-radius: $def_btn_radius;
+    box-sizing: border-box;
+  }
+
+  .in {
+    border-color: $textGreenColor;
+
+    &[aria-checked='true'] {
+      background-color: $textGreenColor;
+    }
+  }
+
+  .out {
+    border-color: $textRedColor;
+
+    &[aria-checked='true'] {
+      background-color: $textRedColor;
+    }
+  }
+
+}

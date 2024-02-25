@@ -10,8 +10,8 @@
     </scroll-view>
     <view class='modal-footer'>
       <view class="border"></view>
-      <view wx:if='{{!single}}' class='cancel-btn' hover-class="def_hover" bindtap='cancel'>取消</view>
-      <view class='confirm-btn' hover-class="def_hover" bindtap='confirm'>确定 </view>
+      <view wx:if='{{!single}}' class='cancel-btn' hover-class="def_hover" hover-stay-time="150" bindtap='cancel'>取消</view>
+      <view class='confirm-btn' hover-class="def_hover" hover-stay-time="150" bindtap='confirm'>确定 </view>
     </view>
   </view>
 </view>

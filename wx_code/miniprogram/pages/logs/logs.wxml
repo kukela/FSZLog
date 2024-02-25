@@ -1,33 +1,29 @@
 <view class="page">
   <view class="header_bar">
-    <view class="copy_btn" hover-class="def_hover">复制本页数据</view>
+    <view class="copy btn" hover-class="def_hover" hover-stay-time="150" bindtap="copyTap">复制</view>
+    <view class="import btn" hover-class="def_hover" hover-stay-time="150" bindtap="importTap">导入</view>
+    <view class="space"></view>
     <picker mode="date" fields="year" value="{{date}}" start="{{startDate}}" end="{{endDate}}" bindchange="bindDateChange">
-      <view class="sel_year" hover-class="def_hover">{{ date }}年</view>
+      <view class="sel_year" hover-class="def_hover" hover-stay-time="150">{{ date }}年</view>
     </picker>
   </view>
   <scroll-view class="list" data-weui-theme="{{theme}}" scroll-y type="list">
-    <view class="cell">
-      <view class="main bb" hover-class="def_hover" hover-stay-time="150">
-        <text class="title">1月</text>
-        <view class="num_box">
-          <text class="num big p">+1000</text>
-          <text class="num">总预算：3000</text>
+    <view wx:for="{{list}}" wx:key="date" class="cell">
+      <view class="main {{item.isShowSub ? 's' : ''}}">
+        <view class="title" hover-class="def_hover" hover-stay-time="150" data-i="{{index}}" bindtap="cellTitleTap">{{item.sTitle}}</view>
+        <view class="num_box" hover-class="def_hover" hover-stay-time="150">
+          <text class="num big {{item.isProfit ? 'p' : 'l'}}">{{item.sP}}</text>
+          <text wx:if="{{item.isShowSub}}" class="num">预算：{{item.budget}}</text>
         </view>
       </view>
-      <view class="sub bb" hover-class="def_hover" hover-stay-time="150">
-        <text class="title">Abc</text>
-        <text class="num big">-100</text>
-      </view>
-      <view class="sub" hover-class="def_hover" hover-stay-time="150">
-        <text class="title">Abc</text>
-        <text class="num big">-100</text>
-      </view>
+      <block wx:if="{{item.isShowSub}}">
+        <view wx:for="{{item.list}}" wx:key="name" class="sub" hover-class="def_hover" hover-stay-time="150">
+          <text class="title">{{item.name}}</text>
+          <text class="num big">{{item.sP}}</text>
+        </view>
+      </block>
     </view>
-    <view class="cell">
-      <view class="main" hover-class="def_hover" hover-stay-time="150">
-        <text class="title">2月</text>
-        <text class="num big l">-1000</text>
-      </view>
-    </view>
+    <view wx:if="{{list.length < 1}}" class="cell_no_data">无数据</view>
+    <view class="cell_bs"></view>
   </scroll-view>
 </view>

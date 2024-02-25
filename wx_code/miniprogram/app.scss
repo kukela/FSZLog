@@ -14,14 +14,14 @@ page {
 }
 
 .def_hover {
-  opacity: 0.85;
+  opacity: 0.75;
 }
 
 .num {
   color: $textNumColor;
   font-size: 26rpx;
   text-align: end;
-  padding: 3rpx 0;
+  padding: 4rpx 0;
 }
 
 .num.big {
@@ -36,61 +36,128 @@ page {
   color: $textRedColor;
 }
 
-.cell {
-  min-height: 100rpx;
-  margin: 0 $page-lr-margin 20rpx $page-lr-margin;
-  background-color: $bgCellColor;
-  border-radius: 20rpx;
-  display: flex;
-  flex-direction: column;
-  padding: 0 30rpx;
+.list {
+
+  .cell {
+    min-height: 100rpx;
+    margin: 0 $page-lr-margin 20rpx $page-lr-margin;
+    background-color: $bgCellColor;
+    border-radius: 20rpx;
+    display: flex;
+    flex-direction: column;
+    padding: 0 30rpx;
+
+    .main {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      min-height: 100rpx;
+    }
+
+    .main .title {
+      font-size: 32rpx;
+      color: $textMainColor;
+      line-height: 100rpx;
+      flex: 1;
+    }
+
+    .sub {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      height: 80rpx;
+      align-items: center;
+      margin-left: 10rpx;
+    }
+
+    .sub .title {
+      font-size: 26rpx;
+      color: $textMainColor;
+      margin-left: 10rpx;
+    }
+
+    .num_box {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      min-height: 100rpx;
+      min-width: 150rpx;
+      padding-left: 30rpx;
+    }
+
+    .main.s .num_box {
+      min-height: 120rpx;
+    }
+  }
+
+  .cell>view {
+    border-bottom: $border_height solid $borderColor;
+
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+
+  .space {
+    height: 100rpx;
+    margin: 0 $page-lr-margin 20rpx $page-lr-margin;
+    background-color: $bgCellColor;
+    border-radius: 20rpx;
+  }
+
+  .cell_no_data {
+    min-height: 100rpx;
+    line-height: 100rpx;
+    margin: 0 $page-lr-margin 20rpx $page-lr-margin;
+    text-align: center;
+    color: $textMainColor;
+    font-size: 28rpx;
+  }
+
 }
 
-.cell .main {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  min-height: 100rpx;
-}
+modal-view {
 
-.cell .main .title {
-  font-size: 32rpx;
-  color: $textMainColor;
-}
+  input {
+    height: 80rpx;
+    border: $border_height solid $borderColor;
+    border-radius: $def_btn_radius;
+    box-sizing: border-box;
+    font-size: 28rpx;
+    text-align: start;
+    padding: 0 20rpx;
+    flex: 1;
+    color: $textMainColor;
+  }
 
-.cell .sub {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  height: 80rpx;
-  align-items: center;
-}
+  .model_cell {
+    position: relative;
+    margin: 10rpx 0;
+    width: 100%;
+    display: inline-flex;
+    flex-direction: row;
+    
+  }
 
-.cell .sub .title {
-  font-size: 26rpx;
-  color: $textMainColor;
-  margin-left: 10rpx;
-}
+  .item_box {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    max-height: 280rpx;
 
-.cell .main.bb {
-  border-bottom: 2rpx solid $borderColor;
-}
+    .item {
+      background-color: #303030;
+      height: 80rpx;
+      color: $textMainColor;
+      line-height: 80rpx;
+      padding: 0 16rpx;
+      display: inline-block;
+      border-radius: $def_btn_radius;
+      margin: 0 20rpx 20rpx 0;
+    }
 
-.cell .sub.bb {
-  border-bottom: 2rpx solid $borderColor;
-}
+  }
 
-.cell .num_box {
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	min-height: 120rpx;
-}
-
-.space {
-  height: 100rpx;
-  margin: 0 $page-lr-margin 20rpx $page-lr-margin;
-  background-color: $bgCellColor;
-  border-radius: 20rpx;
 }

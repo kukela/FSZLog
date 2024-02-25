@@ -26,7 +26,8 @@
   "window": {
     "navigationBarTextStyle": "@navigationBarTextStyle",
     "navigationBarBackgroundColor": "@navigationBarBackgroundColor",
-    "backgroundColor": "@backgroundColor"
+    "backgroundColor": "@backgroundColor",
+    "visualEffectInBackground": "hidden"
   },
   "style": "v2",
   "rendererOptions": {

@@ -4,6 +4,10 @@
   position: absolute;
   top: 160rpx;
   bottom: 1rpx;
+
+  .cell_bs {
+    height: 150rpx;
+  }
 }
 
 .header_box {
@@ -24,19 +28,26 @@
   .all_bar {
     background-color: $bgCellColor;
     border-radius: 10rpx;
-    height: 40rpx;
     width: 100%;
     font-size: 0;
     line-height: 0;
     margin: 20rpx 0;
+    padding: 6rpx 4rpx;
+    box-sizing: border-box;
 
     .h_bar {
       background-color: $textGreenColor;
-      width: 40%;
       height: 30rpx;
-      margin: 5rpx;
       border-radius: 10rpx;
       display: inline-block;
+
+      &._2 {
+        background-color: $textYellowColor;
+      }
+
+      &._3 {
+        background-color: $textRedColor;
+      }
     }
   }
 }
@@ -58,85 +69,4 @@
 
 .space_b {
   height: 160rpx;
-}
-
-.add_modal {
-  input {
-    height: 80rpx;
-    border: $border_height solid $borderColor;
-    border-radius: $def_btn_radius;
-    box-sizing: border-box;
-    font-size: 28rpx;
-    text-align: start;
-    padding: 0 20rpx;
-    flex: 1;
-  }
-
-  .model_cell {
-    position: relative;
-    margin: 10rpx 0;
-    width: 100%;
-    display: inline-flex;
-    flex-direction: row;
-
-    radio-group {
-      height: 80rpx;
-
-      radio {
-        display: none;
-      }
-
-      label {
-        height: 80rpx;
-        margin-right: 20rpx;
-        line-height: 80rpx;
-        display: inline-block;
-        padding: 0 16rpx;
-        font-size: 28rpx;
-        color: $textMainColor;
-        border: $border_height solid $borderColor;
-        border-radius: $def_btn_radius;
-        box-sizing: border-box;
-      }
-
-      .sr {
-        border-color: $textGreenColor;
-      }
-
-      .sr[aria-checked='true'] {
-        background-color: $textGreenColor;
-      }
-
-      .zc {
-        border-color: $textRedColor;
-      }
-
-      .zc[aria-checked='true'] {
-        background-color: $textRedColor;
-      }
-
-    }
-
-  }
-
-  .item_box {
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    flex-wrap: wrap;
-    max-height: 280rpx;
-
-    .item {
-      background-color: #303030;
-      height: 80rpx;
-      color: $textMainColor;
-      line-height: 80rpx;
-      padding: 0 16rpx;
-      display: inline-block;
-      border-radius: $def_btn_radius;
-      margin: 0 20rpx 20rpx 0;
-    }
-
-  }
-
 }

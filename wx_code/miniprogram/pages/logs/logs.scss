@@ -3,14 +3,18 @@
 .header_bar {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: center;
 
-  .copy_btn {
+  .btn {
     padding: 0 40rpx;
     font-size: 32rpx;
     color: $mainColor;
     line-height: 120rpx;
+  }
+
+  .space {
+    flex: 1;
   }
 
   picker {
@@ -31,4 +35,8 @@
   position: absolute;
   top: 120rpx;
   bottom: 1rpx;
+
+  .cell_bs {
+    height: 60rpx;
+  }
 }

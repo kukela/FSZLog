@@ -1,15 +1,29 @@
+import dataU from '../../utils/data.js'
+
 Component({
   data: {
     date: '',
     startDate: '',
     endDate: '',
+    list: <any>[]
   },
   lifetimes: {
     attached: function () {
+      const yearList = dataU.getYearDataKeys(true)
+      let defYear = dataU.getDefYear()
+      let minDate = parseInt(defYear)
+      yearList.forEach((v: string) => {
+        let vv = parseInt(v)
+        if (vv < minDate) {
+          minDate = vv
+        }
+      });
+      let list = dataU.year2List(defYear, true)
       this.setData({
-        date: this.getDate(null),
-        startDate: this.getDate('start'),
-        endDate: this.getDate('end')
+        date: defYear,
+        startDate: `${minDate}`,
+        endDate: dataU.getCurrentYear(),
+        list: list
       })
     }
   },
@@ -18,18 +32,24 @@ Component({
     }
   },
   methods: {
-    bindDateChange: function (e: any) {
+    bindDateChange(e: any) {
+      let date = e.detail.value
       this.setData({
-        date: e.detail.value
+        date: date,
+        list: dataU.year2List(date, true)
       })
+      dataU.setDefYear(date)
     },
-    getDate(type: any) {
-      const date = new Date();
-      let year = date.getFullYear();
-      if (type === 'start') {
-        year = year - 2;
-      }
-      return `${year}`;
+    copyTap() {
+      console.log("--")
+    },
+    importTap() {
+    },
+    cellTitleTap(e: any) {
+      let i = e.currentTarget.dataset.i
+      let vv = this.data.list[i] as any
+      vv.isShowSub = !vv.isShowSub
+      this.setData({ list: this.data.list })
     }
   }
 })

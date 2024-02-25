@@ -1,5 +1,7 @@
 {
+  "navigationBarTitleText": "本月",
   "usingComponents": {
-    "modal-view": "../../components/modal/modal"
+    "modal-view": "../../components/modal/modal",
+    "pio-input": "../../components/pioInput/pioInput"
   }
 }

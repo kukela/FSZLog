@@ -1,0 +1,7 @@
+  <radio-group bindchange="radioChange">
+    <label wx:for="{{list}}" wx:key="v" class="{{item.v}}">
+      <radio value="{{item.v}}" checked="{{pio == item.v}}" />
+      <text>{{item.title}}</text>
+    </label>
+  </radio-group>
+  <input type="digit" placeholder="请输入价格" value="{{p}}" bindinput="inputChange" />
