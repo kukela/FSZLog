@@ -179,13 +179,17 @@ export default {
   // +-字符串转obj
   pioStr2Obj(v: string): any {
     let sL = v.substr(0, 1)
+    let vv = v.substring(1)
     let pio = "in"
     if (sL == "-") {
       pio = "out"
+    } else if (sL == "+") {
+    } else {
+      vv = v
     }
     return {
       pio: pio,
-      p: v.substring(1)
+      p: vv
     }
   }
 

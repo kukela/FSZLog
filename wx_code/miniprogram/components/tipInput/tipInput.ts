@@ -12,6 +12,10 @@ Component({
       type: Number,
       value: 140
     },
+    verifyTips: {
+      type: Boolean,
+      value: false
+    },
   },
 
   /**
@@ -22,8 +26,15 @@ Component({
   },
 
   observers: {
-    'value': function (v) {
-      this.changeTip(v)
+    'verifyTips': function (v) {
+      if (v) {
+        this.changeTip(this.data.value)
+      } else {
+        this.setData({ tip: "" })
+      }
+    },
+    'tips': function (_) {
+      this.changeValue(this.data.value)
     }
   },
 
@@ -32,11 +43,11 @@ Component({
    */
   methods: {
     inputChange: function (e: any) {
-      let iv = e.detail.value
-      this.changeTip(iv)
-      this.triggerEvent('input', { value: iv })
+      let v = e.detail.value
+      this.changeValue(v)
+      this.triggerEvent('input', e.detail)
     },
-    changeTip(v: string) {
+    changeTip(v: string): string {
       let tips = this.data.tips
       let tip = ""
       for (const key in tips) {
@@ -46,6 +57,14 @@ Component({
         break
       }
       this.setData({ tip: tip })
+      return tip
+    },
+    changeValue(v: string) {
+      if (this.changeTip(v)) {
+        this.setData({ value: "" })
+      } else {
+        this.setData({ value: v })
+      }
     }
   }
 })

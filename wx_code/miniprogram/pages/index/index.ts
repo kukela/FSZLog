@@ -11,11 +11,17 @@ Component({
     m: <any>{},
     budgetM: {
       show: false,
-      budget: 0.0,
+      verifyTips: false,
+      budgetTips: [{
+        t: "请输入正确的预算",
+        f: verifyU.vFloatFun
+      }]
     },
+    budgetM_budget: "",
 
     editTagListM: {
       show: false,
+      verifyTips: false,
       i: 0,
       i2: 0,
       p: "",
@@ -23,11 +29,13 @@ Component({
     },
     editTagListM_v: "",
 
-    showModal: false,
     tagList: <any>[],
     addM: {
+      show: false,
+      verifyTips: false,
+      p: "",
       pio: "out",
-      tips: [{
+      title_tips: [{
         t: "请输入标题",
         f: verifyU.vNullFun
       }]
@@ -42,8 +50,7 @@ Component({
         m = dataU.newMonthData()
       }
       this.setData({
-        m: m,
-        ["budgetM.budget"]: m.budget
+        m: m
       })
     }
   },
@@ -55,18 +62,19 @@ Component({
     budgetTap() {
       this.setData({
         ["budgetM.show"]: true,
-        ["budgetM.budget"]: this.data.m.budget
+        ["budgetM.verifyTips"]: false,
+        budgetM_budget: this.data.m.budget
       })
     },
-    budgetM_budgetInput(e: any) {
-      let v = parseFloat(e.detail.value)
-      this.setData({ ["budgetM.budget"]: v })
-    },
     budgetModalConfirm() {
-      let bM = this.data.budgetM
-      if (isNaN(bM.budget)) return
-      let m = this.data.m
-      m.budget = bM.budget
+      this.setData({ ["budgetM.verifyTips"]: true })
+      let d = this.data
+      let t_budget = d.budgetM_budget
+      if (verifyU.vTips(d.budgetM.budgetTips, t_budget)) {
+        return
+      }
+      let m = d.m
+      m.budget = parseFloat(t_budget)
       m = dataU.monthCalc(m)
       this.setData({
         m: m,
@@ -87,6 +95,7 @@ Component({
       let pM = dataU.pioStr2Obj(d.m.p)
       let etlM = this.data.editTagListM
       etlM.show = true
+      etlM.verifyTips = false
       etlM.i = d.i
       etlM.i2 = d.i2
       etlM.p = pM.p
@@ -94,18 +103,18 @@ Component({
       this.setData({ editTagListM: etlM })
     },
     cellSubModalConfirm() {
-      let v = this.data.editTagListM_v
-      if (v == "" || v == undefined) {
-        this.setData({ ["editTagListM.piovITips"]: true })
+      this.setData({ ["editTagListM.verifyTips"]: true })
+      let d = this.data
+      let pM = dataU.pioStr2Obj(d.editTagListM_v)
+      if (verifyU.vTips(d.pioTips, pM.p)) {
         return
       }
       let etlM = this.data.editTagListM
-      let m = this.data.m
+      let m = d.m
       try {
-        m.list[etlM.i].list[etlM.i2].p = v
+        m.list[etlM.i].list[etlM.i2].p = d.editTagListM_v
         this.setData({
           m: dataU.monthCalc(m),
-          ["editTagListM.piovITips"]: false,
           ["editTagListM.show"]: false
         })
         this.saveData()
@@ -115,7 +124,8 @@ Component({
 
     showAddModalTap: function () {
       this.setData({
-        showModal: true,
+        ["addM.show"]: true,
+        ["addM.verifyTips"]: false,
         tagList: dataU.getAddTagList(),
         addM_title: "",
         addM_piov: "",
@@ -127,7 +137,16 @@ Component({
       this.setData({ 'addM_title': tag })
     },
     addModalConfirm() {
+      this.setData({ ["addM.verifyTips"]: true })
+      let d = this.data
+      if (verifyU.vTips(d.addM.title_tips, d.addM_title) ||
+        verifyU.vTips(d.pioTips, d.addM_piov)) {
+        return
+      }
+
+      this.saveData()
     },
+
     saveData() {
 
     }
