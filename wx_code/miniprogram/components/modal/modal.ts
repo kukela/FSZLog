@@ -41,7 +41,6 @@ Component({
     },
     // 点击确定按钮的回调函数
     confirm() {
-      this.setData({ show: false })
       this.triggerEvent('confirm')
     }
   }

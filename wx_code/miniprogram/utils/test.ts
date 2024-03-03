@@ -19,7 +19,7 @@ function initTestData() {
   let test2024 = `
   [
     {
-      "date": "2024-2",
+      "date": "2024-3",
       "budget": 3000,
       "list": [
       {

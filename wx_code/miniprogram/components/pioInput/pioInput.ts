@@ -7,7 +7,8 @@ Component({
   properties: {
     pio: String,
     p: String,
-    v: String
+    v: String,
+    tips: Array,
   },
 
   /**
@@ -20,7 +21,10 @@ Component({
     ],
   },
 
-  pageLifetimes: {
+  observers: {
+    'p': function () {
+      this.changeV()
+    }
   },
 
   /**

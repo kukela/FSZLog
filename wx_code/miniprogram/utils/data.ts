@@ -19,7 +19,7 @@ export default {
   // 设置默认预算
   getDefBudget(): number {
     let v = wx.getStorageSync("defBudget")
-    if (v == undefined || v <= 0 || v == NaN || v == null) {
+    if (v == undefined || v <= 0 || isNaN(v) || v == null) {
       v = 3000
       this.setDefBudget(v)
     }
@@ -110,6 +110,7 @@ export default {
     m.sP2 = m.sP.replace("+", '')
     let per = Math.abs(m.aP) / m.budget * 100
     if (per > 100) per = 100
+    if (per < 0) per = 0
     m.per = per.toFixed(2)
     if (per >= 95) {
       m.perType = 3
