@@ -17,32 +17,33 @@ Component({
   },
   pageLifetimes: {
     show: function () {
+      this.refPageData(dataU.getDefYear())
+    }
+  },
+  methods: {
+    refPageData(year: string) {
       const yearList = dataU.getYearDataKeys(true)
-      let defYear = dataU.getDefYear()
-      let minDate = parseInt(defYear)
+      let minDate = parseInt(year)
       yearList.forEach((v: string) => {
         let vv = parseInt(v)
         if (vv < minDate) {
           minDate = vv
         }
       });
-      let list = dataU.year2List(defYear, true)
+      let list = dataU.year2List(year, true)
       dataU.coverYearIsShowSub(list, this.data.list)
       this.setData({
-        date: defYear,
+        date: year,
         startDate: `${minDate}`,
         endDate: dataU.getCurrentYear(),
         list: list
       })
-    }
-  },
-  methods: {
+    },
     copyTap() {
       let copyStr = dataU.yearList2CopyStr(this.data.list)
       if (copyStr.length > 0) {
-        // console.log(copyStr)
         wx.setClipboardData({
-          data: 'data',
+          data: copyStr,
           success() {
             wx.showToast({ title: '本年数据已复制', icon: 'success' })
           },
@@ -66,17 +67,15 @@ Component({
       })
     },
     importStrData(v: string) {
-      let ioStr = `
--$budget- | 3000 | 2024-03
-ABC | -1000.10 | 2024-03-01 12:01:01
-ABCd | -100 | 2024-03-01 12:01:02
-ABC1 | -10 | 2024-03-02 12:01:01
-ABC2 | +101.1 | 2024-03-03 12:01:01
-ABC3 | -10.1 | 2024-03-04 12:01:01
-ABC4 | -10.10 | 2024-03-51 12:01:01
-      `
-      console.log(v)
-      let list = dataU.importYearListStr(ioStr)
+//       v = `
+// -$budget- | 3000 | 2023-12
+// ABC123 | -1000.10 | 2023-12-12 12:01:01
+// -$budget- | 3000 | 2024-02
+// -$budget- | 3000 | 2024-03
+// ABC | -1000.11 | 2024-03-01 12:01:01
+// ABCd | +100 | 2024-03-01 12:01:02
+//       `
+      let list = dataU.importYearListStr(v)
       if (list.length < 1) {
         wx.showToast({ title: '剪贴板数据不对', icon: 'error', duration: 2000 })
         return
@@ -88,10 +87,17 @@ ABC4 | -10.10 | 2024-03-51 12:01:01
     },
     importModalConfirm() {
       let list = this.data.importM.list
-      if (dataU.importListData(list)) {
+      let importTip = dataU.importListData(list)
+      if (!importTip) {
+        let list = dataU.year2List(this.data.date, true)
+        dataU.coverYearIsShowSub(list, this.data.list)
+        this.setData({
+          list: list,
+          ["importM.show"]: false
+        })
         wx.showToast({ title: '导入成功', icon: 'success' })
       } else {
-        wx.showToast({ title: '导入失败', icon: 'error', duration: 2000 })
+        wx.showToast({ title: importTip, icon: 'error', duration: 2000 })
       }
     },
     bindDateChange(e: any) {

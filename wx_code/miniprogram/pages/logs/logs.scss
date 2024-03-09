@@ -42,6 +42,13 @@
 }
 
 .import_modal {
+
+  .tip {
+    color: $textRedColor;
+    font-size: 30rpx;
+    line-height: 60rpx;
+  }
+
   .cell {
     display: flex;
     justify-content: space-between;

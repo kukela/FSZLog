@@ -7,7 +7,7 @@ export default {
   io_budget_type: "-$budget-",
   // app打开初始化数据
   initData() {
-    require('./test.js').initTestData()
+    // require('./test.js').initTestData()
   },
   // 获取当前年
   getCurrentYear(): string {
@@ -50,6 +50,7 @@ export default {
     try {
       var rList: string[] = []
       const list = wx.getStorageInfoSync().keys
+      console.log(list)
       list.forEach((v, _) => {
         if (v.indexOf(this.ydataKey) !== -1) {
           if (isYear) {
@@ -91,26 +92,36 @@ export default {
       });
       return list
     } catch (e) {
-      console.debug(e)
+      console.error(e)
       return []
     }
   },
   sortMonthData(list: Array<any>, isReverse: boolean = true): Array<any> {
     return list.sort((a: any, b: any) => {
-      if (isReverse) {
-        return util.dateKey2MonthNum(b.date) - util.dateKey2MonthNum(a.date)
-      } else {
-        return util.dateKey2MonthNum(a.date) - util.dateKey2MonthNum(b.date)
+      try {
+        if (isReverse) {
+          return util.dateKey2MonthNum(b.date) - util.dateKey2MonthNum(a.date)
+        } else {
+          return util.dateKey2MonthNum(a.date) - util.dateKey2MonthNum(b.date)
+        }
+      } catch (e) {
+        console.error(e)
+        return 0
       }
     });
   },
   // 排序月份tag数据
   sortMonthTagData(m: any, isReverse: boolean = true) {
     m.list = m.list.sort((a: any, b: any) => {
-      if (isReverse) {
-        return util.dateKey2Time(`${m.date}-${b.t}`) - util.dateKey2Time(`${m.date}-${a.t}`)
-      } else {
-        return util.dateKey2Time(`${m.date}-${a.t}`) - util.dateKey2Time(`${m.date}-${b.t}`)
+      try {
+        if (isReverse) {
+          return util.dateKey2Time(`${m.date}-${b.t}`) - util.dateKey2Time(`${m.date}-${a.t}`)
+        } else {
+          return util.dateKey2Time(`${m.date}-${a.t}`) - util.dateKey2Time(`${m.date}-${b.t}`)
+        }
+      } catch (e) {
+        console.error(e)
+        return 0
       }
     });
   },
@@ -270,10 +281,21 @@ export default {
   // 保存年数据
   saveYearList(year: string, list: Array<any>): boolean {
     try {
-      let yListStr = JSON.stringify(list)
+      let nlist: Array<any> = []
+      list.forEach(mm => {
+        let mList: Array<any> = []
+        if (mm.list) {
+          mm.list.forEach((v: any) => {
+            mList.push({ tt: v.tt, t: v.t, p: v.p })
+          });
+        }
+        nlist.push({ date: mm.date, budget: mm.budget, list: mList })
+      });
+      let yListStr = JSON.stringify(nlist)
       wx.setStorageSync(this.getYearDataKey(year), yListStr)
       return true
     } catch (e) {
+      console.error(e)
       return false
     }
   },
@@ -342,28 +364,52 @@ export default {
     return list
   },
   // 导入数组
-  importListData(list: Array<any>): boolean {
-    let mM: any = {}
+  importListData(list: Array<any>): string {
+    let yM: any = {}
     list.forEach(v => {
       let key = v.t.length > 7 ? v.t.slice(0, 7) : v.t
-      let m = mM[key]
+      let year = key.slice(0, 4)
+      let m = yM[year]
       if (!m) m = {}
+      let mm = m[key]
+      if (!mm) mm = {}
       if (v.tt == this.io_budget_type) {
-        m.budget = parseFloat(v.p)
+        mm.budget = parseFloat(v.p)
       } else {
-        let list = m.list
-        if(!list) list = []
+        let list = mm.list
+        if (!list) list = []
         v.t = v.t.replace(`${key}-`, '')
-        list.push(v.t)
-        m.list = list
+        list.push(v)
+        mm.list = list
       }
-      mM[key] = m
+      m[key] = mm
+      yM[year] = m
     });
-    let keys = Object.keys(mM)
-    if(keys.length < 1) return false
-    keys.forEach(key => {
-      
+    let keys = Object.keys(yM)
+    if (keys.length < 1) return "没有数据可导入"
+    let isAllOk = true
+    keys.forEach(year => {
+      let mm = yM[year]
+      let list = this.year2List(year, false)
+      Object.keys(mm).forEach(key => {
+        let m = mm[key]
+        let isChange = false
+        list.forEach((v) => {
+          if (v.date == key) {
+            v.budget = m.budget
+            v.list = m.list
+            isChange = true
+          }
+        });
+        if (!isChange) {
+          m.date = key
+          list.push(m)
+        }
+      })
+      if (!this.saveYearList(year, list)) {
+        isAllOk = false
+      }
     });
-    return true
+    return isAllOk ? "" : "部分数据错误"
   }
 }

@@ -41,6 +41,7 @@ function initTestData() {
   // wx.removeStorageSync("ydata-2025")
   // wx.removeStorageSync("ydata-2024")
   // wx.removeStorageSync("ydata-2023")
+  // wx.clearStorageSync()
 
   // let ioStr = `
   // ABC | 2024-03-01 12:01:01 | -1000.10
