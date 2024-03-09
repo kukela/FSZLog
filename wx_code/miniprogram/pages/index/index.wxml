@@ -9,13 +9,13 @@
     </view>
   </view>
   <scroll-view class="list" data-weui-theme="{{theme}}" scroll-y type="list">
-    <view wx:for="{{m.list}}" wx:key="name" class="cell">
+    <view wx:for="{{m.tags}}" wx:key="index" class="cell">
       <view class="main">
-        <view class="title" hover-class="def_hover" hover-stay-time="150" data-i="{{index}}" bindtap="cellMainTap">{{item.name}}</view>
-        <text class="num big">{{item.sP}}</text>
+        <view class="title" hover-class="def_hover" hover-stay-time="150" data-i="{{index}}" bindtap="cellMainTap">{{index}}</view>
+        <text class="num big">{{item.aPio}}</text>
       </view>
       <block wx:if="{{item.isShowSub}}">
-        <view wx:for="{{item.list}}" wx:key="t" class="sub" hover-class="def_hover" hover-stay-time="150" data-i="{{index}}" wx:for-index='s_index' data-i2="{{s_index}}" data-m="{{item}}" bindtap="cellSubTap">
+        <view wx:for="{{item.list}}" wx:key="i" class="sub" hover-class="def_hover" hover-stay-time="150" data-i="{{item.i}}" bindtap="cellSubTap">
           <text class="title">{{m.date}}-{{item.t}}</text>
           <text class="num big">{{item.p}}</text>
         </view>
@@ -31,6 +31,7 @@
   <modal-view show="{{budgetM.show}}" title="设置预算" bindconfirm="budgetModalConfirm">
     <view class="model_cell">
       <tip-input type="digit" placeholder="请输入预算" tips="{{budgetM.budgetTips}}" model:value="{{budgetM_budget}}" verifyTips="{{budgetM.verifyTips}}"></tip-input>
+      <text class="unit">￥</text>
     </view>
   </modal-view>
 

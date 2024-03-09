@@ -1,4 +1,3 @@
-// components/pioInput/pioInput.ts
 Component({
 
   /**
@@ -26,9 +25,6 @@ Component({
   },
 
   observers: {
-    'p': function () {
-      this.changeV()
-    }
   },
 
   /**
@@ -37,6 +33,10 @@ Component({
   methods: {
     radioChange: function (e: any) {
       this.setData({ pio: e.detail.value })
+      this.changeV()
+    },
+    inputChange: function (e: any) {
+      this.setData({ p: e.detail.value })
       this.changeV()
     },
     changeV() {

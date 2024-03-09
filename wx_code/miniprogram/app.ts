@@ -5,7 +5,5 @@ App<IAppOption>({
   },
   onLaunch() {
     dataU.initData()
-    
-    require('./utils/test.js').initTestData()
   }
 })

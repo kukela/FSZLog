@@ -40,3 +40,33 @@
     height: 60rpx;
   }
 }
+
+.import_modal {
+  .cell {
+    display: flex;
+    justify-content: space-between;
+
+    text {
+      font-size: 26rpx;
+      color: $textMainColor;
+      line-height: 50rpx;
+      padding: 0 5rpx;
+      text-align: start;
+      overflow: auto;
+    }
+
+    .tt {
+      flex: 2;
+    }
+
+    .p {
+      white-space: nowrap;
+      flex: 1;
+    }
+
+    .t {
+      width: 150rpx;
+      white-space: nowrap;
+    }
+  }
+}

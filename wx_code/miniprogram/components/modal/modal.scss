@@ -26,7 +26,7 @@ $border_height: 1rpx;
   background-color: $bgCellColor;
   border-radius: $def_radius;
   text-align: center;
-  margin-bottom: 100rpx;
+  margin-bottom: 50rpx;
 }
 
 .modal-header {
@@ -37,6 +37,7 @@ $border_height: 1rpx;
 
   .title {
     font-size: 32rpx;
+    line-height: 36rpx;
     color: $textMainColor;
   }
 }
@@ -46,13 +47,13 @@ $border_height: 1rpx;
   flex: 1;
   height: 100%;
   overflow-y: hidden;
-  max-height: 80vh;
+  max-height: 75vh;
   width: 100%;
   /* 内容高度最高80vh 以免内容太多溢出*/
 }
 
 .cxt_box {
-  padding: 0 $lr_padding;
+  padding: 0 $lr_padding 30rpx $lr_padding;
 }
 
 /*底部按钮*/
@@ -60,7 +61,6 @@ $border_height: 1rpx;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  margin-top: 30rpx;
 
   .border {
     height: $border_height;

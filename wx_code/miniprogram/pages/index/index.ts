@@ -1,4 +1,5 @@
 import dataU from '../../utils/data.js';
+import util from '../../utils/util.js';
 import verifyU from '../../utils/verify.js';
 
 Component({
@@ -23,7 +24,6 @@ Component({
       show: false,
       verifyTips: false,
       i: 0,
-      i2: 0,
       p: "",
       pio: ""
     },
@@ -45,20 +45,25 @@ Component({
   },
   lifetimes: {
     attached: function () {
-      let m = dataU.date2DataObj(dataU.getCurrentDateKey())
-      if (m == null) {
-        m = dataU.newMonthData()
-      }
-      this.setData({
-        m: m
+      wx.setNavigationBarTitle({
+        title: util.getCurrentDateKey()
       })
     }
   },
   pageLifetimes: {
     show: function () {
+      let m = dataU.date2DataObj(util.getCurrentDateKey())
+      if (m == null) {
+        m = dataU.newMonthData()
+      }
+      dataU.coverMonthIsShowSub(m, this.data.m)
+      this.setData({
+        m: m
+      })
     }
   },
   methods: {
+    // 头部事件
     budgetTap() {
       this.setData({
         ["budgetM.show"]: true,
@@ -75,29 +80,37 @@ Component({
       }
       let m = d.m
       m.budget = parseFloat(t_budget)
-      m = dataU.monthCalc(m)
       this.setData({
-        m: m,
+        m: dataU.monthCalc(m, true),
         ["budgetM.show"]: false
       })
       this.saveData()
     },
-
+    // 列表展开
     cellMainTap: function (e: any) {
-      let i = e.currentTarget.dataset.i
-      let vv = this.data.m.list[i] as any
-      vv.isShowSub = !vv.isShowSub
-      this.setData({ m: this.data.m })
+      let k = e.currentTarget.dataset.i
+      this.setData({ [`m.tags.${k}.isShowSub`]: !this.data.m.tags[k].isShowSub })
     },
-
+    // 子列表事件
     cellSubTap: function (e: any) {
-      let d = e.currentTarget.dataset
-      let pM = dataU.pioStr2Obj(d.m.p)
+      let i = e.currentTarget.dataset.i
+      let d = this.data
+      let tag = undefined
+      try {
+        tag = d.m.list[i]
+      } catch (error) {
+      }
+      if (tag == null) {
+        wx.showToast({
+          title: '数据错误！', icon: 'error', duration: 2000
+        })
+        return
+      }
+      let pM = dataU.pioStr2Obj(tag.p)
       let etlM = this.data.editTagListM
       etlM.show = true
       etlM.verifyTips = false
-      etlM.i = d.i
-      etlM.i2 = d.i2
+      etlM.i = i
       etlM.p = pM.p
       etlM.pio = pM.pio
       this.setData({ editTagListM: etlM })
@@ -112,20 +125,22 @@ Component({
       let etlM = this.data.editTagListM
       let m = d.m
       try {
-        m.list[etlM.i].list[etlM.i2].p = d.editTagListM_v
+        m.list[etlM.i].p = d.editTagListM_v
         this.setData({
-          m: dataU.monthCalc(m),
+          m: dataU.monthCalc(m, true),
           ["editTagListM.show"]: false
         })
         this.saveData()
       } catch (e) {
       }
     },
-
+    // 添加事件
     showAddModalTap: function () {
       this.setData({
         ["addM.show"]: true,
         ["addM.verifyTips"]: false,
+        ["addM.p"]: "",
+        ["addM.pio"]: "out",
         tagList: dataU.getAddTagList(),
         addM_title: "",
         addM_piov: "",
@@ -139,16 +154,30 @@ Component({
     addModalConfirm() {
       this.setData({ ["addM.verifyTips"]: true })
       let d = this.data
+      let pM = dataU.pioStr2Obj(d.addM_piov)
       if (verifyU.vTips(d.addM.title_tips, d.addM_title) ||
-        verifyU.vTips(d.pioTips, d.addM_piov)) {
+        verifyU.vTips(d.pioTips, pM.p)) {
         return
       }
-
+      let tag = {
+        tt: d.addM_title,
+        p: d.addM_piov,
+        t: util.formatTime(new Date()).replace(`${d.m.date}-`, '')
+      }
+      d.m.list.unshift(tag)
+      this.setData({
+        ["addM.show"]: false,
+        m: dataU.monthCalc(d.m, true)
+      })
       this.saveData()
     },
-
+    // 其他方法
     saveData() {
-
+      let tt = dataU.saveMonthData(this.data.m)
+      if (!tt) return
+      wx.showToast({
+        title: tt, icon: 'error', duration: 2000
+      })
     }
   },
 })

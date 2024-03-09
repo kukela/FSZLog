@@ -74,6 +74,21 @@ page {
     .sub .title {
       font-size: 26rpx;
       color: $textMainColor;
+    }
+
+    .title_box {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+
+      .t_sub {
+        color: $textNumColor;
+        font-size: 22rpx;
+      }
+    }
+
+    .sub>.title,
+    .sub>.title_box {
       margin-left: 10rpx;
     }
 
@@ -137,6 +152,7 @@ modal-view {
     width: 100%;
     display: inline-flex;
     flex-direction: row;
+    align-items: center;
   }
 
   .item_box {

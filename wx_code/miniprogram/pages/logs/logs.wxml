@@ -11,19 +11,30 @@
     <view wx:for="{{list}}" wx:key="date" class="cell">
       <view class="main {{item.isShowSub ? 's' : ''}}">
         <view class="title" hover-class="def_hover" hover-stay-time="150" data-i="{{index}}" bindtap="cellTitleTap">{{item.sTitle}}</view>
-        <view class="num_box" hover-class="def_hover" hover-stay-time="150">
-          <text class="num big {{item.isProfit ? 'p' : 'l'}}">{{item.sP}}</text>
+        <view class="num_box">
+          <text class="num big {{item.isProfit ? 'p' : 'l'}}">{{item.sPio}}</text>
           <text wx:if="{{item.isShowSub}}" class="num">预算：{{item.budget}}</text>
         </view>
       </view>
       <block wx:if="{{item.isShowSub}}">
-        <view wx:for="{{item.list}}" wx:key="name" class="sub" hover-class="def_hover" hover-stay-time="150">
-          <text class="title">{{item.name}}</text>
-          <text class="num big">{{item.sP}}</text>
+        <view wx:for="{{item.list}}" wx:key="name" wx:for-item="tag" class="sub">
+          <view class="title_box">
+            <text class="title">{{tag.tt}}</text>
+            <text class="t_sub">{{item.date}}-{{tag.t}}</text>
+          </view>
+          <text class="num big">{{tag.p}}</text>
         </view>
       </block>
     </view>
     <view wx:if="{{list.length < 1}}" class="cell_no_data">无数据</view>
     <view class="cell_bs"></view>
   </scroll-view>
+
+  <modal-view show="{{importM.show}}" title="导入" class="import_modal" bindconfirm="importModalConfirm">
+    <view wx:for="{{importM.list}}" wx:key="index" class="cell">
+      <text class="tt">{{item.tt}}</text>
+      <text class="p">{{item.p}}</text>
+      <text class="t">{{item.t}}</text>
+    </view>
+  </modal-view>
 </view>

@@ -1,12 +1,12 @@
 export default {
 
   vFloatFun(v: string) {
-    let vv = -1.0
+    let vv = NaN
     try {
       vv = parseFloat(v)
     } catch (e) {
     }
-    return vv < 0 || isNaN(vv)
+    return isNaN(vv)
   },
 
   vNullFun(v: string) {

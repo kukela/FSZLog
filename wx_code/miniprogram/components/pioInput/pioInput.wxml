@@ -4,4 +4,5 @@
     <text>{{item.title}}</text>
   </label>
 </radio-group>
-<tip-input type="digit" placeholder="请输入价格" model:value="{{p}}" tips="{{tips}}" verifyTips="{{verifyTips}}"></tip-input>
+<tip-input type="digit" placeholder="请输入价格" value="{{p}}" bindinput="inputChange" tips="{{tips}}" verifyTips="{{verifyTips}}"></tip-input>
+<text class="unit">￥</text>
