@@ -7,7 +7,7 @@ export default {
   io_budget_type: "-$budget-",
   // app打开初始化数据
   initData() {
-    // require('./test.js').initTestData()
+    require('./test.js').initTestData()
   },
   // 获取当前年
   getCurrentYear(): string {
@@ -50,7 +50,6 @@ export default {
     try {
       var rList: string[] = []
       const list = wx.getStorageInfoSync().keys
-      console.log(list)
       list.forEach((v, _) => {
         if (v.indexOf(this.ydataKey) !== -1) {
           if (isYear) {
@@ -154,14 +153,14 @@ export default {
     let isShowSubM: any = undefined
     if (m.tags) {
       isShowSubM = {}
-      Object.keys(m.tags).forEach((key: string) => {
-        isShowSubM[key] = m.tags[key].isShowSub
+      m.tags.forEach((v: any) => {
+        isShowSubM[v.tag] = v.isShowSub
       });
     }
-    m.tags = {}
+    m.tags = []
     m.list.forEach((v: any, i: number) => {
       let tM = m.tags[v.tt]
-      if (!tM) tM = {}
+      if (!tM) tM = { tag: v.tt}
       let tList = tM.list
       if (!tList) tList = []
       tList.push({
@@ -170,16 +169,15 @@ export default {
         i: i,
       })
       tM.list = tList
-      m.tags[v.tt] = tM
+      m.tags.push(tM)
     });
-    Object.keys(m.tags).forEach((key: string) => {
-      let v = m.tags[key]
+    m.tags.forEach((v: any) => {
       v.aP = 0.0
       v.list.forEach((vv: any) => {
         v.aP += parseFloat(vv.p)
       });
       v.aPio = this.price2IOStr(v.aP)
-      if (isShowSubM) v.isShowSub = isShowSubM[key]
+      if (isShowSubM) v.isShowSub = isShowSubM[v.tag]
       if (v.isShowSub == undefined) v.isShowSub = false
     });
     return m
@@ -303,11 +301,11 @@ export default {
   coverMonthIsShowSub(newM: any, oldM: any) {
     if (!oldM || !oldM.tags || !newM || !newM.tags) return
     let isShowSubM: any = {}
-    Object.keys(oldM.tags).forEach(key => {
-      isShowSubM[key] = oldM.tags[key].isShowSub
+    oldM.tags.forEach((v: any) => {
+      isShowSubM[v.tag] = v.isShowSub
     });
-    Object.keys(newM.tags).forEach((key: string) => {
-      newM.tags[key].isShowSub = isShowSubM[key]
+    newM.tags.forEach((v: any) => {
+      v.isShowSub = isShowSubM[v.tag]
     });
   },
   // 覆盖年份的isShowSub数据

@@ -11,7 +11,7 @@
   <scroll-view class="list" data-weui-theme="{{theme}}" scroll-y type="list">
     <view wx:for="{{m.tags}}" wx:key="index" class="cell">
       <view class="main">
-        <view class="title" hover-class="def_hover" hover-stay-time="150" data-i="{{index}}" bindtap="cellMainTap">{{index}}</view>
+        <view class="title" hover-class="def_hover" hover-stay-time="150" data-i="{{index}}" bindtap="cellMainTap">{{item.tag}}</view>
         <text class="num big">{{item.aPio}}</text>
       </view>
       <block wx:if="{{item.isShowSub}}">
@@ -35,8 +35,9 @@
     </view>
   </modal-view>
 
-  <modal-view show="{{editTagListM.show}}" title="编辑" bindconfirm="cellSubModalConfirm">
+  <modal-view show="{{editTagListM.show}}" title="编辑" class="edit_modal" bindconfirm="cellSubModalConfirm">
     <pio-input class="model_cell" p="{{editTagListM.p}}" pio="{{editTagListM.pio}}" tips="{{pioTips}}" model:v="{{editTagListM_v}}" verifyTips="{{editTagListM.verifyTips}}"></pio-input>
+    <button class="del_btn" bindtap="cellSubDel">删除</button>
   </modal-view>
 
   <modal-view show="{{addM.show}}" title="添加" bindconfirm="addModalConfirm">

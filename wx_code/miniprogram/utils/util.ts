@@ -19,6 +19,11 @@ export default {
     return this.getYearMonthKey(new Date())
   },
 
+  // 获取当前时间
+  getCurrentDate(): string {
+    return this.formatTime(new Date())
+  },
+
   // 日期转年月key
   getYearMonthKey(date: Date): string {
     let year = date.getFullYear()

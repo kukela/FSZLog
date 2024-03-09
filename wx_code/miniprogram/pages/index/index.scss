@@ -52,6 +52,13 @@
   }
 }
 
+.edit_modal {
+  .del_btn {
+    margin: 30rpx 0 10rpx 0;
+    width: 100%;
+  }
+}
+
 .add_btn[plain] {
   position: fixed;
   bottom: 40rpx;

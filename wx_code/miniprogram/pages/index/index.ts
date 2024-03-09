@@ -89,7 +89,7 @@ Component({
     // 列表展开
     cellMainTap: function (e: any) {
       let k = e.currentTarget.dataset.i
-      this.setData({ [`m.tags.${k}.isShowSub`]: !this.data.m.tags[k].isShowSub })
+      this.setData({ [`m.tags.[${k}].isShowSub`]: !this.data.m.tags[k].isShowSub })
     },
     // 子列表事件
     cellSubTap: function (e: any) {
@@ -123,16 +123,40 @@ Component({
         return
       }
       let etlM = this.data.editTagListM
-      let m = d.m
       try {
-        m.list[etlM.i].p = d.editTagListM_v
+        let eM = d.m.list[etlM.i]
+        eM.p = d.editTagListM_v
         this.setData({
-          m: dataU.monthCalc(m, true),
+          m: dataU.monthCalc(d.m, true),
           ["editTagListM.show"]: false
         })
         this.saveData()
       } catch (e) {
       }
+    },
+    // 删除
+    cellSubDel() {
+      let self = this
+      let d = this.data
+      wx.showModal({
+        title: '提示',
+        content: '删除后不可撤销，是否删除？',
+        success(res) {
+          if (!res.confirm) return
+          try {
+            let index = d.editTagListM.i
+            d.m.list.splice(index, 1)
+            self.setData({
+              m: dataU.monthCalc(d.m, true),
+              ["editTagListM.show"]: false
+            })
+            self.saveData()
+          } catch (error) {
+            console.error(error)
+            wx.showToast({ title: '删除失败！', icon: 'error', duration: 2000 })
+          }
+        }
+      })
     },
     // 添加事件
     showAddModalTap: function () {
@@ -162,12 +186,12 @@ Component({
       let tag = {
         tt: d.addM_title,
         p: d.addM_piov,
-        t: util.formatTime(new Date()).replace(`${d.m.date}-`, '')
+        t: util.getCurrentDate().replace(`${d.m.date}-`, '')
       }
       d.m.list.unshift(tag)
       this.setData({
-        ["addM.show"]: false,
-        m: dataU.monthCalc(d.m, true)
+        m: dataU.monthCalc(d.m, true),
+        ["addM.show"]: false
       })
       this.saveData()
     },
