@@ -7,7 +7,7 @@ export default {
   io_budget_type: "-$budget-",
   // app打开初始化数据
   initData() {
-    require('./test.js').initTestData()
+    // require('./test.js').initTestData()
   },
   // 获取当前年
   getCurrentYear(): string {
