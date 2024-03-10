@@ -159,8 +159,11 @@ export default {
     }
     m.tags = []
     m.list.forEach((v: any, i: number) => {
-      let tM = m.tags[v.tt]
-      if (!tM) tM = { tag: v.tt}
+      let tM = m.tags.find((item: any) => item.tag == v.tt)
+      if (!tM) {
+        tM = { tag: v.tt }
+        m.tags.push(tM)
+      }
       let tList = tM.list
       if (!tList) tList = []
       tList.push({
@@ -169,8 +172,8 @@ export default {
         i: i,
       })
       tM.list = tList
-      m.tags.push(tM)
     });
+    console.log(m.tags)
     m.tags.forEach((v: any) => {
       v.aP = 0.0
       v.list.forEach((vv: any) => {
