@@ -25,6 +25,9 @@ Component({
   },
 
   observers: {
+    'p': function (_) {
+      this.changeV()
+    }
   },
 
   /**
@@ -37,7 +40,6 @@ Component({
     },
     inputChange: function (e: any) {
       this.setData({ p: e.detail.value })
-      this.changeV()
     },
     changeV() {
       let v = this.data.p

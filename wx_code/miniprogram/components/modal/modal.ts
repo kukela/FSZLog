@@ -23,6 +23,16 @@ Component({
    * 组件的初始数据
    */
   data: {
+    show2: false
+  },
+
+  observers: {
+    'show': function (v) {
+      if(this.data.show2 == v) return
+      setTimeout(() => {
+        this.setData({show2: v})
+      }, v ? 0 : 230);
+    }
   },
 
   /**

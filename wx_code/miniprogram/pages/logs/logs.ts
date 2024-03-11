@@ -1,4 +1,7 @@
-import dataU from '../../utils/data.js'
+import conf from '../../utils/conf.js'
+import data from '../../utils/data.js'
+import dateU from '../../utils/date.js';
+import IOData from '../../utils/IOData.js'
 
 Page({
   data: {
@@ -16,7 +19,7 @@ Page({
     }
   },
   onShow() {
-    this.refPageData(dataU.getDefYear())
+    this.refPageData(conf.getDefYear())
   },
   onShareAppMessage() {
     return {
@@ -30,7 +33,7 @@ Page({
   },
   // 刷新页面
   refPageData(year: string) {
-    const yearList = dataU.getYearDataKeys(true)
+    const yearList = data.getYearDataKeys(true)
     let minDate = parseInt(year)
     yearList.forEach((v: string) => {
       let vv = parseInt(v)
@@ -38,17 +41,18 @@ Page({
         minDate = vv
       }
     });
-    let list = dataU.year2List(year, true)
-    dataU.coverYearIsShowSub(list, this.data.list)
+    let list = data.year2List(year, true)
+    data.coverYearIsShowSub(list, this.data.list)
     this.setData({
       date: year,
       startDate: `${minDate}`,
-      endDate: dataU.getCurrentYear(),
+      endDate: dateU.getCurrentYear(),
       list: list
     })
   },
+  // 拷贝数据
   copyTap() {
-    let copyStr = dataU.yearList2CopyStr(this.data.list)
+    let copyStr = IOData.yearList2CopyStr(this.data.list)
     if (copyStr.length > 0) {
       wx.setClipboardData({
         data: copyStr,
@@ -63,6 +67,7 @@ Page({
       wx.showToast({ title: '暂无数据', icon: 'error', duration: 2000 })
     }
   },
+  // 导入数据
   importTap() {
     let self = this
     wx.getClipboardData({
@@ -75,15 +80,15 @@ Page({
     })
   },
   importStrData(v: string) {
-    //       v = `
+    //     v = `
     // -$budget- | 3000 | 2023-12
     // ABC123 | -1000.10 | 2023-12-12 12:01:01
     // -$budget- | 3000 | 2024-02
     // -$budget- | 3000 | 2024-03
     // ABC | -1000.11 | 2024-03-01 12:01:01
     // ABCd | +100 | 2024-03-01 12:01:02
-    //       `
-    let list = dataU.importYearListStr(v)
+    //     `
+    let list = IOData.importYearListStr(v)
     if (list.length < 1) {
       wx.showToast({ title: '剪贴板数据不对', icon: 'error', duration: 2000 })
       return
@@ -95,10 +100,10 @@ Page({
   },
   importModalConfirm() {
     let list = this.data.importM.list
-    let importTip = dataU.importListData(list)
+    let importTip = IOData.importListData(list)
     if (!importTip) {
-      let list = dataU.year2List(this.data.date, true)
-      dataU.coverYearIsShowSub(list, this.data.list)
+      let list = data.year2List(this.data.date, true)
+      data.coverYearIsShowSub(list, this.data.list)
       this.setData({
         list: list,
         ["importM.show"]: false
@@ -108,18 +113,24 @@ Page({
       wx.showToast({ title: importTip, icon: 'error', duration: 2000 })
     }
   },
+  // 年点击事件
   bindDateChange(e: any) {
     let date = e.detail.value
     this.setData({
       date: date,
-      list: dataU.year2List(date, true)
+      list: data.year2List(date, true)
     })
-    dataU.setDefYear(date)
+    conf.setDefYear(date)
   },
+  // 列表展开
   cellTitleTap(e: any) {
     let i = e.currentTarget.dataset.i
     let vv = this.data.list[i] as any
-    vv.isShowSub = !vv.isShowSub
-    this.setData({ list: this.data.list })
+    if (vv.isShowSubAnim != undefined && vv.isShowSub != vv.isShowSubAnim) return
+    let isShowSub = !vv.isShowSub
+    this.setData({ [`list[${i}].isShowSubAnim`]: isShowSub })
+    setTimeout(() => {
+      this.setData({ [`list[${i}].isShowSub`]: isShowSub })
+    }, isShowSub ? 0 : 230);
   }
 })

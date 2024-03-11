@@ -1,6 +1,9 @@
-import dataU from '../../utils/data.js';
-import util from '../../utils/util.js';
+import data from '../../utils/data.js';
+import dateU from '../../utils/date.js';
+import IOData from '../../utils/IOData.js';
 import verifyU from '../../utils/verify.js';
+import util from '../../utils/util.js';
+import tags from '../../utils/tags.js';
 
 Page({
   data: {
@@ -45,15 +48,15 @@ Page({
   },
   onLoad() {
     wx.setNavigationBarTitle({
-      title: util.getCurrentDateKey()
+      title: dateU.getCurrentDateKey()
     })
   },
   onShow() {
-    let m = dataU.date2DataObj(util.getCurrentDateKey())
+    let m = data.date2DataObj(dateU.getCurrentDateKey())
     if (m == null) {
-      m = dataU.newMonthData()
+      m = data.newMonthData()
     }
-    dataU.coverMonthIsShowSub(m, this.data.m)
+    data.coverMonthIsShowSub(m, this.data.m)
     this.setData({
       m: m
     })
@@ -86,7 +89,7 @@ Page({
     let m = d.m
     m.budget = parseFloat(t_budget)
     this.setData({
-      m: dataU.monthCalc(m, true),
+      m: data.monthCalc(m, true),
       ["budgetM.show"]: false
     })
     this.saveData()
@@ -94,7 +97,13 @@ Page({
   // 列表展开
   cellMainTap: function (e: any) {
     let k = e.currentTarget.dataset.i
-    this.setData({ [`m.tags.[${k}].isShowSub`]: !this.data.m.tags[k].isShowSub })
+    let tag = this.data.m.tags[k]
+    if (tag.isShowSubAnim != undefined && tag.isShowSub != tag.isShowSubAnim) return
+    let isShowSub = !tag.isShowSub
+    this.setData({ [`m.tags.[${k}].isShowSubAnim`]: isShowSub })
+    setTimeout(() => {
+      this.setData({ [`m.tags.[${k}].isShowSub`]: isShowSub })
+    }, isShowSub ? 0 : 230);
   },
   // 子列表事件
   cellSubTap: function (e: any) {
@@ -111,7 +120,7 @@ Page({
       })
       return
     }
-    let pM = dataU.pioStr2Obj(tag.p)
+    let pM = util.pioStr2Obj(tag.p)
     let etlM = this.data.editTagListM
     etlM.show = true
     etlM.verifyTips = false
@@ -123,7 +132,7 @@ Page({
   cellSubModalConfirm() {
     this.setData({ ["editTagListM.verifyTips"]: true })
     let d = this.data
-    let pM = dataU.pioStr2Obj(d.editTagListM_v)
+    let pM = util.pioStr2Obj(d.editTagListM_v)
     if (verifyU.vTips(d.pioTips, pM.p)) {
       return
     }
@@ -132,7 +141,7 @@ Page({
       let eM = d.m.list[etlM.i]
       eM.p = d.editTagListM_v
       this.setData({
-        m: dataU.monthCalc(d.m, true),
+        m: data.monthCalc(d.m, true),
         ["editTagListM.show"]: false
       })
       this.saveData()
@@ -152,7 +161,7 @@ Page({
           let index = d.editTagListM.i
           d.m.list.splice(index, 1)
           self.setData({
-            m: dataU.monthCalc(d.m, true),
+            m: data.monthCalc(d.m, true),
             ["editTagListM.show"]: false
           })
           self.saveData()
@@ -170,7 +179,7 @@ Page({
       ["addM.verifyTips"]: false,
       ["addM.p"]: "",
       ["addM.pio"]: "out",
-      tagList: dataU.getAddTagList(),
+      tagList: tags.getAddTagList(),
       addM_title: "",
       addM_piov: "",
     })
@@ -183,26 +192,27 @@ Page({
   addModalConfirm() {
     this.setData({ ["addM.verifyTips"]: true })
     let d = this.data
-    let pM = dataU.pioStr2Obj(d.addM_piov)
-    if (verifyU.vTips(d.addM.title_tips, d.addM_title) ||
+    let pM = util.pioStr2Obj(d.addM_piov)
+    let aTitle = IOData.strDes(d.addM_title)
+    if (verifyU.vTips(d.addM.title_tips, aTitle) ||
       verifyU.vTips(d.pioTips, pM.p)) {
       return
     }
     let tag = {
-      tt: d.addM_title,
+      tt: aTitle,
       p: d.addM_piov,
-      t: util.getCurrentDate().replace(`${d.m.date}-`, '')
+      t: dateU.getCurrentDate().replace(`${d.m.date}-`, '')
     }
     d.m.list.unshift(tag)
     this.setData({
-      m: dataU.monthCalc(d.m, true),
+      m: data.monthCalc(d.m, true),
       ["addM.show"]: false
     })
     this.saveData()
   },
   // 其他方法
   saveData() {
-    let tt = dataU.saveMonthData(this.data.m)
+    let tt = data.saveMonthData(this.data.m)
     if (!tt) return
     wx.showToast({
       title: tt, icon: 'error', duration: 2000

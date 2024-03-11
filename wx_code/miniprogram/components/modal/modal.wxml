@@ -1,5 +1,5 @@
-<view class='modal-mask' wx:if='{{show}}' bindtap='clickMask'>
-  <view class='modal-content'>
+<view wx:if='{{show2}}' class='modal-mask {{show ? "mask_show" : "mask_hide" }}' bindtap='clickMask'>
+  <view class='modal-content {{show ? "modal_show" : "modal_hide" }}'>
     <view wx:if='{{title}}' class="modal-header">
       <text class="title">{{title}}</text>
     </view>

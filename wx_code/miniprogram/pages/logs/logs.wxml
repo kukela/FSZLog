@@ -8,9 +8,9 @@
     </picker>
   </view>
   <scroll-view class="list" data-weui-theme="{{theme}}" scroll-y type="list">
-    <view wx:for="{{list}}" wx:key="date" class="cell">
-      <view class="main {{item.isShowSub ? 's' : ''}}">
-        <view class="title" hover-class="def_hover" hover-stay-time="150" data-i="{{index}}" bindtap="cellTitleTap">{{item.sTitle}}</view>
+    <view wx:for="{{list}}" wx:key="date" class="cell {{item.isShowSubAnim ? 'list_show' : 'list_hide'}}">
+      <view class="main {{item.isShowSub ? 's' : ''}}" hover-class="def_hover" hover-stay-time="150" data-i="{{index}}" bindtap="cellTitleTap">
+        <text class="title">{{item.sTitle}}</text>
         <view class="num_box">
           <text class="num big {{item.isProfit ? 'p' : 'l'}}">{{item.sPio}}</text>
           <text wx:if="{{item.isShowSub}}" class="num">预算：{{item.budget}}</text>

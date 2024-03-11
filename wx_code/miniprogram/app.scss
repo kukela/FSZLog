@@ -1,4 +1,5 @@
 @import "./components/theme.scss";
+@import "./components/anim.scss";
 
 page {
   background-color: $bgColor;
@@ -11,10 +12,6 @@ page {
   flex-direction: column;
   height: 100%;
   justify-content: space-between;
-}
-
-.def_hover {
-  opacity: 0.75;
 }
 
 .num {
@@ -46,6 +43,7 @@ page {
     display: flex;
     flex-direction: column;
     padding: 0 30rpx;
+    overflow: hidden;
 
     .main {
       display: flex;
@@ -60,6 +58,10 @@ page {
       color: $textMainColor;
       line-height: 100rpx;
       flex: 1;
+    }
+
+    .sub_box {
+      overflow: hidden;
     }
 
     .sub {
@@ -106,7 +108,8 @@ page {
     }
   }
 
-  .cell>view {
+  .cell>view,
+  .sub_box>view {
     border-bottom: $border_height solid $borderColor;
 
     &:last-child {
@@ -152,7 +155,7 @@ modal-view {
     width: 100%;
     display: inline-flex;
     flex-direction: row;
-    align-items: center;
+    // align-items: center;
   }
 
   .item_box {
@@ -163,8 +166,9 @@ modal-view {
     max-height: 280rpx;
 
     .item {
-      background-color: #303030;
+      background-color: $bgItemColor;
       height: 80rpx;
+      min-width: 50rpx;
       color: $textMainColor;
       line-height: 80rpx;
       padding: 0 16rpx;

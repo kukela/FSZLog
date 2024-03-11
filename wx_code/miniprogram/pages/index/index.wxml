@@ -5,13 +5,13 @@
       <text class="num big">剩余:{{m.sP2}}</text>
     </view>
     <view class="all_bar">
-      <view class="h_bar _{{m.perType}}" style="width:{{m.per}}%;"></view>
+      <view class="h_bar _{{m.perType}}" style="width:{{m.per}}\%;"></view>
     </view>
   </view>
   <scroll-view class="list" data-weui-theme="{{theme}}" scroll-y type="list">
-    <view wx:for="{{m.tags}}" wx:key="index" class="cell">
-      <view class="main">
-        <view class="title" hover-class="def_hover" hover-stay-time="150" data-i="{{index}}" bindtap="cellMainTap">{{item.tag}}</view>
+    <view wx:for="{{m.tags}}" wx:key="index" class="cell {{item.isShowSubAnim ? 'list_show' : 'list_hide'}}">
+      <view class="main" hover-class="def_hover" hover-stay-time="150" data-i="{{index}}" bindtap="cellMainTap">
+        <view class="title">{{item.tag}}</view>
         <text class="num big">{{item.aPio}}</text>
       </view>
       <block wx:if="{{item.isShowSub}}">
@@ -37,7 +37,7 @@
 
   <modal-view show="{{editTagListM.show}}" title="编辑" class="edit_modal" bindconfirm="cellSubModalConfirm">
     <pio-input class="model_cell" p="{{editTagListM.p}}" pio="{{editTagListM.pio}}" tips="{{pioTips}}" model:v="{{editTagListM_v}}" verifyTips="{{editTagListM.verifyTips}}"></pio-input>
-    <button class="del_btn" bindtap="cellSubDel">删除</button>
+    <button class="del_btn" bindtap="cellSubDel" hover-class="def_hover" hover-stay-time="150">删除</button>
   </modal-view>
 
   <modal-view show="{{addM.show}}" title="添加" bindconfirm="addModalConfirm">

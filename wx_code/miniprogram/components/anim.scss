@@ -1,0 +1,97 @@
+.def_hover {
+  opacity: 0.75;
+}
+
+// 列表
+
+.list_show {
+  animation: list_show 0.35s ease;
+}
+
+.list_hide {
+  animation: list_hide 0.25s ease;
+}
+
+@keyframes list_show {
+  from {
+    clip-path: ellipse(110% 100rpx at 50% 50rpx);
+    max-height: 0;
+  }
+
+  to {
+    clip-path: ellipse(110% 115% at 50% 0);
+    max-height: 100%;
+  }
+}
+
+@keyframes list_hide {
+  from {
+    clip-path: ellipse(110% 115% at 50% 0);
+    max-height: 100%;
+  }
+
+  to {
+    clip-path: ellipse(110% 100rpx at 50% 50rpx);
+    max-height: 0;
+  }
+}
+
+// 背景遮罩
+
+.mask_show {
+  animation: mask_show 0.35s ease;
+}
+
+.mask_hide {
+  animation: mask_hide 0.25s ease;
+}
+
+@keyframes mask_show {
+  from {
+    opacity: 0.3;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes mask_hide {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0.2;
+  }
+}
+
+// 弹窗
+
+.modal_show {
+  animation: modal_show 0.25s ease;
+}
+
+.modal_hide {
+  animation: modal_hide 0.25s ease;
+}
+
+@keyframes modal_show {
+  from {
+    transform: translateY(100%);
+  }
+
+  to {
+    transform: none;
+  }
+}
+
+@keyframes modal_hide {
+  from {
+    transform: none;
+  }
+
+  to {
+    transform: translateY(100%);
+  }
+}

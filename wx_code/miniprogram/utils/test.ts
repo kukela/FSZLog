@@ -34,7 +34,7 @@ function initTestData() {
     }
   ]`
   // wx.setStorageSync("ydata-2023", test2023)
-  // wx.setStorageSync("ydata-2024", test2024)
+  wx.setStorageSync("ydata-2024", test2024)
   // wx.setStorageSync("ydata-2025", undefined)
   // wx.removeStorageSync("ydata-2025")
   // wx.removeStorageSync("ydata-2024")

@@ -1,54 +1,34 @@
 export default {
-
-  formatTime(date: Date): string {
-    const year = date.getFullYear()
-    const month = date.getMonth() + 1
-    const day = date.getDate()
-    const hour = date.getHours()
-    const minute = date.getMinutes()
-    const second = date.getSeconds()
-    return (
-      [year, month, day].map(this.formatNumber).join('-') +
-      ' ' +
-      [hour, minute, second].map(this.formatNumber).join(':')
-    )
+  // 价格转字符串
+  price2Str(v: number, _: string = "￥"): string {
+    return v % 1 === 0 ? `${v}` : v.toFixed(2)
   },
-
-  // 获取当前日期key
-  getCurrentDateKey(): string {
-    return this.getYearMonthKey(new Date())
+  // 价格转+-字符串
+  price2IOStr(v: number, type: string = "￥"): string {
+    let vs = `${v}`
+    if (vs.indexOf('.') > -1) vs = this.price2Str(v, type)
+    if (v > 0) vs = `+${vs}`
+    return vs
   },
-
-  // 获取当前时间
-  getCurrentDate(): string {
-    return this.formatTime(new Date())
+  // 价格字符串转+-字符串
+  pioStr2IOStr(v: string, type: string = "￥"): string {
+    return this.price2IOStr(parseFloat(v), type)
   },
-
-  // 日期转年月key
-  getYearMonthKey(date: Date): string {
-    let year = date.getFullYear()
-    let month = date.getMonth() + 1
-    return [year, month].map(this.formatNumber).join('-')
+  // +-字符串转obj
+  pioStr2Obj(v: string): any {
+    let sL = v.substr(0, 1)
+    let vv = v.substring(1)
+    let pio = ""
+    if (sL == "-") {
+      pio = "out"
+    } else if (sL == "+") {
+      pio = "in"
+    } else {
+      vv = v
+    }
+    return {
+      pio: pio,
+      p: vv
+    }
   },
-
-  // 日期key转月份数字
-  dateKey2MonthNum(v: string): number {
-    let mStr = v.split("-", 2)[1]
-    if (mStr == undefined || mStr == "") mStr = "0"
-    return parseInt(mStr)
-  },
-
-  // 日期key转时间戳
-  dateKey2Date(v: string): Date {
-    return new Date(Date.parse(v.replace(/-/g, '/')));
-  },
-  dateKey2Time(v: string): number {
-    return this.dateKey2Date(v).getTime();
-  },
-
-  formatNumber(n: number): string {
-    const s = n.toString()
-    return s[1] ? s : '0' + s
-  }
-
 }
