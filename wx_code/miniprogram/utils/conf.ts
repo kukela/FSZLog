@@ -3,6 +3,8 @@ import dateU from './date.js';
 export default {
   // 年数据key开头
   yearDataKey: "ydata-",
+  // 列表动画时长
+  anim_list_d: 180,
 
   // 获取当前选择的年
   getDefYear(): string {

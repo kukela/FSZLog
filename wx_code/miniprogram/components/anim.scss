@@ -5,11 +5,11 @@
 // 列表
 
 .list_show {
-  animation: list_show 0.35s ease;
+  animation: list_show 0.2s ease;
 }
 
 .list_hide {
-  animation: list_hide 0.25s ease;
+  animation: list_hide 0.2s ease;
 }
 
 @keyframes list_show {
@@ -39,11 +39,11 @@
 // 背景遮罩
 
 .mask_show {
-  animation: mask_show 0.35s ease;
+  animation: mask_show 0.2s ease;
 }
 
 .mask_hide {
-  animation: mask_hide 0.25s ease;
+  animation: mask_hide 0.2s ease;
 }
 
 @keyframes mask_show {
@@ -69,11 +69,11 @@
 // 弹窗
 
 .modal_show {
-  animation: modal_show 0.25s ease;
+  animation: modal_show 0.2s ease;
 }
 
 .modal_hide {
-  animation: modal_hide 0.25s ease;
+  animation: modal_hide 0.2s ease;
 }
 
 @keyframes modal_show {

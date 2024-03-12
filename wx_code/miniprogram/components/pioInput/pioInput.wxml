@@ -4,10 +4,5 @@
     <text>{{item.title}}</text>
   </label>
 </radio-group>
-<tip-input type="digit" placeholder="请输入价格" value="{{p}}" bindinput="inputChange" tips="{{tips}}" verifyTips="{{verifyTips}}">
-  <!-- <keyboard-accessory class="container" style="height: 50px;">
-    <cover-view bindtap="tap" style="flex: 1; background: green;">1</cover-view>
-    <cover-view bindtap="tap" style="flex: 1; background: red;">2</cover-view>
-  </keyboard-accessory> -->
-</tip-input>
+<tip-input type="digit" placeholder="请输入价格" value="{{p}}" bindinput="inputChange" tips="{{tips}}" verifyTips="{{verifyTips}}" />
 <text class="unit">￥</text>

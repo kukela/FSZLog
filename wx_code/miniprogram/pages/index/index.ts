@@ -4,6 +4,8 @@ import IOData from '../../utils/IOData.js';
 import verifyU from '../../utils/verify.js';
 import util from '../../utils/util.js';
 import tags from '../../utils/tags.js';
+import evalMath from '../../utils/eval_math.js';
+import conf from '../../utils/conf.js';
 
 Page({
   data: {
@@ -11,6 +13,7 @@ Page({
       t: "请输入正确的价格",
       f: verifyU.vFloatFun
     }],
+    evalMathFun: evalMath.evalMath,
 
     m: <any>{},
     budgetM: {
@@ -103,7 +106,7 @@ Page({
     this.setData({ [`m.tags.[${k}].isShowSubAnim`]: isShowSub })
     setTimeout(() => {
       this.setData({ [`m.tags.[${k}].isShowSub`]: isShowSub })
-    }, isShowSub ? 0 : 230);
+    }, isShowSub ? 0 : conf.anim_list_d);
   },
   // 子列表事件
   cellSubTap: function (e: any) {

@@ -131,6 +131,6 @@ Page({
     this.setData({ [`list[${i}].isShowSubAnim`]: isShowSub })
     setTimeout(() => {
       this.setData({ [`list[${i}].isShowSub`]: isShowSub })
-    }, isShowSub ? 0 : 230);
+    }, isShowSub ? 0 : conf.anim_list_d);
   }
 })

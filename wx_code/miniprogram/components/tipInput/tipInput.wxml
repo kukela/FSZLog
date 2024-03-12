@@ -1,2 +1,3 @@
-<input type="{{type}}" placeholder="{{placeholder}}" model:value="{{value}}" bindinput="inputChange" maxlength="{{maxlength}}" />
+<input type="{{type}}" placeholder="{{placeholder}}" model:value="{{value}}" bindinput="inputChange" maxlength="{{maxlength}}">
+</input>
 <text wx:if="{{tip}}" class="input_tips">{{tip}}</text>

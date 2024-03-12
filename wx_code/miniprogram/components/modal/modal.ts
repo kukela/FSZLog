@@ -31,7 +31,7 @@ Component({
       if(this.data.show2 == v) return
       setTimeout(() => {
         this.setData({show2: v})
-      }, v ? 0 : 230);
+      }, v ? 0 : 180);
     }
   },
 

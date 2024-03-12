@@ -12,6 +12,11 @@ Component({
       type: Boolean,
       value: false
     },
+    evalMathFun: <any>{},
+    showKeyboard: {
+      type: Boolean,
+      value: false
+    },
   },
 
   /**
@@ -43,6 +48,8 @@ Component({
     },
     changeV() {
       let v = this.data.p
+      // let f = this.data.evalMathFun
+      // if (f) v = f(v)
       if (this.data.pio == "in") {
         v = `+${v}`
       } else {
