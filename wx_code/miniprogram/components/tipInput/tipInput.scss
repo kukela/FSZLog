@@ -5,3 +5,18 @@ tip-input {
   display: flex;
   flex-direction: column;
 }
+
+.def_input {
+  display: flex;
+
+  input {
+    height: 100%;
+  }
+
+  .unit {
+    line-height: $def_input_height;
+    color: $textMainColor;
+    margin-right: 10rpx;
+    font-size: 32rpx;
+  }
+}

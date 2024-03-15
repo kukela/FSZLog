@@ -33,6 +33,30 @@ page {
   color: $textRedColor;
 }
 
+.header_bar {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+
+  .btn {
+    padding: 0 40rpx;
+    font-size: 32rpx;
+    color: $mainColor;
+    line-height: 100rpx;
+  }
+
+  .space {
+    flex: 1;
+  }
+}
+
+.header_bar+.list {
+  position: absolute;
+  top: 110rpx;
+  bottom: 1rpx;
+}
+
 .list {
 
   .cell {
@@ -138,10 +162,6 @@ page {
 modal-view {
 
   input {
-    height: 80rpx;
-    border: $border_height solid $borderColor;
-    border-radius: $def_btn_radius;
-    box-sizing: border-box;
     font-size: 32rpx;
     text-align: start;
     padding: 0 20rpx;
@@ -167,16 +187,24 @@ modal-view {
 
     .item {
       background-color: $bgItemColor;
-      height: 80rpx;
+      height: $def_input_height;
       min-width: 50rpx;
       color: $textMainColor;
-      line-height: 80rpx;
+      line-height: $def_input_height;
       padding: 0 16rpx;
+      font-size: 32rpx;
       display: inline-block;
       border-radius: $def_btn_radius;
       margin: 0 20rpx 20rpx 0;
     }
 
+  }
+
+  .del_btn {
+    margin: 30rpx 0 10rpx 0;
+    width: 100% !important;
+    background-color: $bgItemColor;
+    color: $textNumColor;
   }
 
 }

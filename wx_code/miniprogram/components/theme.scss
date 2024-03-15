@@ -6,6 +6,7 @@ $mainColor: #8183FF;
 
 $textMainColor: #fff;
 $textNumColor: #7d90a9;
+$textDisabledColor: #8F8F8F;
 $textGreenColor: #74a800;
 $textYellowColor: #cc9c00;
 $textRedColor: #fa5151;
@@ -14,6 +15,7 @@ $page-lr-margin: 40rpx;
 
 $def_btn_radius: 10rpx;
 $border_height: 1rpx;
+$def_input_height: 80rpx;
 
 .input_tips {
   text-align: start;
@@ -22,8 +24,9 @@ $border_height: 1rpx;
   color: $textRedColor;
 }
 
-.unit {
-  color: $textMainColor;
-  font-size: 32rpx;
-  margin-left: 15rpx;
+.def_input {
+  height: $def_input_height;
+  border: $border_height solid $borderColor;
+  border-radius: $def_btn_radius;
+  box-sizing: border-box;
 }

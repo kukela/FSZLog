@@ -1,21 +1,6 @@
 @import "../../components/theme.scss";
 
 .header_bar {
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  align-items: center;
-
-  .btn {
-    padding: 0 40rpx;
-    font-size: 32rpx;
-    color: $mainColor;
-    line-height: 120rpx;
-  }
-
-  .space {
-    flex: 1;
-  }
 
   picker {
     display: flex;
@@ -25,16 +10,13 @@
   .sel_year {
     font-size: 48rpx;
     text-align: end;
-    line-height: 120rpx;
+    line-height: 100rpx;
     color: $textMainColor;
     padding: 0 40rpx;
   }
 }
 
 .list {
-  position: absolute;
-  top: 120rpx;
-  bottom: 1rpx;
 
   .cell_bs {
     height: 60rpx;

@@ -1,16 +1,16 @@
 @import "../theme.scss";
 
 radio-group {
-  height: 80rpx;
+  height: $def_input_height;
 
   radio {
     display: none;
   }
 
   label {
-    height: 80rpx;
+    height: $def_input_height;
     margin-right: 20rpx;
-    line-height: 80rpx;
+    line-height: $def_input_height;
     display: inline-block;
     padding: 0 16rpx;
     font-size: 28rpx;
@@ -36,8 +36,4 @@ radio-group {
     }
   }
 
-}
-
-.unit {
-  line-height: 80rpx;
 }

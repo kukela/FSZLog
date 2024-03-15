@@ -1,0 +1,112 @@
+@import "./components/theme.scss";
+@import "./components/anim.scss";
+
+.info_box {
+  display: flex;
+  flex-direction: row;
+  margin-top: 10rpx;
+  border-bottom: none !important;
+
+  .item {
+    display: flex;
+    flex-direction: column;
+
+    .title {
+      font-size: 26rpx;
+      line-height: 40rpx;
+      color: $textNumColor;
+    }
+
+    .num {
+      text-align: start;
+      font-size: 32rpx;
+      color: $textMainColor;
+      line-height: 60rpx;
+    }
+
+    &.bj {
+      flex: 135;
+    }
+
+    &.zlx {
+      flex: 115;
+    }
+  }
+
+  .item.ll {
+    width: 110rpx;
+
+    .title {
+      font-size: 22rpx;
+      color: $textMainColor;
+    }
+
+    text {
+      text-align: right;
+    }
+  }
+
+}
+
+.table_box {
+  display: flex;
+  flex-direction: column;
+  border-bottom: none !important;
+
+  .thead,
+  .tr {
+    display: flex;
+
+    text:nth-child(1) {
+      flex: 5;
+    }
+
+    text:nth-child(2) {
+      flex: 2;
+    }
+
+    text:nth-child(3) {
+      width: 116rpx;
+      text-align: right;
+    }
+  }
+
+  .thead {
+    margin-top: 10rpx;
+
+    text {
+      font-size: 22rpx;
+      line-height: 40rpx;
+      color: $textNumColor;
+    }
+  }
+
+  .tr {
+    text {
+      font-size: 26rpx;
+      line-height: 60rpx;
+      color: $textMainColor;
+    }
+  }
+
+  .tr.dis,
+  .tr.off {
+    text {
+      color: $textDisabledColor;
+    }
+  }
+
+}
+
+.cell .dis>text {
+  text-decoration-line: line-through;
+}
+
+.more_btn {
+  padding: 0 40rpx;
+  font-size: 32rpx;
+  color: $mainColor;
+  line-height: 80rpx;
+  text-align: center;
+  margin-bottom: 10rpx;
+}

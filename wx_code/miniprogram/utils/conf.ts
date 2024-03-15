@@ -1,11 +1,21 @@
 import dateU from './date.js';
 
 export default {
-  // 年数据key开头
-  yearDataKey: "ydata-",
+  // 当前数据版本号
+  currentDataVer: 1,
+  // 月数据key开头
+  monthDataKey: "md-",
   // 列表动画时长
   anim_list_d: 180,
 
+  // 本地数据版本
+  getDataVer(): number {
+    let v = parseInt(wx.getStorageSync("dataVer"))
+    return isNaN(v) ? 0 : v
+  },
+  saveDataVer() {
+    wx.setStorageSync("dataVer", this.currentDataVer)
+  },
   // 获取当前选择的年
   getDefYear(): string {
     var defYear = wx.getStorageSync("defYear")
@@ -32,8 +42,8 @@ export default {
     wx.setStorageSync("defBudget", v)
   },
   // 获取年数据key
-  getYearDataKey(year: string): string {
-    return `${this.yearDataKey}${year}`
+  getMonthDataKey(month: string): string {
+    return `${this.monthDataKey}${month}`
   },
 
 }

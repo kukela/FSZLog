@@ -8,7 +8,7 @@
       <view class="h_bar _{{m.perType}}" style="width:{{m.per}}%;"></view>
     </view>
   </view>
-  <scroll-view class="list" data-weui-theme="{{theme}}" scroll-y type="list">
+  <scroll-view class="list" scroll-y type="list">
     <view wx:for="{{m.tags}}" wx:key="index" class="cell {{item.isShowSubAnim ? 'list_show' : 'list_hide'}}">
       <view class="main" hover-class="def_hover" hover-stay-time="150" data-i="{{index}}" bindtap="cellMainTap">
         <view class="title">{{item.tag}}</view>
@@ -30,8 +30,7 @@
 
   <modal-view show="{{budgetM.show}}" title="设置预算" bindconfirm="budgetModalConfirm">
     <view class="model_cell">
-      <tip-input type="digit" placeholder="请输入预算" tips="{{budgetM.budgetTips}}" model:value="{{budgetM_budget}}" verifyTips="{{budgetM.verifyTips}}"></tip-input>
-      <text class="unit">￥</text>
+      <tip-input type="digit" placeholder="请输入预算" tips="{{budgetM.budgetTips}}" model:value="{{budgetM_budget}}" verifyTips="{{budgetM.verifyTips}}" input-class="input" unit="￥" />
     </view>
   </modal-view>
 
@@ -46,7 +45,7 @@
     </view>
     <scroll-view class="model_cell" type="custom" scroll-y="true">
       <view class="item_box">
-        <view wx:for="{{tagList}}" wx:key="this" class="item" hover-class="def_hover" hover-stay-time="150" data-i="{{index}}" bindtap="tagTap">{{item}}</view>
+        <view wx:for="{{tagList}}" wx:key="tt" class="item" hover-class="def_hover" hover-stay-time="150" data-i="{{index}}" bindtap="tagTap">{{item.tt}}</view>
       </view>
     </scroll-view>
     <pio-input class="model_cell" p="{{addM.p}}" pio="{{addM.pio}}" tips="{{pioTips}}" model:v="{{addM_piov}}" verifyTips="{{addM.verifyTips}}" evalMathFun="{{evalMathFun}}"></pio-input>

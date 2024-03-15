@@ -55,11 +55,9 @@ Page({
     })
   },
   onShow() {
-    let m = data.date2DataObj(dateU.getCurrentDateKey())
-    if (m == null) {
-      m = data.newMonthData()
-    }
-    data.coverMonthIsShowSub(m, this.data.m)
+    let m = data.date2DataObj(dateU.getCurrentDateKey(), 2)
+    if (!m) m = data.newMonthData()
+    this.monthDataChange(m, true)
     this.setData({
       m: m
     })
@@ -74,7 +72,7 @@ Page({
       title: '反赊账记录器',
     }
   },
-  // 头部事件
+  // 预算点击事件
   budgetTap() {
     this.setData({
       ["budgetM.show"]: true,
@@ -82,6 +80,7 @@ Page({
       budgetM_budget: this.data.m.budget
     })
   },
+  // 预算弹窗确定事件
   budgetModalConfirm() {
     this.setData({ ["budgetM.verifyTips"]: true })
     let d = this.data
@@ -92,7 +91,7 @@ Page({
     let m = d.m
     m.budget = parseFloat(t_budget)
     this.setData({
-      m: data.monthCalc(m, true),
+      m: this.monthDataChange(m, true),
       ["budgetM.show"]: false
     })
     this.saveData()
@@ -132,6 +131,7 @@ Page({
     etlM.pio = pM.pio
     this.setData({ editTagListM: etlM })
   },
+  // 编辑数据弹窗确定
   cellSubModalConfirm() {
     this.setData({ ["editTagListM.verifyTips"]: true })
     let d = this.data
@@ -144,14 +144,14 @@ Page({
       let eM = d.m.list[etlM.i]
       eM.p = d.editTagListM_v
       this.setData({
-        m: data.monthCalc(d.m, true),
+        m: this.monthDataChange(d.m, true),
         ["editTagListM.show"]: false
       })
       this.saveData()
     } catch (e) {
     }
   },
-  // 删除
+  // 删除一条数据弹窗
   cellSubDel() {
     let self = this
     let d = this.data
@@ -164,7 +164,7 @@ Page({
           let index = d.editTagListM.i
           d.m.list.splice(index, 1)
           self.setData({
-            m: data.monthCalc(d.m, true),
+            m: self.monthDataChange(d.m, true),
             ["editTagListM.show"]: false
           })
           self.saveData()
@@ -182,16 +182,17 @@ Page({
       ["addM.verifyTips"]: false,
       ["addM.p"]: "",
       ["addM.pio"]: "out",
-      tagList: tags.getAddTagList(),
+      tagList: tags.getAll(),
       addM_title: "",
       addM_piov: "",
     })
   },
   tagTap: function (e: any) {
     let i = e.currentTarget.dataset.i
-    let tag = this.data.tagList[i] as string
-    this.setData({ 'addM_title': tag })
+    let tag = this.data.tagList[i]
+    this.setData({ 'addM_title': tag.tt })
   },
+  // 添加弹窗确定事件
   addModalConfirm() {
     this.setData({ ["addM.verifyTips"]: true })
     let d = this.data
@@ -208,17 +209,24 @@ Page({
     }
     d.m.list.unshift(tag)
     this.setData({
-      m: data.monthCalc(d.m, true),
+      m: this.monthDataChange(d.m, true),
       ["addM.show"]: false
     })
     this.saveData()
   },
-  // 其他方法
+  // 保存数据
   saveData() {
-    let tt = data.saveMonthData(this.data.m)
-    if (!tt) return
-    wx.showToast({
-      title: tt, icon: 'error', duration: 2000
-    })
-  }
+    console.log(this.data.m)
+    // let tt = data.saveMonthData(this.data.m)
+    // if (!tt) return
+    // wx.showToast({
+    //   title: tt, icon: 'error', duration: 2000
+    // })
+  },
+  monthDataChange(m: any, isCalc: boolean): any {
+    if (isCalc) data.monthCalc(m, 2)
+    data.genMonthTags(m)
+    data.coverMonthIsShowSub(m, this.data.m)
+    return m
+  },
 })

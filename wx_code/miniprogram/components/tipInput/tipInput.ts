@@ -15,7 +15,8 @@ Component({
     verifyTips: {
       type: Boolean,
       value: false
-    }
+    },
+    unit: String,
   },
 
   /**

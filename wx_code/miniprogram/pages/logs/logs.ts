@@ -14,10 +14,6 @@ Page({
       list: <any>[],
     }
   },
-  lifetimes: {
-    attached: function () {
-    }
-  },
   onShow() {
     this.refPageData(conf.getDefYear())
   },
@@ -33,20 +29,18 @@ Page({
   },
   // 刷新页面
   refPageData(year: string) {
-    const yearList = data.getYearDataKeys(true)
-    let minDate = parseInt(year)
-    yearList.forEach((v: string) => {
-      let vv = parseInt(v)
-      if (vv < minDate) {
-        minDate = vv
-      }
-    });
-    let list = data.year2List(year, true)
+    let endDate = dateU.getCurrentYear()
+    let startDate = endDate
+    let yearList = data.getAllYears()
+    if (yearList.length > 0) {
+      startDate = yearList[yearList.length - 1]
+    }
+    let list = data.year2List(year, 2)
     data.coverYearIsShowSub(list, this.data.list)
     this.setData({
       date: year,
-      startDate: `${minDate}`,
-      endDate: dateU.getCurrentYear(),
+      startDate: startDate,
+      endDate: endDate,
       list: list
     })
   },
@@ -80,14 +74,16 @@ Page({
     })
   },
   importStrData(v: string) {
-    //     v = `
-    // -$budget- | 3000 | 2023-12
-    // ABC123 | -1000.10 | 2023-12-12 12:01:01
-    // -$budget- | 3000 | 2024-02
-    // -$budget- | 3000 | 2024-03
-    // ABC | -1000.11 | 2024-03-01 12:01:01
-    // ABCd | +100 | 2024-03-01 12:01:02
-    //     `
+    /*
+    v = `
+-$budget- | 3003 | 2023-12
+ABC123 | -1000.10 | 2023-12-12 12:01:01
+-$budget- | 3002 | 2024-02
+-$budget- | 3001 | 2024-03
+ABC | -1000.11 | 2024-03-01 12:01:01
+ABCd | +100 | 2024-03-01 12:01:02
+    `
+    */
     let list = IOData.importYearListStr(v)
     if (list.length < 1) {
       wx.showToast({ title: '剪贴板数据不对', icon: 'error', duration: 2000 })
@@ -99,17 +95,21 @@ Page({
     })
   },
   importModalConfirm() {
-    let list = this.data.importM.list
-    let importTip = IOData.importListData(list)
+    let importTip = IOData.importListData(this.data.importM.list)
     if (!importTip) {
-      let list = data.year2List(this.data.date, true)
+      let list = data.year2List(this.data.date, 2)
       data.coverYearIsShowSub(list, this.data.list)
       this.setData({
         list: list,
+        ["importM.list"]: [],
         ["importM.show"]: false
       })
       wx.showToast({ title: '导入成功', icon: 'success' })
     } else {
+      this.setData({
+        ["importM.list"]: [],
+        ["importM.show"]: false
+      })
       wx.showToast({ title: importTip, icon: 'error', duration: 2000 })
     }
   },
@@ -118,7 +118,7 @@ Page({
     let date = e.detail.value
     this.setData({
       date: date,
-      list: data.year2List(date, true)
+      list: data.year2List(date, 2)
     })
     conf.setDefYear(date)
   },

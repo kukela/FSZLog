@@ -53,21 +53,6 @@
   }
 }
 
-.model_cell {
-  .unit {
-    line-height: 80rpx;
-  }
-}
-
-.edit_modal {
-  .del_btn {
-    margin: 30rpx 0 10rpx 0;
-    width: 100%;
-    background-color: $bgItemColor;
-    color: $textNumColor;
-  }
-}
-
 .add_btn[plain] {
   position: fixed;
   bottom: 40rpx;

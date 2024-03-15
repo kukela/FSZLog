@@ -7,7 +7,7 @@
       <view class="sel_year" hover-class="def_hover" hover-stay-time="150">{{ date }}年</view>
     </picker>
   </view>
-  <scroll-view class="list" data-weui-theme="{{theme}}" scroll-y type="list">
+  <scroll-view class="list" scroll-y type="list">
     <view wx:for="{{list}}" wx:key="date" class="cell {{item.isShowSubAnim ? 'list_show' : 'list_hide'}}">
       <view class="main {{item.isShowSub ? 's' : ''}}" hover-class="def_hover" hover-stay-time="150" data-i="{{index}}" bindtap="cellTitleTap">
         <text class="title">{{item.sTitle}}</text>

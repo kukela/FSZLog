@@ -1,115 +1,141 @@
 import conf from './conf.js';
 import dateU from './date.js';
 import util from './util.js';
+import verify from './verify.js';
 
 export default {
+  sep: " | ",
+
   // app打开初始化数据
   initData() {
-    // require('./test.js').initTestData()
+    require('./test.js').initTestData()
+
+    let ver = conf.getDataVer()
+    if (ver < 1) {
+      let state = require('./verData.js').update_0_to_1()
+      if (state != "") {
+        wx.showToast({
+          title: `本地数据转换失败${state}，请联系管理员`, icon: 'none', duration: 5000
+        })
+        return
+      }
+    }
+    conf.saveDataVer()
   },
   // 新建当月的月份数据
   newMonthData(): any {
-    let nm = {
-      "date": dateU.getCurrentDateKey(),
-      "budget": conf.getDefBudget(),
-      "list": []
-    }
-    return this.monthCalc(nm, true)
-  },
-  // 获取月数据key
-  getMonthDataKey(year: string, month: string): string {
-    return `${year}-${month}`
-  },
-  // 获取所有年数据key
-  getYearDataKeys(isYear: boolean = false): string[] {
-    try {
-      var rList: string[] = []
-      const list = wx.getStorageInfoSync().keys
-      list.forEach((v, _) => {
-        if (v.indexOf(conf.yearDataKey) !== -1) {
-          rList.push(isYear ? v.replace(conf.yearDataKey, '') : v)
-        }
-      })
-      return rList
-    } catch (e) {
-      return []
+    return {
+      budget: conf.getDefBudget(),
+      date: dateU.getCurrentDateKey(),
+      listS: ""
     }
   },
-  // 通过年key获取数据
-  year2List(year: string, isCalc: boolean): any[] {
-    try {
-      let str = wx.getStorageSync(conf.getYearDataKey(year))
-      let list = JSON.parse(str)
-      list = this.sortMonthData(list)
-      if (!isCalc) return list
-      list.forEach((v: any) => {
-        this.monthCalc(v, false)
+  /**
+   * 获取所有月数据key
+   * @param isMonth 返回月份
+   * @param sort 0（不排序）、1（从小到大）、2（从大到小）
+   * @param year 按照年筛选
+   */
+  getMonthDataKeys(isMonth: boolean, sort: number = 0, year: string = ""): string[] {
+    const keys = wx.getStorageInfoSync().keys
+    var list: string[] = []
+    let fKey = conf.monthDataKey + year
+    keys.forEach(v => {
+      if (v.indexOf(fKey) == -1) return
+      let m = v.replace(conf.monthDataKey, '')
+      if (isNaN(dateU.dateKey2Time(m))) {
+        wx.removeStorageSync(v)
+        return
+      }
+      list.push(isMonth || sort > 0 ? m : v)
+    })
+    if (sort <= 0) return list
+    this.sortYearData(list, 2)
+    if (!isMonth) {
+      list.forEach((v, i) => {
+        list[i] = `${conf.monthDataKey}${v}`
       });
-      return list
+    }
+    return list
+  },
+  // 获取所有年 从大到小
+  getAllYears(): string[] {
+    let yM = new Set<string>()
+    let mList = this.getMonthDataKeys(true)
+    mList.forEach(v => {
+      yM.add(v.slice(0, 4))
+    });
+    let nL = Array.from(yM)
+    nL.sort((a: string, b: string) => {
+      try {
+        return parseInt(b) - parseInt(a)
+      } catch (e) {
+        return 0
+      }
+    });
+    return nL
+  },
+  /**
+   * 通过年key获取数据
+   * @param year 年
+   * @param sort 0（不排序）、1（从小到大）、2（从大到小）
+   */
+  year2List(year: string, sort: number = 0): any[] {
+    let yKeys = this.getMonthDataKeys(false, 2, year)
+    let list: any[] = []
+    yKeys.forEach((k: string) => {
+      list.push(this.dateKey2DataObj(k, sort))
+    });
+    return list
+  },
+  /**
+   * 通过月份日期获取月份数据
+   * @param date 年-月
+   * @param sort 0（不排序）、1（从小到大）、2（从大到小）
+   */
+  date2DataObj(date: string, sort: number = 0): any {
+    return this.dateKey2DataObj(`${conf.monthDataKey}${date}`, sort)
+  },
+  dateKey2DataObj(dateKey: string, sort: number = 0): any {
+    try {
+      let str = wx.getStorageSync(dateKey)
+      let m = JSON.parse(str)
+      m.date = dateKey.replace(conf.monthDataKey, "")
+      if (m.listS) {
+        let cTime = new Date().getTime();
+        let nList: Array<any> = []
+        m.listS.split("\n").forEach((v: string) => {
+          let tag = this.tagData2Obj(v, cTime, m.date)
+          if (!tag) return
+          nList.push(tag)
+        });
+        m.list = nList
+        m.listS = ""
+      }
+      if (!m.list) m.list = []
+      if (sort >= 0) this.monthCalc(m, sort)
+      return m
     } catch (e) {
       console.error(e)
-      return []
-    }
-  },
-  // 通过日期和数组获取月份数据
-  month2DataObj(yearList: any[], date: string): any {
-    for (let key in yearList) {
-      let m = yearList[key]
-      if (m.date == date) return m
     }
     return null
   },
-  // 通过日期获取月份数据
-  date2DataObj(v: string): any {
-    let dList = v.split("-");
-    if (dList.length > 0) {
-      let yList = this.year2List(dList[0], false)
-      if (yList == null) return null
-      let m = this.month2DataObj(yList, v)
-      if (m == null) return null
-      return this.monthCalc(m, true)
-    }
-    return null
-  },
-  // 排序月份数据
-  sortMonthData(list: Array<any>, isReverse: boolean = true): Array<any> {
-    return list.sort((a: any, b: any) => {
-      try {
-        if (isReverse) {
-          return dateU.dateKey2MonthNum(b.date) - dateU.dateKey2MonthNum(a.date)
-        } else {
-          return dateU.dateKey2MonthNum(a.date) - dateU.dateKey2MonthNum(b.date)
-        }
-      } catch (e) {
-        console.error(e)
-        return 0
-      }
-    });
-  },
-  // 排序月份tag数据
-  sortMonthTagData(m: any, isReverse: boolean = true) {
-    m.list = m.list.sort((a: any, b: any) => {
-      try {
-        if (isReverse) {
-          return dateU.dateKey2Time(`${m.date}-${b.t}`) - dateU.dateKey2Time(`${m.date}-${a.t}`)
-        } else {
-          return dateU.dateKey2Time(`${m.date}-${a.t}`) - dateU.dateKey2Time(`${m.date}-${b.t}`)
-        }
-      } catch (e) {
-        console.error(e)
-        return 0
-      }
-    });
-  },
-  // 计算月份要显示的数据
-  monthCalc(m: any, isTagGroup: Boolean): any {
-    this.sortMonthTagData(m)
-    m.sTitle = `${dateU.dateKey2MonthNum(m.date)}月`
+  /**
+   * 计算月份要显示的数据
+   * @param m 月数据
+   * @param sort 0（不排序）、1（从小到大）、2（从大到小）
+   */
+  monthCalc(m: any, sort: number = 0): any {
+    if (!m) return m
+    if (!m.list) m.list = []
+    this.sortMonthTagData(m, sort)
     m.aP = 0.0
-    m.list.forEach((vv: any) => {
-      m.aP += parseFloat(vv.p)
+    m.list.forEach((v: any) => {
+      m.aP += parseFloat(v.p)
     });
+    m.sTitle = `${dateU.dateKey2MonthNum(m.date)}月`
     m.sP = m.budget + m.aP
+    m.sP2 = util.price2Str(m.sP)
     m.isProfit = m.sP >= 0
     m.sPio = util.price2IOStr(m.sP)
     let per = Math.abs(m.aP) / m.budget * 100
@@ -123,17 +149,31 @@ export default {
     } else {
       m.perType = 1
     }
-    if (m.isShowSub == undefined) m.isShowSub = false
-    if (!isTagGroup) return m
-
-    m.sP2 = util.price2Str(m.sP)
-    let isShowSubM: any = undefined
-    if (m.tags) {
-      isShowSubM = {}
-      m.tags.forEach((v: any) => {
-        isShowSubM[v.tag] = v.isShowSub
-      });
-    }
+    m.isShowSub = false
+    return m
+  },
+  /**
+   * tag数据字符串转obj
+   * @param v 数据字符串
+   * @param cTime 当前时间戳
+   * @param date 月份日期
+   */
+  tagData2Obj(v: string, cTime: number = 0, date: string = ""): any {
+    if (!v) return null
+    let tdList = v.split(this.sep)
+    if (tdList.length < 3) return null
+    let tt = tdList[0]
+    let p = tdList[1]
+    let t = tdList[2]
+    let tDate = dateU.dateKey2Date(date ? `${date}-${t}` : t)
+    let tTime = tDate.getTime()
+    if (verify.vNullFun(tt) || verify.vFloatFun(p) || isNaN(tTime)) return null
+    if (cTime > 0 && tTime > cTime) return null
+    return { tt: tt, p: p, t: t }
+  },
+  // 生成月份tag数组
+  genMonthTags(m: any) {
+    if (!m || !m.list) return
     m.tags = []
     m.list.forEach((v: any, i: number) => {
       let tM = m.tags.find((item: any) => item.tag == v.tt)
@@ -156,60 +196,38 @@ export default {
         v.aP += parseFloat(vv.p)
       });
       v.aPio = util.price2IOStr(v.aP)
-      if (isShowSubM) v.isShowSub = isShowSubM[v.tag]
-      if (v.isShowSub == undefined) v.isShowSub = false
     });
-    return m
+    // this.coverIsShowSub(m.tags, oldTags, "tag")
   },
-  // 保存当月数据
-  saveMonthData(m: any): string {
-    if (!m || !m.date || isNaN(m.budget) || !m.list) {
-      return "内容不全！"
-    }
-    let dateArr = m.date.split("-", 2)
-    if (dateArr.length < 2) return "日期格式错误！"
-    let year = dateArr[0]
-    let yearList = this.year2List(year, false)
-    if (!yearList) yearList = []
-    let index = -1
-    yearList.forEach((v, i) => {
-      if (v.date == m.date) {
-        index = i
-        return
+  // 排序年内数据
+  sortYearData(list: Array<any>, sort: number = 2) {
+    list.sort((a: string, b: string) => {
+      try {
+        if (sort == 2) {
+          return dateU.dateKey2Time(b) - dateU.dateKey2Time(a)
+        } else {
+          return dateU.dateKey2Time(a) - dateU.dateKey2Time(b)
+        }
+      } catch (e) {
+        return 0
       }
     });
-    let d = {
-      date: m.date,
-      budget: m.budget,
-      list: m.list
-    }
-    if (index < 0) {
-      yearList.unshift(d)
-    } else {
-      yearList[index] = d
-    }
-    return this.saveYearList(year, yearList) ? "" : "保存失败！"
   },
-  // 保存年数据
-  saveYearList(year: string, list: Array<any>): boolean {
-    try {
-      let nlist: Array<any> = []
-      list.forEach(mm => {
-        let mList: Array<any> = []
-        if (mm.list) {
-          mm.list.forEach((v: any) => {
-            mList.push({ tt: v.tt, t: v.t, p: v.p })
-          });
+  // 排序月份tag数据
+  sortMonthTagData(m: any, sort: number = 0) {
+    if (sort == 0) return
+    m.list.sort((a: any, b: any) => {
+      try {
+        if (sort == 2) {
+          return dateU.dateKey2Time(`${m.date}-${b.t}`) - dateU.dateKey2Time(`${m.date}-${a.t}`)
+        } else {
+          return dateU.dateKey2Time(`${m.date}-${a.t}`) - dateU.dateKey2Time(`${m.date}-${b.t}`)
         }
-        nlist.push({ date: mm.date, budget: mm.budget, list: mList })
-      });
-      let yListStr = JSON.stringify(nlist)
-      wx.setStorageSync(conf.getYearDataKey(year), yListStr)
-      return true
-    } catch (e) {
-      console.error(e)
-      return false
-    }
+      } catch (e) {
+        console.error(e)
+        return 0
+      }
+    });
   },
   // 覆盖isShowSub数据
   coverIsShowSub(newL: Array<any>, oldL: Array<any>, key: string) {

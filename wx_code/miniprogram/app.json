@@ -1,6 +1,7 @@
 {
   "pages": [
     "pages/index/index",
+    "pages/installment/installment",
     "pages/logs/logs"
   ],
   "tabBar": {
@@ -14,6 +15,12 @@
         "text": "本月",
         "iconPath": "@iconPathBy",
         "selectedIconPath": "@selectedIconPathBy"
+      },
+      {
+        "pagePath": "pages/installment/installment",
+        "text": "分期",
+        "iconPath": "@iconPathInstallment",
+        "selectedIconPath": "@selectedIconPathInstallment"
       },
       {
         "pagePath": "pages/logs/logs",

@@ -1,0 +1,59 @@
+<view class="page">
+  <view class="header_bar">
+    <view class="copy btn" hover-class="def_hover" hover-stay-time="150" bindtap="copyTap">复制</view>
+    <view class="import btn" hover-class="def_hover" hover-stay-time="150" bindtap="importTap">导入</view>
+    <view class="space"></view>
+    <view class="add btn" hover-class="def_hover" hover-stay-time="150" bindtap="addTap">添加</view>
+  </view>
+  <scroll-view class="list" scroll-y type="list">
+    <view class="cell">
+      <view class="main" hover-class="def_hover" hover-stay-time="150" bindtap="cellMainTap">
+        <text class="title">(3/36) 贷款</text>
+        <text class="num big">1000</text>
+      </view>
+      <view class="info_box" hover-class="def_hover" hover-stay-time="150">
+        <view class="item bj">
+          <text class="title">本金</text>
+          <text class="num">40000</text>
+        </view>
+        <view class="item zlx">
+          <text class="title">总利息</text>
+          <text class="num">5000</text>
+        </view>
+        <view class="item ll">
+          <text class="title">先息后本</text>
+          <text class="num">4%</text>
+        </view>
+      </view>
+      <view class="table_box">
+        <view class="thead">
+          <text>分期应还</text>
+          <text>利息</text>
+          <text>月份</text>
+        </view>
+        <view class="tr dis">
+          <text>(1) 1000</text>
+          <text>99.9</text>
+          <text>2024-03</text>
+        </view>
+        <view class="tr off">
+          <text>(2) 1000</text>
+          <text>99.9</text>
+          <text>2024-04</text>
+        </view>
+        <view class="tr">
+          <text>(3) 1000</text>
+          <text>99.9</text>
+          <text>2024-05</text>
+        </view>
+      </view>
+      <view class="more_btn" hover-class="def_hover" hover-stay-time="150" bindtap="cellMoreTap">更 多</view>
+    </view>
+    <view class="cell">
+      <view class="main dis" hover-class="def_hover" hover-stay-time="150" bindtap="cellMainTap">
+        <text class="title">(36/36) 贷款</text>
+        <text class="num big">1000</text>
+      </view>
+    </view>
+  </scroll-view>
+</view>

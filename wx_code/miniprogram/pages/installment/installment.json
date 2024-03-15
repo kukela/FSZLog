@@ -1,0 +1,8 @@
+{
+  "navigationBarTitleText": "分期",
+  "usingComponents": {
+    "modal-view": "../../components/modal/modal",
+    "pio-input": "../../components/pioInput/pioInput",
+    "tip-input": "../../components/tipInput/tipInput"
+  }
+}
