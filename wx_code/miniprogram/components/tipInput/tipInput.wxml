@@ -1,5 +1,5 @@
-<view class="def_input">
-  <input type="{{type}}" placeholder="{{placeholder}}" model:value="{{value}}" bindinput="inputChange" maxlength="{{maxlength}}" />
-  <text class="unit" wx:if="{{unit}}">{{unit}}</text>
-</view>
-<text wx:if="{{tip}}" class="input_tips">{{tip}}</text>
+  <view class="def_input">
+    <input class="tip_input" type="{{type}}" placeholder="{{placeholder}}" model:value="{{value}}" bindinput="inputChange" maxlength="{{maxlength}}" />
+    <text class="unit" wx:if="{{unit}}">{{unit}}</text>
+  </view>
+  <text wx:if="{{tip}}" class="input_tips">{{tip}}</text>

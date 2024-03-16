@@ -1,8 +1,10 @@
 import dateU from './date.js';
 
 export default {
+  // 0 正式环境
+  env: 1,
   // 当前数据版本号
-  currentDataVer: 1,
+  currentDataVer: 2,
   // 月数据key开头
   monthDataKey: "md-",
   // 列表动画时长
@@ -10,7 +12,7 @@ export default {
 
   // 本地数据版本
   getDataVer(): number {
-    let v = parseInt(wx.getStorageSync("dataVer"))
+    const v = parseInt(wx.getStorageSync("dataVer"))
     return isNaN(v) ? 0 : v
   },
   saveDataVer() {
@@ -18,7 +20,7 @@ export default {
   },
   // 获取当前选择的年
   getDefYear(): string {
-    var defYear = wx.getStorageSync("defYear")
+    const defYear = wx.getStorageSync("defYear")
     if (defYear == undefined || defYear.length == 0) {
       return dateU.getCurrentYear()
     }

@@ -31,8 +31,8 @@ export default {
 
   // 日期转年月key
   getYearMonthKey(date: Date): string {
-    let year = date.getFullYear()
-    let month = date.getMonth() + 1
+    const year = date.getFullYear()
+    const month = date.getMonth() + 1
     return [year, month].map(this.formatNumber).join('-')
   },
 
@@ -43,7 +43,7 @@ export default {
     return parseInt(mStr)
   },
 
-  // 日期key转时间戳
+  // 日期key转时间
   dateKey2Date(v: string): Date {
     return new Date(Date.parse(v.replace(/-/g, '/')));
   },

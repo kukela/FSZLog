@@ -29,13 +29,13 @@ Page({
   },
   // 刷新页面
   refPageData(year: string) {
-    let endDate = dateU.getCurrentYear()
+    const endDate = dateU.getCurrentYear()
     let startDate = endDate
     let yearList = data.getAllYears()
     if (yearList.length > 0) {
       startDate = yearList[yearList.length - 1]
     }
-    let list = data.year2List(year, 2)
+    const list = data.year2List(year, 2)
     data.coverYearIsShowSub(list, this.data.list)
     this.setData({
       date: year,
@@ -46,7 +46,7 @@ Page({
   },
   // 拷贝数据
   copyTap() {
-    let copyStr = IOData.yearList2CopyStr(this.data.list)
+    const copyStr = IOData.yearList2CopyStr(this.data.list)
     if (copyStr.length > 0) {
       wx.setClipboardData({
         data: copyStr,
@@ -63,7 +63,7 @@ Page({
   },
   // 导入数据
   importTap() {
-    let self = this
+    const self = this
     wx.getClipboardData({
       success(res) {
         self.importStrData(res.data)
@@ -84,7 +84,7 @@ ABC | -1000.11 | 2024-03-01 12:01:01
 ABCd | +100 | 2024-03-01 12:01:02
     `
     */
-    let list = IOData.importYearListStr(v)
+   const list = IOData.importYearListStr(v)
     if (list.length < 1) {
       wx.showToast({ title: '剪贴板数据不对', icon: 'error', duration: 2000 })
       return
@@ -95,9 +95,9 @@ ABCd | +100 | 2024-03-01 12:01:02
     })
   },
   importModalConfirm() {
-    let importTip = IOData.importListData(this.data.importM.list)
+    const importTip = IOData.importListData(this.data.importM.list)
     if (!importTip) {
-      let list = data.year2List(this.data.date, 2)
+      const list = data.year2List(this.data.date, 2)
       data.coverYearIsShowSub(list, this.data.list)
       this.setData({
         list: list,
@@ -115,7 +115,7 @@ ABCd | +100 | 2024-03-01 12:01:02
   },
   // 年点击事件
   bindDateChange(e: any) {
-    let date = e.detail.value
+    const date = e.detail.value
     this.setData({
       date: date,
       list: data.year2List(date, 2)
@@ -124,10 +124,10 @@ ABCd | +100 | 2024-03-01 12:01:02
   },
   // 列表展开
   cellTitleTap(e: any) {
-    let i = e.currentTarget.dataset.i
-    let vv = this.data.list[i] as any
+    const i = e.currentTarget.dataset.i
+    const vv = this.data.list[i] as any
     if (vv.isShowSubAnim != undefined && vv.isShowSub != vv.isShowSubAnim) return
-    let isShowSub = !vv.isShowSub
+    const isShowSub = !vv.isShowSub
     this.setData({ [`list[${i}].isShowSubAnim`]: isShowSub })
     setTimeout(() => {
       this.setData({ [`list[${i}].isShowSub`]: isShowSub })

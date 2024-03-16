@@ -3,15 +3,15 @@ import dateU from './date.js';
 module.exports = {
 
   update_0_to_1(): string {
-    let ydKey = "ydata-"
-    let mdKey = "md-"
-    let sep = " | "
+    const ydKey = "ydata-"
+    const mdKey = "md-"
+    const sep = " | "
     let keyList = wx.getStorageInfoSync().keys
     // console.log(keyList)
-    let tags: any = {}
+    const tags: any = {}
     keyList.forEach(key => {
       if (key.indexOf(ydKey) == -1) return
-      let str = wx.getStorageSync(key)
+      const str = wx.getStorageSync(key)
       let list = []
       try {
         list = JSON.parse(str)
@@ -30,14 +30,14 @@ module.exports = {
                 return
               }
               listS += `${v.tt}${sep}${v.p}${sep}${v.t}\n`
-              let tTime = dateU.dateKey2Time(`${m.date}-${v.t}`)
+              const tTime = dateU.dateKey2Time(`${m.date}-${v.t}`)
               if (!tags[v.tt] || tTime > tags[v.tt]) {
                 tags[v.tt] = tTime
               }
             });
           }
-          let mKey = m.date.slice(0, 7)
-          let nM = {
+          const mKey = m.date.slice(0, 7)
+          const nM = {
             budget: m.budget,
             listS: listS
           }
@@ -52,7 +52,7 @@ module.exports = {
     keyList = wx.getStorageInfoSync().keys
     // console.log(keyList)
 
-    let tagsList: Array<any> = []
+    const tagsList: Array<any> = []
     Object.keys(tags).forEach((k: string) => {
       tagsList.push({ tt: k, t: tags[k] })
     });

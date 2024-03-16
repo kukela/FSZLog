@@ -56,8 +56,12 @@ Page({
   },
   onShow() {
     let m = data.date2DataObj(dateU.getCurrentDateKey(), 2)
-    if (!m) m = data.newMonthData()
-    this.monthDataChange(m, true)
+    if (!m) {
+      m = data.newMonthData()
+      this.saveData()
+    }
+    m.tags = this.data.m.tags
+    data.genMonthTagsGroup(m)
     this.setData({
       m: m
     })
@@ -83,25 +87,25 @@ Page({
   // 预算弹窗确定事件
   budgetModalConfirm() {
     this.setData({ ["budgetM.verifyTips"]: true })
-    let d = this.data
-    let t_budget = d.budgetM_budget
+    const d = this.data
+    const t_budget = d.budgetM_budget
     if (verifyU.vTips(d.budgetM.budgetTips, t_budget)) {
       return
     }
-    let m = d.m
+    const m = d.m
     m.budget = parseFloat(t_budget)
     this.setData({
-      m: this.monthDataChange(m, true),
+      m: this.monthDataChange(m),
       ["budgetM.show"]: false
     })
     this.saveData()
   },
   // 列表展开
   cellMainTap: function (e: any) {
-    let k = e.currentTarget.dataset.i
-    let tag = this.data.m.tags[k]
+    const k = e.currentTarget.dataset.i
+    const tag = this.data.m.tags[k]
     if (tag.isShowSubAnim != undefined && tag.isShowSub != tag.isShowSubAnim) return
-    let isShowSub = !tag.isShowSub
+    const isShowSub = !tag.isShowSub
     this.setData({ [`m.tags.[${k}].isShowSubAnim`]: isShowSub })
     setTimeout(() => {
       this.setData({ [`m.tags.[${k}].isShowSub`]: isShowSub })
@@ -109,8 +113,8 @@ Page({
   },
   // 子列表事件
   cellSubTap: function (e: any) {
-    let i = e.currentTarget.dataset.i
-    let d = this.data
+    const i = e.currentTarget.dataset.i
+    const d = this.data
     let tag = undefined
     try {
       tag = d.m.list[i]
@@ -122,8 +126,8 @@ Page({
       })
       return
     }
-    let pM = util.pioStr2Obj(tag.p)
-    let etlM = this.data.editTagListM
+    const pM = util.pioStr2Obj(tag.p)
+    const etlM = this.data.editTagListM
     etlM.show = true
     etlM.verifyTips = false
     etlM.i = i
@@ -134,17 +138,17 @@ Page({
   // 编辑数据弹窗确定
   cellSubModalConfirm() {
     this.setData({ ["editTagListM.verifyTips"]: true })
-    let d = this.data
-    let pM = util.pioStr2Obj(d.editTagListM_v)
+    const d = this.data
+    const pM = util.pioStr2Obj(d.editTagListM_v)
     if (verifyU.vTips(d.pioTips, pM.p)) {
       return
     }
-    let etlM = this.data.editTagListM
+    const etlM = this.data.editTagListM
     try {
-      let eM = d.m.list[etlM.i]
+      const eM = d.m.list[etlM.i]
       eM.p = d.editTagListM_v
       this.setData({
-        m: this.monthDataChange(d.m, true),
+        m: this.monthDataChange(d.m),
         ["editTagListM.show"]: false
       })
       this.saveData()
@@ -153,18 +157,18 @@ Page({
   },
   // 删除一条数据弹窗
   cellSubDel() {
-    let self = this
-    let d = this.data
+    const self = this
+    const d = this.data
     wx.showModal({
       title: '提示',
       content: '删除后不可撤销，是否删除？',
       success(res) {
         if (!res.confirm) return
         try {
-          let index = d.editTagListM.i
+          const index = d.editTagListM.i
           d.m.list.splice(index, 1)
           self.setData({
-            m: self.monthDataChange(d.m, true),
+            m: self.monthDataChange(d.m),
             ["editTagListM.show"]: false
           })
           self.saveData()
@@ -177,56 +181,57 @@ Page({
   },
   // 添加事件
   showAddModalTap: function () {
+    tags.init()
     this.setData({
       ["addM.show"]: true,
       ["addM.verifyTips"]: false,
       ["addM.p"]: "",
       ["addM.pio"]: "out",
-      tagList: tags.getAll(),
+      tagList: tags.list,
       addM_title: "",
       addM_piov: "",
     })
   },
   tagTap: function (e: any) {
-    let i = e.currentTarget.dataset.i
-    let tag = this.data.tagList[i]
+    const i = e.currentTarget.dataset.i
+    const tag = this.data.tagList[i]
     this.setData({ 'addM_title': tag.tt })
   },
   // 添加弹窗确定事件
   addModalConfirm() {
     this.setData({ ["addM.verifyTips"]: true })
-    let d = this.data
-    let pM = util.pioStr2Obj(d.addM_piov)
-    let aTitle = IOData.strDes(d.addM_title)
+    const d = this.data
+    const pM = util.pioStr2Obj(d.addM_piov)
+    const aTitle = IOData.strDes(d.addM_title)
     if (verifyU.vTips(d.addM.title_tips, aTitle) ||
       verifyU.vTips(d.pioTips, pM.p)) {
       return
     }
-    let tag = {
+    const td = {
       tt: aTitle,
       p: d.addM_piov,
       t: dateU.getCurrentDate().replace(`${d.m.date}-`, '')
     }
-    d.m.list.unshift(tag)
+    d.m.list.unshift(td)
+
     this.setData({
-      m: this.monthDataChange(d.m, true),
+      m: this.monthDataChange(d.m),
+      tagList: tags.addTagTitle(aTitle),
       ["addM.show"]: false
     })
     this.saveData()
+    tags.saveTags()
   },
   // 保存数据
-  saveData() {
-    console.log(this.data.m)
-    // let tt = data.saveMonthData(this.data.m)
-    // if (!tt) return
-    // wx.showToast({
-    //   title: tt, icon: 'error', duration: 2000
-    // })
+  saveData(m: any = null) {
+    const sm = m ? m : this.data.m
+    const tt = IOData.saveMonthData(sm)
+    if (!tt) return
+    wx.showToast({
+      title: tt, icon: 'error', duration: 2000
+    })
   },
-  monthDataChange(m: any, isCalc: boolean): any {
-    if (isCalc) data.monthCalc(m, 2)
-    data.genMonthTags(m)
-    data.coverMonthIsShowSub(m, this.data.m)
-    return m
+  monthDataChange(m: any): any {
+    return data.monthCalc(m, 2, true)
   },
 })

@@ -17,7 +17,7 @@ export default {
   vTips(tips: Array<any>, v: string): string {
     let tip = ""
     for (const key in tips) {
-      let tipM = tips[key]
+      const tipM = tips[key]
       if (!tipM.f || !tipM.f(v)) continue
       tip = tipM.t
       break

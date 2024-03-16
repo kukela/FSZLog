@@ -16,7 +16,7 @@ export default {
   },
   // +-字符串转obj
   pioStr2Obj(v: string): any {
-    let sL = v.substr(0, 1)
+    const sL = v.substr(0, 1)
     let vv = v.substring(1)
     let pio = ""
     if (sL == "-") {
@@ -30,5 +30,20 @@ export default {
       pio: pio,
       p: vv
     }
+  },
+  // 覆盖isShowSub数据
+  coverIsShowSub(newL: Array<any>, oldL: Array<any>, key: string) {
+    if (!newL || newL.length < 1 || !oldL || oldL.length < 1) return
+    const isShowSubM: any = {}
+    oldL.forEach(v => {
+      isShowSubM[v[key]] = v.isShowSub
+    });
+    newL.forEach(v => {
+      const isShowSub = isShowSubM[v[key]]
+      if (isShowSub != undefined && isShowSub != null) {
+        v.isShowSub = isShowSub
+        v.isShowSubAnim = isShowSub
+      }
+    });
   },
 }

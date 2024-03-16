@@ -1,6 +1,6 @@
-<radio-group bindchange="radioChange">
-  <label wx:for="{{list}}" wx:key="v" class="{{item.v}}">
-    <radio value="{{item.v}}" checked="{{pio == item.v}}" />
+<radio-group class="radio_group" bindchange="radioChange">
+  <label wx:for="{{list}}" wx:key="v" class="label {{item.v}} {{pio == item.v ? 'sel' : ''}}">
+    <radio class="radio" value="{{item.v}}" checked="{{pio == item.v}}" />
     <text>{{item.title}}</text>
   </label>
 </radio-group>

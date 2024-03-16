@@ -1,6 +1,6 @@
 function initTestData() {
   // wx.clearStorageSync()
-  // let ydata = [{
+  // const ydata = [{
   //   date: "2024-03",
   //   budget: 3000,
   //   list: [
@@ -12,19 +12,19 @@ function initTestData() {
   // wx.setStorageSync("ydata-2024", JSON.stringify(ydata))
 
   // wx.clearStorageSync()
-  // let t_2023_11 = {
+  // const t_2023_11 = {
   //   budget: 3000,
   //   listS: ``
   // }
-  // let t_2023_12 = {
+  // const t_2023_12 = {
   //   budget: 3000,
   //   listS: `ABCd | -4000 | 10 18:00:01`
   // }
-  // let t_2024_02 = {
+  // const t_2024_02 = {
   //   budget: 3000,
   //   listS: `ABCd | -4000 | 10 18:00:01`
   // }
-  // let t_2024_03 = {
+  // const t_2024_03 = {
   //   budget: 3000,
   //   listS: `
   // 京东 | -100 | 01 18:00:01
@@ -37,20 +37,27 @@ function initTestData() {
   // wx.setStorageSync("md-2023-12", JSON.stringify(t_2023_12))
   // wx.setStorageSync("md-2024-02", JSON.stringify(t_2024_02))
   // wx.setStorageSync("md-2024-03", JSON.stringify(t_2024_03))
+  // const tags = [
+  //   { tt: "京东", t: 1710554711754 },
+  //   { tt: "支付宝", t: 1710554711754 },
+  //   { tt: "ABC_1", t: 1710554711754 }
+  // ]
+  // wx.setStorageSync("tags", JSON.stringify(tags))
 
   // wx.removeStorageSync("md-2024-03")
 
-  // let ioStr = `
+  // const ioStr = `
   // ABC | 2024-03-01 12:01:01 | -1000.10
   // ABCd | 2024-03-02 12:01:03 | +100
   // `
 
-  let testIM = `
--$installment- | 贷款 | 40000 | ELP | 3.99 | 36 | 2024-03-11 | 2024-04
--$installment- | 自行车 | 40000 | IFE | 0 | 12 | 2024-03-11 | 2024-04
+  const testIM = `
+1 | 贷款 | 40000 | ELP_3.99 | 36 | 2024-03-11 | 2024-04
+2 | 自行车 | 600 | IFE | 12 | 2024-03-11 | 2024-04
   `
   wx.setStorageSync("installment", testIM)
   // wx.removeStorageSync("installment")
+  // installmentC
 }
 
 module.exports = {

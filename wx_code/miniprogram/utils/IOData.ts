@@ -23,19 +23,20 @@ export default {
   },
   // 导入年数据字符串
   importYearListStr(str: String): Array<any> {
-    let list: Array<any> = []
-    let cTime = new Date().getTime();
+    const list: Array<any> = []
+    const cTime = new Date().getTime();
+    const sS = this.sep
     str.split("\n").forEach(v => {
-      let tDList = v.split(this.sep)
+      const tDList = v.split(sS)
       if (tDList.length < 3) return
-      let tt = tDList[0]
-      let p = tDList[1]
-      let t = tDList[2]
-      let tDate = dateU.dateKey2Date(t)
-      let tTime = tDate.getTime()
+      const tt = tDList[0]
+      const p = tDList[1]
+      const t = tDList[2]
+      const tDate = dateU.dateKey2Date(t)
+      const tTime = tDate.getTime()
       if (verify.vNullFun(tt) || verify.vFloatFun(p) || isNaN(tTime)) return
       if (tTime > cTime) return
-      let tag = { tt: tt, p: p, t: "" }
+      const tag = { tt: tt, p: p, t: "" }
       if (tt == this.budget_type) {
         tag.t = dateU.getYearMonthKey(tDate)
       } else {
@@ -47,9 +48,9 @@ export default {
   },
   // 导入数组
   importListData(list: Array<any>): string {
-    let mM: any = {}
+    const mM: any = {}
     list.forEach((v: any) => {
-      let key = v.t.length > 7 ? v.t.slice(0, 7) : v.t
+      const key = v.t.length > 7 ? v.t.slice(0, 7) : v.t
       let m = mM[key]
       if (!m) {
         m = {}
@@ -70,13 +71,13 @@ export default {
         m.budget = conf.getDefBudget()
       }
     });
-    let keys = Object.keys(mM)
+    const keys = Object.keys(mM)
     if (keys.length < 1) return "没有数据可导入"
     let isAllOk = true
     keys.forEach(month => {
-      let mm = mM[month]
+      const mm = mM[month]
       mm.date = month.replace(conf.monthDataKey, "")
-      let st = this.saveMonthData(mm)
+      const st = this.saveMonthData(mm)
       if (st) {
         isAllOk = false
       }
@@ -89,19 +90,19 @@ export default {
       return "内容不全！"
     }
     if (isNaN(dateU.dateKey2Date(m.date).getTime())) return "日期格式错误！"
-    let sep = this.sep
+    const sep = this.sep
     let listS = ""
     if (m.list) {
       m.list.forEach((v: any) => {
         listS += `${v.tt}${sep}${v.p}${sep}${v.t}\n`
       });
     }
-    let sM = {
+    const sM = {
       budget: m.budget,
       listS: listS
     }
     try {
-      let smStr = JSON.stringify(sM)
+      const smStr = JSON.stringify(sM)
       wx.setStorageSync(conf.getMonthDataKey(m.date), smStr)
     } catch (error) {
       return "JSON格式转换失败"

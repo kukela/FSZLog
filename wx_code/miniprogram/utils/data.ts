@@ -2,17 +2,18 @@ import conf from './conf.js';
 import dateU from './date.js';
 import util from './util.js';
 import verify from './verify.js';
+import IMData from './IMData.js'
 
 export default {
   sep: " | ",
 
   // app打开初始化数据
   initData() {
-    require('./test.js').initTestData()
+    if (conf.env != 0) require('./test.js').initTestData()
 
-    let ver = conf.getDataVer()
+    const ver = conf.getDataVer()
     if (ver < 1) {
-      let state = require('./verData.js').update_0_to_1()
+      const state = require('./verData.js').update_0_to_1()
       if (state != "") {
         wx.showToast({
           title: `本地数据转换失败${state}，请联系管理员`, icon: 'none', duration: 5000
@@ -20,15 +21,23 @@ export default {
         return
       }
     }
+    if (ver < 2) {
+      wx.removeStorageSync("installment")
+    }
+
     conf.saveDataVer()
+
+    IMData.init()
   },
   // 新建当月的月份数据
   newMonthData(): any {
-    return {
+    const nm = {
       budget: conf.getDefBudget(),
       date: dateU.getCurrentDateKey(),
       listS: ""
     }
+    this.monthCalc(nm, 2)
+    return nm
   },
   /**
    * 获取所有月数据key
@@ -38,11 +47,11 @@ export default {
    */
   getMonthDataKeys(isMonth: boolean, sort: number = 0, year: string = ""): string[] {
     const keys = wx.getStorageInfoSync().keys
-    var list: string[] = []
-    let fKey = conf.monthDataKey + year
+    const list: string[] = []
+    const fKey = conf.monthDataKey + year
     keys.forEach(v => {
       if (v.indexOf(fKey) == -1) return
-      let m = v.replace(conf.monthDataKey, '')
+      const m = v.replace(conf.monthDataKey, '')
       if (isNaN(dateU.dateKey2Time(m))) {
         wx.removeStorageSync(v)
         return
@@ -60,12 +69,12 @@ export default {
   },
   // 获取所有年 从大到小
   getAllYears(): string[] {
-    let yM = new Set<string>()
-    let mList = this.getMonthDataKeys(true)
+    const yM = new Set<string>()
+    const mList = this.getMonthDataKeys(true)
     mList.forEach(v => {
       yM.add(v.slice(0, 4))
     });
-    let nL = Array.from(yM)
+    const nL = Array.from(yM)
     nL.sort((a: string, b: string) => {
       try {
         return parseInt(b) - parseInt(a)
@@ -81,8 +90,8 @@ export default {
    * @param sort 0（不排序）、1（从小到大）、2（从大到小）
    */
   year2List(year: string, sort: number = 0): any[] {
-    let yKeys = this.getMonthDataKeys(false, 2, year)
-    let list: any[] = []
+    const yKeys = this.getMonthDataKeys(false, 2, year)
+    const list: any[] = []
     yKeys.forEach((k: string) => {
       list.push(this.dateKey2DataObj(k, sort))
     });
@@ -98,14 +107,14 @@ export default {
   },
   dateKey2DataObj(dateKey: string, sort: number = 0): any {
     try {
-      let str = wx.getStorageSync(dateKey)
-      let m = JSON.parse(str)
+      const str = wx.getStorageSync(dateKey)
+      const m = JSON.parse(str)
       m.date = dateKey.replace(conf.monthDataKey, "")
       if (m.listS) {
-        let cTime = new Date().getTime();
-        let nList: Array<any> = []
+        const cTime = new Date().getTime();
+        const nList: Array<any> = []
         m.listS.split("\n").forEach((v: string) => {
-          let tag = this.tagData2Obj(v, cTime, m.date)
+          const tag = this.tagData2Obj(v, cTime, m.date)
           if (!tag) return
           nList.push(tag)
         });
@@ -125,7 +134,7 @@ export default {
    * @param m 月数据
    * @param sort 0（不排序）、1（从小到大）、2（从大到小）
    */
-  monthCalc(m: any, sort: number = 0): any {
+  monthCalc(m: any, sort: number = 0, isGenTagsGroup: boolean = false): any {
     if (!m) return m
     if (!m.list) m.list = []
     this.sortMonthTagData(m, sort)
@@ -150,6 +159,7 @@ export default {
       m.perType = 1
     }
     m.isShowSub = false
+    if (isGenTagsGroup) this.genMonthTagsGroup(m)
     return m
   },
   /**
@@ -160,26 +170,26 @@ export default {
    */
   tagData2Obj(v: string, cTime: number = 0, date: string = ""): any {
     if (!v) return null
-    let tdList = v.split(this.sep)
+    const tdList = v.split(this.sep)
     if (tdList.length < 3) return null
-    let tt = tdList[0]
-    let p = tdList[1]
-    let t = tdList[2]
-    let tDate = dateU.dateKey2Date(date ? `${date}-${t}` : t)
-    let tTime = tDate.getTime()
+    const tt = tdList[0]
+    const p = tdList[1]
+    const t = tdList[2]
+    const tDate = dateU.dateKey2Date(date ? `${date}-${t}` : t)
+    const tTime = tDate.getTime()
     if (verify.vNullFun(tt) || verify.vFloatFun(p) || isNaN(tTime)) return null
     if (cTime > 0 && tTime > cTime) return null
     return { tt: tt, p: p, t: t }
   },
   // 生成月份tag数组
-  genMonthTags(m: any) {
+  genMonthTagsGroup(m: any) {
     if (!m || !m.list) return
-    m.tags = []
+    const tags: Array<any> = []
     m.list.forEach((v: any, i: number) => {
-      let tM = m.tags.find((item: any) => item.tag == v.tt)
+      let tM = tags.find((item: any) => item.tag == v.tt)
       if (!tM) {
         tM = { tag: v.tt }
-        m.tags.push(tM)
+        tags.push(tM)
       }
       let tList = tM.list
       if (!tList) tList = []
@@ -190,14 +200,15 @@ export default {
       })
       tM.list = tList
     });
-    m.tags.forEach((v: any) => {
+    tags.forEach((v: any) => {
       v.aP = 0.0
       v.list.forEach((vv: any) => {
         v.aP += parseFloat(vv.p)
       });
       v.aPio = util.price2IOStr(v.aP)
     });
-    // this.coverIsShowSub(m.tags, oldTags, "tag")
+    util.coverIsShowSub(tags, m.tags, "tag")
+    m.tags = tags
   },
   // 排序年内数据
   sortYearData(list: Array<any>, sort: number = 2) {
@@ -229,27 +240,9 @@ export default {
       }
     });
   },
-  // 覆盖isShowSub数据
-  coverIsShowSub(newL: Array<any>, oldL: Array<any>, key: string) {
-    if (!newL || newL.length < 1 || !oldL || oldL.length < 1) return
-    let isShowSubM: any = {}
-    oldL.forEach(v => {
-      isShowSubM[v[key]] = v.isShowSub
-    });
-    newL.forEach(v => {
-      let isShowSub = isShowSubM[v[key]]
-      if (isShowSub != undefined && isShowSub != null) {
-        v.isShowSub = isShowSub
-        v.isShowSubAnim = isShowSub
-      }
-    });
-  },
-  // 覆盖月份的isShowSub数据
-  coverMonthIsShowSub(newM: any, oldM: any) {
-    this.coverIsShowSub(newM.tags, oldM.tags, "tag")
-  },
+
   // 覆盖年份的isShowSub数据
   coverYearIsShowSub(newL: Array<any>, oldL: Array<any>) {
-    this.coverIsShowSub(newL, oldL, "date")
+    util.coverIsShowSub(newL, oldL, "date")
   },
 }

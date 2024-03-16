@@ -6,23 +6,29 @@
     <view class="add btn" hover-class="def_hover" hover-stay-time="150" bindtap="addTap">添加</view>
   </view>
   <scroll-view class="list" scroll-y type="list">
-    <view class="cell">
+    <view class="cell" wx:for="{{ list }}" wx:key="id">
       <view class="main" hover-class="def_hover" hover-stay-time="150" bindtap="cellMainTap">
-        <text class="title">(3/36) 贷款</text>
+        <text class="title">[3/{{ item.qs }}] {{ item.tt }}</text>
         <text class="num big">1000</text>
       </view>
       <view class="info_box" hover-class="def_hover" hover-stay-time="150">
         <view class="item bj">
           <text class="title">本金</text>
-          <text class="num">40000</text>
+          <text class="num">{{ item.pS }}</text>
         </view>
         <view class="item zlx">
           <text class="title">总利息</text>
-          <text class="num">5000</text>
+          <text class="num">{{ item.GI }}</text>
         </view>
         <view class="item ll">
-          <text class="title">先息后本</text>
-          <text class="num">4%</text>
+          <block wx:if="{{ item.type.ir }}">
+            <text class="title">{{ item.type.tt }}</text>
+            <text class="num">{{ item.type.ir }}%</text>
+          </block>
+          <block wx:else="">
+            <text class="title">-</text>
+            <text class="num">{{ item.type.tt }}</text>
+          </block>
         </view>
       </view>
       <view class="table_box">
@@ -51,7 +57,7 @@
     </view>
     <view class="cell">
       <view class="main dis" hover-class="def_hover" hover-stay-time="150" bindtap="cellMainTap">
-        <text class="title">(36/36) 贷款</text>
+        <text class="title">[36/36] 贷款</text>
         <text class="num big">1000</text>
       </view>
     </view>

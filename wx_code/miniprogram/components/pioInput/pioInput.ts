@@ -12,7 +12,7 @@ Component({
       type: Boolean,
       value: false
     },
-    evalMathFun: <any>{},
+    // evalMathFun: <any>{},
     showKeyboard: {
       type: Boolean,
       value: false
