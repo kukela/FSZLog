@@ -1,6 +1,12 @@
 @import "./components/theme.scss";
 @import "./components/anim.scss";
 
+.list {
+  .cell_bs {
+    height: 10rpx;
+  }
+}
+
 .info_box {
   display: flex;
   flex-direction: row;
@@ -53,6 +59,7 @@
   display: flex;
   flex-direction: column;
   border-bottom: none !important;
+  margin-bottom: 10rpx;
 
   .thead,
   .tr {
@@ -66,7 +73,7 @@
       flex: 2;
     }
 
-    text:nth-child(3) {
+    text:last-child {
       width: 116rpx;
       text-align: right;
     }
@@ -97,6 +104,12 @@
     }
   }
 
+  .more {
+    font-size: 32rpx;
+    color: $textDisabledColor;
+    line-height: 36rpx;
+    text-align: center;
+  }
 }
 
 .cell .dis>text {
@@ -104,10 +117,9 @@
 }
 
 .more_btn {
-  padding: 0 40rpx;
-  font-size: 32rpx;
-  color: $mainColor;
-  line-height: 80rpx;
+  font-size: 28rpx;
+  color: $textDisabledColor;
+  line-height: 100rpx;
   text-align: center;
-  margin-bottom: 10rpx;
+  margin: 0 40rpx 0 40rpx;
 }

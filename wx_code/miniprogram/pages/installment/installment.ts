@@ -6,15 +6,18 @@ import IMData from '../../utils/IMData.js'
 
 Page({
   data: {
-    list: []
+    list: [],
+    listC: [],
   },
   onLoad() {
 
   },
   onShow() {
     this.setData({
-      list: IMData.list
+      list: IMData.list,
+      listC: IMData.listC
     })
+    // console.log(this.data.listC)
   },
   onShareAppMessage() {
     return {

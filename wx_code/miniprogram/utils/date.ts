@@ -43,6 +43,11 @@ export default {
     return parseInt(mStr)
   },
 
+  // 日期转年月数字
+  date2YMNum(v: Date): number {
+    return v.getFullYear() * 100 + v.getMonth()
+  },
+
   // 日期key转时间
   dateKey2Date(v: string): Date {
     return new Date(Date.parse(v.replace(/-/g, '/')));

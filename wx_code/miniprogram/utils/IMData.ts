@@ -9,21 +9,31 @@ export default {
   sep: " | ",
   installment_type: "-$IM-",
   installmentC_type: "-$IMC-",
-  typeM: <any>{
-    "IFE": "免息",
-    "ELP": "等额本息",
-    "EPP": "等额本金",
-  },
 
   list: <any>[],
   listC: <any>[],
+  // 是否有已完成的分期
+  isIMCList: false,
 
   init() {
-    this.list = this.str2List(this.installmentDataKey)
-    // this.listC = this.str2List(this.installmentDataCKey)
+    this.listC = []
+    this.list = this.str2List(this.installmentDataKey, false)
+    if (this.listC) {
+      this.sortList(this.list, 1)
+      this.saveList()
+      const listC = this.str2List(this.installmentDataCKey, true)
+      this.listC.concat(listC)
+      this.sortList(this.listC, 2)
+      this.saveListC()
+    }
+    console.log(this.list, this.listC)
+
+    let imC = wx.getStorageSync(this.installmentDataCKey)
+    this.isIMCList = imC != undefined && imC.length > 2
+    // console.log(this.isIMCList)
   },
   // 字符串key转数组
-  str2List(key: string): Array<any> {
+  str2List(key: string, isIMC: boolean = false): Array<any> {
     const list: Array<any> = []
     const imStr = wx.getStorageSync(key)
     let imStrList = []
@@ -34,9 +44,13 @@ export default {
     imStrList.forEach((v: any) => {
       const m = this.str2IMDataObj(v)
       if (!m) return
-      list.push(m)
+      console.log(m)
+      if (!isIMC && !m.cqs) {
+        this.listC.push(m)
+      } else {
+        list.push(m)
+      }
     });
-    console.log(list)
     return list
   },
   str2IMDataObj(v: string): any {
@@ -61,71 +75,97 @@ export default {
       m.pS = util.price2Str(m.p)
       try {
         switch (m.type.t) {
-          case "IFE":
+          case "免息":
             this.calc_IFE(m)
             break
-          case "ELP":
+          case "等额本息":
             this.calc_ELP(m)
             break
-          case "EPP":
+          case "等额本金":
             this.calc_EPP(m)
             break
         }
       } catch (error) {
         return null
       }
+      if (m.list) {
+        let em = m.list[m.list.length - 1]
+        if (em) m.etv = parseInt(em.t.replace("-", ''))
+      }
       return m
     } catch (error) {
+      console.error(error)
     }
     return null
   },
   str2TypeObj(v: string): any {
     let m = <any>{}
     const list = v.split("_")
-    if (list[0].indexOf("IFE") != -1) {
-      m = { t: "IFE", ir: 0 }
+    if (list[0].indexOf("免息") != -1) {
+      m = { t: "免息", ir: 0 }
     } else {
-      if (list.length != 2) return null
-      m = {
-        t: list[0],
-        ir: parseFloat(list[1])
-      }
-      if (m.t != "ELP" && m.t == "EPP") return null
-      if (isNaN(m.ir)) return null
+      return null
+      // if (list.length != 2) return null
+      // m = {
+      //   t: list[0],
+      //   ir: parseFloat(list[1])
+      // }
+      // if (m.t != "ELP" && m.t == "EPP") return null
+      // if (isNaN(m.ir)) return null
     }
-    m.tt = this.typeM[m.t]
     return m
   },
   // 获取显示分期时间范围
-  getQSDateRange(qs: number): any {
-    const scDate = new Date()
+  getFQDateRange(): any {
     const ssDate = new Date()
     ssDate.setMonth(ssDate.getMonth() - 1)
     const seDate = new Date()
-    seDate.setMonth(seDate.getMonth() + 2)
-    const eDate = new Date()
-    eDate.setMonth(eDate.getMonth() + qs)
+    seDate.setMonth(seDate.getMonth() + 1)
     return {
-      s_c: dateU.getYearMonthKey(scDate),
-      s_s: dateU.getYearMonthKey(ssDate),
-      s_e: dateU.getYearMonthKey(seDate),
-      e: dateU.getYearMonthKey(eDate)
+      s: dateU.date2YMNum(ssDate),
+      c: dateU.date2YMNum(new Date()),
+      e: dateU.date2YMNum(seDate),
     }
   },
   // 免息计算
   calc_IFE(m: any) {
     m.GI = 0
     m.list = []
-    let qsdrM = this.getQSDateRange(m.qs)
-    console.log(qsdrM)
+    const qM = this.getFQDateRange()
+    // console.log(qM)
+    const qsdrL = [qM.s, qM.c, qM.e]
     const date = dateU.dateKey2Date(m.st)
-    for (let i = 0; i < m.qs; i++) {
-      let t = dateU.getYearMonthKey(date)
-      // m.list.push({t: t})
-
+    const m_pS = util.price2Str(m.p / m.qs)
+    const m_p = parseFloat(m_pS)
+    const st_r_v = dateU.date2YMNum(dateU.dateKey2Date(m.st_r))
+    // console.log(st_r_v)
+    let lastQI = -1
+    for (let i = 1; i <= m.qs; i++) {
       date.setMonth(date.getMonth() + 1)
+      const tv = dateU.date2YMNum(date)
+      // console.log(t)
+      if (i == m.qs && i > lastQI + 1) {
+        m.list.push({ isMore: true })
+      }
+      if (qsdrL.indexOf(tv) == -1 && i < m.qs) continue
+      const mm: any = {
+        p: m_p,
+        pS: m_pS,
+        t: dateU.getYearMonthKey(date),
+      }
+      m.list.push(mm)
+      if (tv == qM.c) {
+        m.cqs = i
+        m.cpS = mm.pS
+      }
+      mm.qi = i
+      if (tv < st_r_v) {
+        mm.state = "dis"
+      } else if (tv < qM.c) {
+        mm.state = "off"
+      }
+      lastQI = mm.qi
     }
-    // m.p
   },
   // 等额本息 计算
   calc_ELP(m: any) {
@@ -133,5 +173,44 @@ export default {
   // 等额本金 计算
   calc_EPP(m: any) {
   },
-
+  /**
+   * 排序数组
+   * @param list 数组
+   * @param sort 0（不排序）、1（从小到大）、2（从大到小）
+   */
+  sortList(list: Array<any>, sort: number) {
+    list.sort((a: any, b: any) => {
+      try {
+        if (sort == 2) {
+          return b.etv - a.etv
+        } else {
+          return a.etv - b.etv
+        }
+      } catch (e) {
+        return 0
+      }
+    });
+  },
+  // 保存数组
+  saveList(): string {
+    try {
+      wx.setStorageSync(this.installmentDataKey,  this.list2SaveStr(this.list))
+      return ""
+    } catch (error) {
+      return "保存失败"
+    }
+  },
+  // 保存已完成数组
+  saveListC() {
+    try {
+      wx.setStorageSync(this.installmentDataCKey,  this.list2SaveStr(this.listC))
+      return ""
+    } catch (error) {
+      return "保存失败"
+    }
+  },
+  list2SaveStr(list: Array<any>): string {
+    
+    return ""
+  }
 }
