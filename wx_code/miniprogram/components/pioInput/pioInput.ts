@@ -12,7 +12,7 @@ Component({
       type: Boolean,
       value: false
     },
-    // evalMathFun: <any>{},
+    evalMath: Object,
     showKeyboard: {
       type: Boolean,
       value: false
@@ -48,8 +48,12 @@ Component({
     },
     changeV() {
       let v = this.data.p
-      // let f = this.data.evalMathFun
-      // if (f) v = f(v)
+      let evalM = this.data.evalMath
+      if (evalM && evalM.f) {
+        v = evalM.f(v)
+      } else {
+        v = `${parseFloat(v)}`
+      }
       if (this.data.pio == "in") {
         v = `+${v}`
       } else {

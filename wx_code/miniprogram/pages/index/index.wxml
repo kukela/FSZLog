@@ -29,25 +29,25 @@
   </button>
 
   <modal-view show="{{budgetM.show}}" title="设置预算" bindconfirm="budgetModalConfirm">
-    <view class="model_cell">
-      <tip-input type="digit" placeholder="请输入预算" tips="{{budgetM.budgetTips}}" model:value="{{budgetM_budget}}" verifyTips="{{budgetM.verifyTips}}" input-class="input" unit="￥" />
+    <view class="modal_cell">
+      <tip-input type="digit" placeholder="请输入预算" tips="{{budgetM.budgetTips}}" model:value="{{budgetM_budget}}" verifyTips="{{budgetM.verifyTips}}" unit="￥" />
     </view>
   </modal-view>
 
   <modal-view show="{{editTagListM.show}}" title="编辑" class="edit_modal" bindconfirm="cellSubModalConfirm">
-    <pio-input class="model_cell" p="{{editTagListM.p}}" pio="{{editTagListM.pio}}" tips="{{pioTips}}" model:v="{{editTagListM_v}}" verifyTips="{{editTagListM.verifyTips}}" evalMathFun="{{evalMathFun}}"></pio-input>
+    <pio-input class="modal_cell" p="{{editTagListM.p}}" pio="{{editTagListM.pio}}" tips="{{pioTips}}" model:v="{{editTagListM_v}}" verifyTips="{{editTagListM.verifyTips}}" evalMathFun="{{evalMathFun}}"></pio-input>
     <button class="del_btn" bindtap="cellSubDel" hover-class="def_hover" hover-stay-time="150">删除</button>
   </modal-view>
 
   <modal-view show="{{addM.show}}" title="添加" bindconfirm="addModalConfirm">
-    <view class="model_cell">
+    <view class="modal_cell">
       <tip-input type="text" maxlength="50" placeholder="请输入标题" tips="{{addM.title_tips}}" model:value="{{addM_title}}" verifyTips="{{addM.verifyTips}}"></tip-input>
     </view>
-    <scroll-view class="model_cell" type="custom" scroll-y="true">
+    <scroll-view class="modal_cell" type="custom" scroll-y="true">
       <view class="item_box">
-        <view wx:for="{{tagList}}" wx:key="tt" class="item" hover-class="def_hover" hover-stay-time="150" data-i="{{index}}" bindtap="tagTap">{{item.tt}}</view>
+        <view wx:for="{{tagList}}" wx:key="tt" class="item" hover-class="def_hover" hover-stay-time="150" data-i="{{index}}" bindtap="tagTap" bind:longtap="tagLongTap">{{item.tt}}</view>
       </view>
     </scroll-view>
-    <pio-input class="model_cell" p="{{addM.p}}" pio="{{addM.pio}}" tips="{{pioTips}}" model:v="{{addM_piov}}" verifyTips="{{addM.verifyTips}}" evalMathFun="{{evalMathFun}}"></pio-input>
+    <pio-input class="modal_cell" p="{{addM.p}}" pio="{{addM.pio}}" tips="{{pioTips}}" model:v="{{addM_piov}}" verifyTips="{{addM.verifyTips}}" evalMathFun="{{evalMathFun}}"></pio-input>
   </modal-view>
 </view>

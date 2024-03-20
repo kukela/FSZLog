@@ -7,6 +7,7 @@ $mainColor: #8183FF;
 $textMainColor: #fff;
 $textNumColor: #7d90a9;
 $textDisabledColor: #8F8F8F;
+$textPlaceholderColor: #8F8F8F;
 $textGreenColor: #74a800;
 $textYellowColor: #cc9c00;
 $textRedColor: #fa5151;
@@ -20,7 +21,7 @@ $def_input_height: 80rpx;
 .input_tips {
   text-align: start;
   font-size: 26rpx;
-  padding: 10rpx 0 0 0;
+  padding: 8rpx 0 0 8rpx;
   color: $textRedColor;
 }
 
@@ -29,4 +30,9 @@ $def_input_height: 80rpx;
   border: $border_height solid $borderColor;
   border-radius: $def_btn_radius;
   box-sizing: border-box;
+  display: flex;
+
+  &.disabled {
+    opacity: 0.7;
+  }
 }

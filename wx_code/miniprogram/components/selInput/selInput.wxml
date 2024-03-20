@@ -1,0 +1,12 @@
+<view class="def_input {{disabled ? 'disabled' : ''}}">
+  <picker class="picker" mode="{{mode}}" range="{{range}}" range-key="t" value="{{value}}" start="{{start}}" end="{{end}}" fields="{{fields}}" bindchange="change" bind:tap="tap" disabled="{{disabled}}">
+    <view class="sel_input" hover-class="{{disabled ? '' : 'def_hover'}}" hover-stay-time="150">
+      <text wx:if="{{value}}">{{showText}}</text>
+      <text wx:else class="placeholder">{{placeholder}}</text>
+    </view>
+  </picker>
+  <view wx:if="{{rBtnImgSrc}}" class="r_img_btn" hover-class="def_hover" hover-stay-time="150" bind:tap="rBtnTap">
+    <image class="img" src="{{rBtnImgSrc}}"></image>
+  </view>
+</view>
+<text wx:if="{{tip}}" class="input_tips">{{tip}}</text>

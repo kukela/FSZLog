@@ -5,13 +5,13 @@ import verifyU from '../../utils/verify.js';
 import util from '../../utils/util.js';
 import tags from '../../utils/tags.js';
 import evalMath from '../../utils/eval_math.js';
-import conf from '../../utils/conf.js';
+import anim from '../../utils/anim.js';
 
 Page({
   data: {
     pioTips: [{
       t: "请输入正确的价格",
-      f: verifyU.vFloatFun
+      f: verifyU.isNaNFloatFun
     }],
     evalMathFun: evalMath.evalMath,
 
@@ -21,7 +21,7 @@ Page({
       verifyTips: false,
       budgetTips: [{
         t: "请输入正确的预算",
-        f: verifyU.vFloatFun
+        f: verifyU.isNaNFloatFun
       }]
     },
     budgetM_budget: "",
@@ -43,7 +43,7 @@ Page({
       pio: "out",
       title_tips: [{
         t: "请输入标题",
-        f: verifyU.vNullFun
+        f: verifyU.isEmptyFun
       }]
     },
     addM_title: "",
@@ -102,14 +102,8 @@ Page({
   },
   // 列表展开
   cellMainTap: function (e: any) {
-    const k = e.currentTarget.dataset.i
-    const tag = this.data.m.tags[k]
-    if (tag.isShowSubAnim != undefined && tag.isShowSub != tag.isShowSubAnim) return
-    const isShowSub = !tag.isShowSub
-    this.setData({ [`m.tags.[${k}].isShowSubAnim`]: isShowSub })
-    setTimeout(() => {
-      this.setData({ [`m.tags.[${k}].isShowSub`]: isShowSub })
-    }, isShowSub ? 0 : conf.anim_list_d);
+    const i = e.currentTarget.dataset.i
+    anim.cellSubShowHide(this, `m.tags[${i}]`)
   },
   // 子列表事件
   cellSubTap: function (e: any) {
@@ -196,6 +190,22 @@ Page({
     const i = e.currentTarget.dataset.i
     const tag = this.data.tagList[i]
     this.setData({ 'addM_title': tag.tt })
+  },
+  tagLongTap: function (e: any) {
+    const i = e.currentTarget.dataset.i
+    let self = this
+    wx.showModal({
+      title: '删除标签',
+      content: '删除后不可撤销，是否删除？',
+      success(res) {
+        if (!res.confirm) return
+        tags.delTagWithIndex(i)
+        tags.saveTags()
+        self.setData({
+          tagList: tags.list
+        })
+      }
+    })
   },
   // 添加弹窗确定事件
   addModalConfirm() {

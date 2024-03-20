@@ -14,9 +14,15 @@ export default {
     return { tt: title, t: new Date().getTime() }
   },
   addTagTitle(title: string): Array<any> {
-    const tag = this.getTag(title)
-    if(!this.list.find((v: any) => tag.tt == v.tt)) this.list.unshift(tag)
+    const i = this.list.findIndex((v: any) => title == v.tt)
+    if (i >= 0) {
+      this.delTagWithIndex(i)
+    }
+    this.list.unshift(this.getTag(title))
     return this.list
+  },
+  delTagWithIndex(i: number) {
+    this.list.splice(i, 1)
   },
   saveTags(): string {
     try {

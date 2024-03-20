@@ -2,6 +2,7 @@ import conf from '../../utils/conf.js'
 import data from '../../utils/data.js'
 import dateU from '../../utils/date.js';
 import IOData from '../../utils/IOData.js'
+import anim from '../../utils/anim.js';
 
 Page({
   data: {
@@ -84,7 +85,7 @@ ABC | -1000.11 | 2024-03-01 12:01:01
 ABCd | +100 | 2024-03-01 12:01:02
     `
     */
-   const list = IOData.importYearListStr(v)
+    const list = IOData.importYearListStr(v)
     if (list.length < 1) {
       wx.showToast({ title: '剪贴板数据不对', icon: 'error', duration: 2000 })
       return
@@ -100,18 +101,16 @@ ABCd | +100 | 2024-03-01 12:01:02
       const list = data.year2List(this.data.date, 2)
       data.coverYearIsShowSub(list, this.data.list)
       this.setData({
-        list: list,
-        ["importM.list"]: [],
-        ["importM.show"]: false
+        list: list
       })
       wx.showToast({ title: '导入成功', icon: 'success' })
     } else {
-      this.setData({
-        ["importM.list"]: [],
-        ["importM.show"]: false
-      })
       wx.showToast({ title: importTip, icon: 'error', duration: 2000 })
     }
+    this.setData({
+      ["importM.list"]: [],
+      ["importM.show"]: false
+    })
   },
   // 年点击事件
   bindDateChange(e: any) {
@@ -125,12 +124,6 @@ ABCd | +100 | 2024-03-01 12:01:02
   // 列表展开
   cellTitleTap(e: any) {
     const i = e.currentTarget.dataset.i
-    const vv = this.data.list[i] as any
-    if (vv.isShowSubAnim != undefined && vv.isShowSub != vv.isShowSubAnim) return
-    const isShowSub = !vv.isShowSub
-    this.setData({ [`list[${i}].isShowSubAnim`]: isShowSub })
-    setTimeout(() => {
-      this.setData({ [`list[${i}].isShowSub`]: isShowSub })
-    }, isShowSub ? 0 : conf.anim_list_d);
+    anim.cellSubShowHide(this, `list[${i}]`)
   }
 })

@@ -1,17 +1,30 @@
+import dateU from './date.js';
+
 export default {
 
-  vFloatFun(v: string) {
-    let vv = NaN
+  isNaNFloatFun(v: string): boolean {
     try {
-      vv = parseFloat(v)
+      return isNaN(parseFloat(v))
     } catch (e) {
+      return true
     }
-    return isNaN(vv)
   },
 
-  vNullFun(v: string) {
-    return !v
-    // return v == "" || v == undefined || v == null
+  isNaNIntFun(v: string): boolean {
+    try {
+      return isNaN(parseInt(v))
+    } catch (e) {
+      return true
+    }
+  },
+
+  isEmptyFun(v: string): boolean {
+    // return !v
+    return v == "" || v == undefined || v == null
+  },
+
+  isNoDateStrFun(v: string): boolean {
+    return isNaN(dateU.dateKey2Time(v))
   },
 
   vTips(tips: Array<any>, v: string): string {
@@ -23,6 +36,6 @@ export default {
       break
     }
     return tip
-  }
+  },
 
 }

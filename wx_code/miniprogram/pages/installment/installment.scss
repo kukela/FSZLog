@@ -5,121 +5,121 @@
   .cell_bs {
     height: 10rpx;
   }
-}
 
-.info_box {
-  display: flex;
-  flex-direction: row;
-  margin-top: 10rpx;
-  border-bottom: none !important;
+  .info_box {
+    display: flex;
+    flex-direction: row;
+    margin-top: 10rpx;
+    border-bottom: none !important;
 
-  .item {
+    .item {
+      display: flex;
+      flex-direction: column;
+
+      .title {
+        font-size: 26rpx;
+        line-height: 40rpx;
+        color: $textNumColor;
+      }
+
+      .num {
+        text-align: start;
+        font-size: 32rpx;
+        color: $textMainColor;
+        line-height: 60rpx;
+        padding: 0;
+      }
+
+      &.bj {
+        flex: 135;
+      }
+
+      &.zlx {
+        flex: 115;
+      }
+    }
+
+    .item.ll {
+      width: 110rpx;
+
+      .title {
+        font-size: 22rpx;
+        color: $textMainColor;
+      }
+
+      text {
+        text-align: right;
+      }
+    }
+
+  }
+
+  .table_box {
     display: flex;
     flex-direction: column;
+    border-bottom: none !important;
+    margin-bottom: 10rpx;
 
-    .title {
-      font-size: 26rpx;
-      line-height: 40rpx;
-      color: $textNumColor;
+    .thead,
+    .tr {
+      display: flex;
+
+      text:nth-child(1) {
+        flex: 5;
+      }
+
+      text:nth-child(2) {
+        flex: 2;
+      }
+
+      text:last-child {
+        width: 116rpx;
+        text-align: right;
+      }
     }
 
-    .num {
-      text-align: start;
+    .thead {
+      margin-top: 10rpx;
+
+      text {
+        font-size: 22rpx;
+        line-height: 40rpx;
+        color: $textNumColor;
+      }
+    }
+
+    .tr {
+      text {
+        font-size: 26rpx;
+        line-height: 60rpx;
+        color: $textMainColor;
+      }
+    }
+
+    .tr.dis,
+    .tr.off {
+      text {
+        color: $textDisabledColor;
+      }
+    }
+
+    .more {
       font-size: 32rpx;
-      color: $textMainColor;
-      line-height: 60rpx;
-      padding: 0;
-    }
-
-    &.bj {
-      flex: 135;
-    }
-
-    &.zlx {
-      flex: 115;
-    }
-  }
-
-  .item.ll {
-    width: 110rpx;
-
-    .title {
-      font-size: 22rpx;
-      color: $textMainColor;
-    }
-
-    text {
-      text-align: right;
-    }
-  }
-
-}
-
-.table_box {
-  display: flex;
-  flex-direction: column;
-  border-bottom: none !important;
-  margin-bottom: 10rpx;
-
-  .thead,
-  .tr {
-    display: flex;
-
-    text:nth-child(1) {
-      flex: 5;
-    }
-
-    text:nth-child(2) {
-      flex: 2;
-    }
-
-    text:last-child {
-      width: 116rpx;
-      text-align: right;
-    }
-  }
-
-  .thead {
-    margin-top: 10rpx;
-
-    text {
-      font-size: 22rpx;
-      line-height: 40rpx;
-      color: $textNumColor;
-    }
-  }
-
-  .tr {
-    text {
-      font-size: 26rpx;
-      line-height: 60rpx;
-      color: $textMainColor;
-    }
-  }
-
-  .tr.dis,
-  .tr.off {
-    text {
       color: $textDisabledColor;
+      line-height: 36rpx;
+      text-align: center;
     }
   }
 
-  .more {
-    font-size: 32rpx;
-    color: $textDisabledColor;
-    line-height: 36rpx;
-    text-align: center;
+  .cell .dis>text {
+    text-decoration-line: line-through;
   }
-}
 
-.cell .dis>text {
-  text-decoration-line: line-through;
-}
-
-.more_btn {
-  font-size: 28rpx;
-  color: $textDisabledColor;
-  line-height: 100rpx;
-  text-align: center;
-  margin: 0 40rpx 0 40rpx;
+  .more_btn {
+    font-size: 28rpx;
+    color: $textDisabledColor;
+    line-height: 100rpx;
+    text-align: center;
+    margin: 0 40rpx 0 40rpx;
+  }
 }

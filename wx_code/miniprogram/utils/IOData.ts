@@ -34,7 +34,7 @@ export default {
       const t = tDList[2]
       const tDate = dateU.dateKey2Date(t)
       const tTime = tDate.getTime()
-      if (verify.vNullFun(tt) || verify.vFloatFun(p) || isNaN(tTime)) return
+      if (verify.isEmptyFun(tt) || verify.isNaNFloatFun(p) || isNaN(tTime)) return
       if (tTime > cTime) return
       const tag = { tt: tt, p: p, t: "" }
       if (tt == this.budget_type) {

@@ -46,4 +46,18 @@ export default {
       }
     });
   },
+  // 通过key获取对象属性
+  key2Obj(obj: any, key: string, defaultValue: any = undefined): any {
+    let result = obj, i = 0;
+    const paths = key.replace(/\[(\d+)\]/g, '.$1').split('.')
+    // console.log(paths, '--')
+    while (i < paths.length) {
+      result = Object(result)[paths[i]];
+      if (result === undefined) {
+        return defaultValue;
+      }
+      i++;
+    }
+    return result;
+  }
 }

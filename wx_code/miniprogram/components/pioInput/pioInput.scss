@@ -1,7 +1,7 @@
 @import "../theme.scss";
 
 :host {
-  height: $def_input_height;
+  min-height: $def_input_height;
 }
 
 .radio_group {

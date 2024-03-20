@@ -7,8 +7,6 @@ export default {
   currentDataVer: 2,
   // 月数据key开头
   monthDataKey: "md-",
-  // 列表动画时长
-  anim_list_d: 180,
 
   // 本地数据版本
   getDataVer(): number {

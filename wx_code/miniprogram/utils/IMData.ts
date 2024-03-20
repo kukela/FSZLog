@@ -1,4 +1,3 @@
-import conf from './conf.js';
 import util from './util.js';
 import dateU from './date.js';
 import verify from './verify.js';
@@ -17,23 +16,29 @@ export default {
 
   init() {
     this.listC = []
-    this.list = this.str2List(this.installmentDataKey, false)
-    if (this.listC) {
+    this.list = this.str2List(this.installmentDataKey, true)
+    if (this.listC.length > 0) {
       this.sortList(this.list, 1)
-      this.saveList()
-      const listC = this.str2List(this.installmentDataCKey, true)
+      this.saveList(false)
+      const listC = this.str2List(this.installmentDataCKey, false)
       this.listC.concat(listC)
       this.sortList(this.listC, 2)
-      this.saveListC()
+      this.saveList(true)
+      this.listC = []
     }
-    console.log(this.list, this.listC)
-
-    let imC = wx.getStorageSync(this.installmentDataCKey)
+    const imC = wx.getStorageSync(this.installmentDataCKey)
     this.isIMCList = imC != undefined && imC.length > 2
-    // console.log(this.isIMCList)
+
+    console.log(this.list, this.listC)
+    // console.log(wx.getStorageSync(this.installmentDataKey))
+    // console.log(wx.getStorageSync(this.installmentDataCKey))
+  },
+  initCList() {
+    this.listC = this.str2List(this.installmentDataCKey, false)
+    this.isIMCList = this.listC.length > 0
   },
   // 字符串key转数组
-  str2List(key: string, isIMC: boolean = false): Array<any> {
+  str2List(key: string, isAddListC: boolean): Array<any> {
     const list: Array<any> = []
     const imStr = wx.getStorageSync(key)
     let imStrList = []
@@ -44,8 +49,7 @@ export default {
     imStrList.forEach((v: any) => {
       const m = this.str2IMDataObj(v)
       if (!m) return
-      console.log(m)
-      if (!isIMC && !m.cqs) {
+      if (isAddListC && !m.cqs) {
         this.listC.push(m)
       } else {
         list.push(m)
@@ -66,7 +70,7 @@ export default {
         st: tDList[5],
         st_r: tDList[6]
       }
-      if (isNaN(m.id) || verify.vNullFun(m.tt) || isNaN(m.p) || isNaN(m.qs) ||
+      if (isNaN(m.id) || verify.isEmptyFun(m.tt) || isNaN(m.p) || isNaN(m.qs) ||
         isNaN(dateU.dateKey2Time(m.st)) || isNaN(dateU.dateKey2Time(m.st_r))
       ) return null
       m.type = this.str2TypeObj(tDList[3])
@@ -92,6 +96,7 @@ export default {
         let em = m.list[m.list.length - 1]
         if (em) m.etv = parseInt(em.t.replace("-", ''))
       }
+      m.isShowSub = false
       return m
     } catch (error) {
       console.error(error)
@@ -192,25 +197,35 @@ export default {
     });
   },
   // 保存数组
-  saveList(): string {
+  saveList(isC: boolean): string {
     try {
-      wx.setStorageSync(this.installmentDataKey,  this.list2SaveStr(this.list))
+      if (!isC) {
+        wx.setStorageSync(this.installmentDataKey, this.list2SaveStr(this.list, false))
+      } else {
+        wx.setStorageSync(this.installmentDataCKey, this.list2SaveStr(this.listC, false))
+      }
       return ""
     } catch (error) {
       return "保存失败"
     }
   },
-  // 保存已完成数组
-  saveListC() {
-    try {
-      wx.setStorageSync(this.installmentDataCKey,  this.list2SaveStr(this.listC))
-      return ""
-    } catch (error) {
-      return "保存失败"
-    }
+  // 数组转保存字符串
+  list2SaveStr(list: Array<any>, isIO: boolean): string {
+    let sS = ""
+    list.forEach((v: any) => {
+      sS += this.imData2SaveStr(v, isIO)
+    });
+    return sS
   },
-  list2SaveStr(list: Array<any>): string {
-    
-    return ""
+  // 分期数据转保存字符串
+  imData2SaveStr(m: any, isIO: boolean): string {
+    let s = isIO ? "" : `${m.id} | `
+    s += `${m.tt} | ${m.p} | ${this.imType2SaveStr(m.type)} | ${m.qs} | ${m.st} | ${m.st_r}\n`
+    return s
+  },
+  // 分期类型转字符串
+  imType2SaveStr(t: any): string {
+    if (t.t == "免息") return t.t
+    return `${t.t}_${t.ir}`
   }
 }

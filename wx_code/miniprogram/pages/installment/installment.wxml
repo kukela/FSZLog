@@ -6,14 +6,17 @@
     <view class="add btn" hover-class="def_hover" hover-stay-time="150" bindtap="addTap">添加</view>
   </view>
   <scroll-view class="list" scroll-y type="list">
-    <block wx:for="{{ [list, '', listC] }}" wx:for-item="mm" wx:key="index">
-      <block wx:if="{{ mm }}">
-        <view class="cell" wx:for="{{ mm }}" wx:key="id" wx:if="{{ item.type }}">
-          <view class="main" hover-class="def_hover" hover-stay-time="150" bindtap="cellMainTap">
+    <block wx:for="{{ list }}" wx:for-item="mm" wx:for-index="mmi" wx:key="mmi">
+      <view wx:if="{{ mm.isData }}" class="more_btn" hover-class="def_hover" hover-stay-time="150" bind:tap="onShowIMCListTap">
+        <text>{{ mm.isShowSub ? '隐藏' : '显示'}}已完成</text>
+      </view>
+      <block wx:if="{{ mm.isShowSub }}">
+        <view wx:if="{{ item.type }}" wx:for="{{ mm.list }}" wx:key="id" class="cell {{item.isShowSubAnim ? 'list_show' : 'list_hide'}}">
+          <view class="main" hover-class="def_hover" hover-stay-time="150" data-mi="{{mmi}}" data-i="{{index}}" bindtap="cellMainTap">
             <text class="title">[{{ item.cqs ? item.cqs : '-' }}/{{ item.qs }}] {{ item.tt }}</text>
             <text class="num big">{{ item.cpS }}</text>
           </view>
-          <view class="info_box" hover-class="def_hover" hover-stay-time="150">
+          <view wx:if="{{item.isShowSub}}" class="info_box" hover-class="def_hover" hover-stay-time="150" bind:tap="cellEditTap">
             <view class="item bj">
               <text class="title">本金</text>
               <text class="num">{{ item.pS }}</text>
@@ -35,7 +38,7 @@
               </view>
             </block>
           </view>
-          <view class="table_box" hover-class="def_hover" hover-stay-time="150" bindtap="cellMoreTap">
+          <view wx:if="{{item.isShowSub}}" class="table_box" hover-class="def_hover" hover-stay-time="150" bindtap="cellMoreTap">
             <block wx:if="{{ item.type.ir }}">
               <view class="thead">
                 <text>分期应还</text>
@@ -59,13 +62,36 @@
             </block>
           </view>
         </view>
-      </block>
-      <block wx:else>
-        <view wx:if="{{ listC.length > 0 }}" class="more_btn" hover-class="def_hover" hover-stay-time="150">
-          <text>隐藏已完成</text>
-        </view>
+        <view wx:if="{{mm.list.length < 1}}" class="cell_no_data">还没有分期数据！</view>
       </block>
     </block>
     <view class="cell_bs"></view>
   </scroll-view>
+
+  <modal-view show="{{addM.show}}" title="添加分期" bindconfirm="addModalConfirm">
+    <view class="modal_cell">
+      <tip-input type="text" maxlength="50" placeholder="请输入标题" tips="{{addM.title_tips}}" model:value="{{addM_title}}" verifyTips="{{addM.verifyTips}}"></tip-input>
+    </view>
+    <view class="modal_cell">
+      <tip-input type="digit" placeholder="本金" tips="{{addM.pTips}}" model:value="{{addM_p}}" verifyTips="{{addM.verifyTips}}" unit="￥" />
+    </view>
+    <view class="modal_cell">
+      <sel-input placeholder="选择计息方式" disabled="true" mode="selector" range="{{imTypeList}}" model:value="{{addM_imType}}" tips="{{addM.imTypeTips}}" verifyTips="{{addM.verifyTips}}" rBtnImgSrc="../../image/btn_help.png" bind:rBtnTap="imTypeHelpTap"></sel-input>
+    </view>
+    <view class="modal_cell">
+      <text class="title">年利率：</text>
+      <tip-input type="digit" placeholder="3.99" tips="{{addM.irTips}}" model:value="{{addM_ir}}" verifyTips="{{addM.verifyTips}}" unit="%" disabled="true" style="flex: 5;" />
+      <text class="title lrm">分</text>
+      <tip-input type="number" placeholder="12" tips="{{addM.qsTips}}" model:value="{{addM_qs}}" verifyTips="{{addM.verifyTips}}" unit="期" style="flex: 4; min-width: 142rpx;" bind:input="addModal_qsChange" />
+    </view>
+    <view class="modal_cell">
+      <text class="title">借款日期：</text>
+      <sel-input placeholder="选择借款日期" mode="date" end="{{addM.stEnd}}" fields="day" model:value="{{addM_st}}" tips="{{addM.stTips}}" verifyTips="{{addM.verifyTips}}" bind:change="addModal_stChange"></sel-input>
+    </view>
+    <view class="modal_cell">
+      <text class="title">入账月份：</text>
+      <sel-input placeholder="选择入账月份" mode="date" start="{{addM.st_rStart}}" end="{{addM.st_rEnd}}" fields="month" model:value="{{addM_st_r}}" tips="{{addM.st_rTips}}" verifyTips="{{addM.verifyTips}}"></sel-input>
+    </view>
+  </modal-view>
+
 </view>

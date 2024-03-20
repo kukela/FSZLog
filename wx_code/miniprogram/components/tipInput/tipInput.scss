@@ -6,17 +6,13 @@
   flex-direction: column;
 }
 
-.def_input {
-  display: flex;
+.tip_input {
+  height: 100%;
+}
 
-  .tip_input {
-    height: 100%;
-  }
-
-  .unit {
-    line-height: $def_input_height;
-    color: $textMainColor;
-    margin-right: 10rpx;
-    font-size: 32rpx;
-  }
+.unit {
+  line-height: $def_input_height;
+  color: $textMainColor;
+  margin-right: 10rpx;
+  font-size: 32rpx;
 }

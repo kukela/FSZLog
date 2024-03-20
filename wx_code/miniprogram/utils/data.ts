@@ -177,7 +177,7 @@ export default {
     const t = tdList[2]
     const tDate = dateU.dateKey2Date(date ? `${date}-${t}` : t)
     const tTime = tDate.getTime()
-    if (verify.vNullFun(tt) || verify.vFloatFun(p) || isNaN(tTime)) return null
+    if (verify.isEmptyFun(tt) || verify.isNaNFloatFun(p) || isNaN(tTime)) return null
     if (cTime > 0 && tTime > cTime) return null
     return { tt: tt, p: p, t: t }
   },

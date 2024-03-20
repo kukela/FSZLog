@@ -1,3 +1,5 @@
+import tipsU from '../utils/tips.js'
+
 Component({
 
   /**
@@ -6,6 +8,7 @@ Component({
   properties: {
     type: String,
     placeholder: String,
+    disabled: Boolean,
     value: String,
     tips: Array,
     maxlength: {
@@ -35,7 +38,10 @@ Component({
       }
     },
     'tips': function (_) {
-      this.changeValue(this.data.value)
+      this.changeTip(this.data.value)
+    },
+    'value': function (v) {
+      this.changeTip(v)
     }
   },
 
@@ -46,26 +52,15 @@ Component({
     inputChange: function (e: any) {
       let v = e.detail.value
       this.changeValue(v)
-      this.triggerEvent('input', e.detail)
     },
     changeTip(v: string): string {
-      let tips = this.data.tips
-      let tip = ""
-      for (const key in tips) {
-        let tipM = tips[key]
-        if (!tipM.f || !tipM.f(v)) continue
-        tip = tipM.t
-        break
-      }
+      const tip = tipsU.changeTip(this.data, v)
       this.setData({ tip: tip })
       return tip
     },
     changeValue(v: string) {
-      if (this.changeTip(v)) {
-        this.setData({ value: "" })
-      } else {
-        this.setData({ value: v })
-      }
+      this.setData({ value: v })
+      this.triggerEvent('input', { value: v })
     }
   }
 })

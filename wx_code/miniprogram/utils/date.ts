@@ -36,6 +36,14 @@ export default {
     return [year, month].map(this.formatNumber).join('-')
   },
 
+  // 日期转年月日key
+  getYearMonthDayKey(date: Date): string {
+    const year = date.getFullYear()
+    const month = date.getMonth() + 1
+    const day = date.getDate()
+    return [year, month, day].map(this.formatNumber).join('-')
+  },
+
   // 日期key转月份数字
   dateKey2MonthNum(v: string): number {
     let mStr = v.split("-", 2)[1]
