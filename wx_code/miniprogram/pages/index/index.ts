@@ -120,7 +120,7 @@ Page({
       })
       return
     }
-    const pM = util.pioStr2Obj(tag.p)
+    const pM = util.pio2Obj(tag.p)
     const etlM = this.data.editTagListM
     etlM.show = true
     etlM.verifyTips = false
@@ -133,14 +133,14 @@ Page({
   cellSubModalConfirm() {
     this.setData({ ["editTagListM.verifyTips"]: true })
     const d = this.data
-    const pM = util.pioStr2Obj(d.editTagListM_v)
+    const pM = util.pio2Obj(d.editTagListM_v)
     if (verifyU.vTips(d.pioTips, pM.p)) {
       return
     }
     const etlM = this.data.editTagListM
     try {
       const eM = d.m.list[etlM.i]
-      eM.p = d.editTagListM_v
+      eM.p = parseFloat(d.editTagListM_v)
       this.setData({
         m: this.monthDataChange(d.m),
         ["editTagListM.show"]: false
@@ -211,19 +211,17 @@ Page({
   addModalConfirm() {
     this.setData({ ["addM.verifyTips"]: true })
     const d = this.data
-    const pM = util.pioStr2Obj(d.addM_piov)
     const aTitle = IOData.strDes(d.addM_title)
     if (verifyU.vTips(d.addM.title_tips, aTitle) ||
-      verifyU.vTips(d.pioTips, pM.p)) {
+      verifyU.vTips(d.pioTips, d.addM_piov)) {
       return
     }
     const td = {
       tt: aTitle,
-      p: d.addM_piov,
+      p: parseFloat(d.addM_piov),
       t: dateU.getCurrentDate().replace(`${d.m.date}-`, '')
     }
     d.m.list.unshift(td)
-
     this.setData({
       m: this.monthDataChange(d.m),
       tagList: tags.addTagTitle(aTitle),

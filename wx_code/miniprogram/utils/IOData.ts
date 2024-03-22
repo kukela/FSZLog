@@ -2,21 +2,22 @@ import conf from './conf.js';
 import data from './data.js';
 import dateU from './date.js';
 import verify from './verify.js';
+import util from './util.js';
 
 export default {
   sep: " | ",
   budget_type: "-$budget-",
   // 年数组数据转导出格式字符串
   yearList2CopyStr(list: Array<any>): string {
-    let nList = JSON.parse(JSON.stringify(list))
+    const nList = JSON.parse(JSON.stringify(list))
     let str = ""
-    let sepS = this.sep
+    const sepS = this.sep
     data.sortYearData(nList, 2)
     nList.forEach((v: any) => {
       str += `${this.budget_type}${sepS}${v.budget}${sepS}${v.date}\n`
       data.sortMonthTagData(v, 2)
       v.list.forEach((vv: any) => {
-        str += `${vv.tt}${sepS}${vv.p}${sepS}${v.date}-${vv.t}\n`
+        str += `${vv.tt}${sepS}${util.price2IOStr(vv.p)}${sepS}${v.date}-${vv.t}\n`
       });
     });
     return str
@@ -36,7 +37,7 @@ export default {
       const tTime = tDate.getTime()
       if (verify.isEmptyFun(tt) || verify.isNaNFloatFun(p) || isNaN(tTime)) return
       if (tTime > cTime) return
-      const tag = { tt: tt, p: p, t: "" }
+      const tag = { tt: tt, p: parseFloat(p), t: "" }
       if (tt == this.budget_type) {
         tag.t = dateU.getYearMonthKey(tDate)
       } else {

@@ -1,3 +1,4 @@
+<wxs module="u" src="../../utils/util.wxs" />
 <view class="page">
   <view class="header_bar">
     <view class="copy btn" hover-class="def_hover" hover-stay-time="150" bindtap="copyTap">复制</view>
@@ -10,9 +11,9 @@
   <scroll-view class="list" scroll-y type="list">
     <view wx:for="{{list}}" wx:key="date" class="cell {{item.isShowSubAnim ? 'list_show' : 'list_hide'}}">
       <view class="main" hover-class="def_hover" hover-stay-time="150" data-i="{{index}}" bindtap="cellTitleTap">
-        <text class="title">{{item.sTitle}}</text>
+        <text class="title">{{u.dateStr2MonthNum(item.date)}}月</text>
         <view class="num_box">
-          <text class="num big {{item.isProfit ? 'p' : 'l'}}">{{item.sPio}}</text>
+          <text class="num big {{item.sP < 0 ? 'l' : 'p'}}">{{u.p2IOs(item.sP)}}</text>
           <text wx:if="{{item.isShowSub}}" class="num">预算：{{item.budget}}</text>
         </view>
       </view>
@@ -22,7 +23,7 @@
             <text class="title">{{tag.tt}}</text>
             <text class="t_sub">{{item.date}}-{{tag.t}}</text>
           </view>
-          <text class="num big">{{tag.p}}</text>
+          <text class="num big">{{u.p2IOs(tag.p)}}</text>
         </view>
       </block>
     </view>
@@ -34,7 +35,7 @@
     <text class="tip">导入数据会覆盖掉原月份数据，请谨慎操作！</text>
     <view wx:for="{{importM.list}}" wx:key="index" class="cell">
       <text class="tt">{{item.tt}}</text>
-      <text class="p">{{item.p}}</text>
+      <text class="p">{{u.p2IOs(item.p)}}</text>
       <text class="t">{{item.t}}</text>
     </view>
   </modal-view>

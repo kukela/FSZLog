@@ -3,6 +3,7 @@ import dateU from './date.js';
 import util from './util.js';
 import verify from './verify.js';
 import IMData from './IMData.js'
+import anim from './anim.js';
 
 export default {
   sep: " | ",
@@ -24,7 +25,6 @@ export default {
     if (ver < 2) {
       wx.removeStorageSync("installment")
     }
-
     conf.saveDataVer()
 
     IMData.init()
@@ -142,23 +142,19 @@ export default {
     m.list.forEach((v: any) => {
       m.aP += parseFloat(v.p)
     });
-    m.sTitle = `${dateU.dateKey2MonthNum(m.date)}月`
     m.sP = m.budget + m.aP
-    m.sP2 = util.price2Str(m.sP)
-    m.isProfit = m.sP >= 0
-    m.sPio = util.price2IOStr(m.sP)
-    let per = Math.abs(m.aP) / m.budget * 100
-    if (per > 100) per = 100
-    if (per < 0) per = 0
-    m.per = util.price2Str(per)
-    if (per >= 95) {
+    m.per = Math.abs(m.aP) / m.budget * 100
+    if (m.per > 100) m.per = 100
+    if (m.per < 0) m.per = 0
+    if (m.per >= 95) {
       m.perType = 3
-    } else if (per >= 80) {
+    } else if (m.per >= 80) {
       m.perType = 2
     } else {
       m.perType = 1
     }
     m.isShowSub = false
+    m.isShowSubAnim = false
     if (isGenTagsGroup) this.genMonthTagsGroup(m)
     return m
   },
@@ -179,7 +175,7 @@ export default {
     const tTime = tDate.getTime()
     if (verify.isEmptyFun(tt) || verify.isNaNFloatFun(p) || isNaN(tTime)) return null
     if (cTime > 0 && tTime > cTime) return null
-    return { tt: tt, p: p, t: t }
+    return { tt: tt, p: parseFloat(p), t: t }
   },
   // 生成月份tag数组
   genMonthTagsGroup(m: any) {
@@ -195,7 +191,7 @@ export default {
       if (!tList) tList = []
       tList.push({
         t: v.t,
-        p: util.pioStr2IOStr(v.p),
+        p: v.p,
         i: i,
       })
       tM.list = tList
@@ -205,9 +201,8 @@ export default {
       v.list.forEach((vv: any) => {
         v.aP += parseFloat(vv.p)
       });
-      v.aPio = util.price2IOStr(v.aP)
     });
-    util.coverIsShowSub(tags, m.tags, "tag")
+    anim.coverIsShowSub(tags, m.tags, "tag")
     m.tags = tags
   },
   // 排序年内数据
@@ -243,6 +238,6 @@ export default {
 
   // 覆盖年份的isShowSub数据
   coverYearIsShowSub(newL: Array<any>, oldL: Array<any>) {
-    util.coverIsShowSub(newL, oldL, "date")
+    anim.coverIsShowSub(newL, oldL, "date")
   },
 }

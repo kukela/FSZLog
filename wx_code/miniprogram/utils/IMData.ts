@@ -11,52 +11,60 @@ export default {
 
   list: <any>[],
   listC: <any>[],
-  // 是否有已完成的分期
-  isIMCList: false,
 
   init() {
-    this.listC = []
-    this.list = this.str2List(this.installmentDataKey, true)
-    if (this.listC.length > 0) {
-      this.sortList(this.list, 1)
-      this.saveList(false)
-      const listC = this.str2List(this.installmentDataCKey, false)
-      this.listC.concat(listC)
-      this.sortList(this.listC, 2)
-      this.saveList(true)
-      this.listC = []
+    const tList = <any>[]
+    try {
+      tList.push(...this.getStorageList(false))
+    } catch (error) {
     }
-    const imC = wx.getStorageSync(this.installmentDataCKey)
-    this.isIMCList = imC != undefined && imC.length > 2
+    try {
+      tList.push(...this.getStorageList(true))
+    } catch (error) {
+    }
+    const idList = new Set()
+    tList.forEach((m: any) => {
+      if (idList.has(m.id)) return
+      idList.add(m.id)
+      if (!this.dataCalc(m)) return
+      if (!m) return
+      if (this.isCData(m)) {
+        this.listC.push(m)
+      } else {
+        this.list.push(m)
+      }
+    });
+    this.saveList(false)
+    this.saveList(true)
 
     console.log(this.list, this.listC)
     // console.log(wx.getStorageSync(this.installmentDataKey))
     // console.log(wx.getStorageSync(this.installmentDataCKey))
   },
-  initCList() {
-    this.listC = this.str2List(this.installmentDataCKey, false)
-    this.isIMCList = this.listC.length > 0
+  // 是否是已完成数据
+  isCData(m: any): boolean {
+    return isNaN(m.cqs)
   },
-  // 字符串key转数组
-  str2List(key: string, isAddListC: boolean): Array<any> {
+  // 是否有已完成的分期
+  isIMCList(): boolean {
+    return this.listC.length > 0
+  },
+  // 获取本地数据
+  getStorageList(isC: boolean): Array<any> {
     const list: Array<any> = []
-    const imStr = wx.getStorageSync(key)
-    let imStrList = []
+    let sList = []
     try {
-      imStrList = imStr.split("\n")
+      sList = wx.getStorageSync(isC ? this.installmentDataCKey : this.installmentDataKey).split("\n")
     } catch (error) {
     }
-    imStrList.forEach((v: any) => {
+    sList.forEach((v: any) => {
       const m = this.str2IMDataObj(v)
       if (!m) return
-      if (isAddListC && !m.cqs) {
-        this.listC.push(m)
-      } else {
-        list.push(m)
-      }
+      list.push(m)
     });
     return list
   },
+  // 字符串转分期数据
   str2IMDataObj(v: string): any {
     if (!v) return null
     try {
@@ -75,34 +83,54 @@ export default {
       ) return null
       m.type = this.str2TypeObj(tDList[3])
       if (!m.type) return null
-
-      m.pS = util.price2Str(m.p)
-      try {
-        switch (m.type.t) {
-          case "免息":
-            this.calc_IFE(m)
-            break
-          case "等额本息":
-            this.calc_ELP(m)
-            break
-          case "等额本金":
-            this.calc_EPP(m)
-            break
-        }
-      } catch (error) {
-        return null
-      }
-      if (m.list) {
-        let em = m.list[m.list.length - 1]
-        if (em) m.etv = parseInt(em.t.replace("-", ''))
-      }
-      m.isShowSub = false
+      if (!this.dataCalc(m)) return null
       return m
     } catch (error) {
       console.error(error)
     }
     return null
   },
+  // 计算一条分期数据
+  dataCalc(m: any): boolean {
+    delete m.cqs
+    delete m.cp
+    m.GI = 0
+    m.list = []
+    const qM = this.getFQDateRange()
+    m.st_rv = dateU.date2YMNum(dateU.dateKey2Date(m.st_r))
+    if (qM.c < m.st_rv) {
+      m.cqs = 0
+      m.cp = 0
+    }
+    try {
+      switch (m.type.t) {
+        case "免息":
+          this.calc_IFE(m, qM)
+          break
+        case "等额本息":
+          this.calc_ELP(m)
+          break
+        case "等额本金":
+          this.calc_EPP(m)
+          break
+        default:
+          return false
+      }
+    } catch (error) {
+      console.error(error)
+      return false
+    }
+    if (m.list) {
+      const em = m.list[m.list.length - 1]
+      if (em) m.etv = parseInt(em.t.replace("-", ''))
+    }
+    if (m.isShowSub == undefined || m.isShowSub == null) {
+      m.isShowSub = false
+      m.isShowSubAnim = false
+    }
+    return true
+  },
+  // 字符串转分期类型对象
   str2TypeObj(v: string): any {
     let m = <any>{}
     const list = v.split("_")
@@ -133,38 +161,31 @@ export default {
     }
   },
   // 免息计算
-  calc_IFE(m: any) {
-    m.GI = 0
-    m.list = []
-    const qM = this.getFQDateRange()
-    // console.log(qM)
+  calc_IFE(m: any, qM: any) {
     const qsdrL = [qM.s, qM.c, qM.e]
     const date = dateU.dateKey2Date(m.st)
-    const m_pS = util.price2Str(m.p / m.qs)
-    const m_p = parseFloat(m_pS)
-    const st_r_v = dateU.date2YMNum(dateU.dateKey2Date(m.st_r))
-    // console.log(st_r_v)
+    const m_p = parseFloat(util.price2Str(m.p / m.qs))
+    // console.log(m.st_rv)
     let lastQI = -1
     for (let i = 1; i <= m.qs; i++) {
       date.setMonth(date.getMonth() + 1)
       const tv = dateU.date2YMNum(date)
-      // console.log(t)
+      // console.log(tv)
       if (i == m.qs && i > lastQI + 1) {
         m.list.push({ isMore: true })
       }
       if (qsdrL.indexOf(tv) == -1 && i < m.qs) continue
       const mm: any = {
         p: m_p,
-        pS: m_pS,
         t: dateU.getYearMonthKey(date),
       }
       m.list.push(mm)
       if (tv == qM.c) {
         m.cqs = i
-        m.cpS = mm.pS
+        m.cp = mm.p
       }
       mm.qi = i
-      if (tv < st_r_v) {
+      if (tv < m.st_rv) {
         mm.state = "dis"
       } else if (tv < qM.c) {
         mm.state = "off"
@@ -173,10 +194,62 @@ export default {
     }
   },
   // 等额本息 计算
-  calc_ELP(m: any) {
+  calc_ELP(_: any) {
   },
   // 等额本金 计算
-  calc_EPP(m: any) {
+  calc_EPP(_: any) {
+  },
+  /**
+   * 添加一条分期
+   * @param m 0（添加失败）、1（添加到了list）、2（添加到了listC）
+   */
+  addData(m: any): number {
+    m.id = new Date().getTime() - 1710992828056
+    if (!this.dataCalc(m)) return 0
+    const isC = this.isCData(m)
+    if (isC) {
+      this.listC.push(m)
+    } else {
+      this.list.push(m)
+    }
+    this.saveList(isC)
+    return isC ? 2 : 1
+  },
+  /**
+   * 删除一条分期
+   * @param m @param m 0（删除失败）、1（从list删除）、2（从listC删除）
+   */
+  delData(m: any): number {
+    return this.delDataWithIsC(m, this.isCData(m))
+  },
+  delDataWithIsC(m: any, isC: boolean): number {
+    const list = isC ? this.listC : this.list
+    const i = list.findIndex((v: any) => v.id == m.id)
+    list.splice(i, 1)
+    this.saveList(isC)
+    return isC ? 2 : 1
+  },
+  /**
+   * 编辑一条分期
+   * @param m 0（编辑失败）、1（编辑到了list）、2（编辑到了listC）、3（两个list都改了）
+   */
+  editData(m: any): number {
+    const isOC = this.isCData(m)
+    if (!this.dataCalc(m)) return 0
+    const isC = this.isCData(m)
+    if (isOC == isC) {
+      this.saveList(isC)
+      return isC ? 2 : 1
+    } else {
+      this.delDataWithIsC(m, isOC)
+      if (isC) {
+        this.listC.push(m)
+      } else {
+        this.list.push(m)
+      }
+      this.saveList(isC)
+      return 3
+    }
   },
   /**
    * 排序数组
@@ -199,11 +272,14 @@ export default {
   // 保存数组
   saveList(isC: boolean): string {
     try {
-      if (!isC) {
-        wx.setStorageSync(this.installmentDataKey, this.list2SaveStr(this.list, false))
-      } else {
+      if (isC) {
+        this.sortList(this.listC, 2)
         wx.setStorageSync(this.installmentDataCKey, this.list2SaveStr(this.listC, false))
+      } else {
+        this.sortList(this.list, 1)
+        wx.setStorageSync(this.installmentDataKey, this.list2SaveStr(this.list, false))
       }
+
       return ""
     } catch (error) {
       return "保存失败"

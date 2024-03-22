@@ -44,16 +44,9 @@ export default {
     return [year, month, day].map(this.formatNumber).join('-')
   },
 
-  // 日期key转月份数字
-  dateKey2MonthNum(v: string): number {
-    let mStr = v.split("-", 2)[1]
-    if (mStr == undefined || mStr == "") mStr = "0"
-    return parseInt(mStr)
-  },
-
   // 日期转年月数字
   date2YMNum(v: Date): number {
-    return v.getFullYear() * 100 + v.getMonth()
+    return v.getFullYear() * 100 + v.getMonth() + 1
   },
 
   // 日期key转时间

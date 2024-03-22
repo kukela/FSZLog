@@ -1,0 +1,23 @@
+// 价格转字符串
+var p2s = function (v, type) {
+  var vv = isNaN(v) ? parseFloat(v) : v
+  if (isNaN(vv)) return ""
+  return vv % 1 === 0 ? vv.toFixed(0) : vv.toFixed(2)
+}
+
+// 价格转+-字符串
+var p2IOs = function (v, type) {
+  var vs = p2s(v, type)
+  return parseFloat(vs) > 0 ? "+" + vs : vs
+}
+
+// 日期key转月份数字
+var dateStr2MonthNum = function (v) {
+  return parseInt(v.split("-", 2)[1])
+}
+
+module.exports = {
+  p2s: p2s,
+  p2IOs: p2IOs,
+  dateStr2MonthNum: dateStr2MonthNum
+}

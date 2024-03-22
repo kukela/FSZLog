@@ -1,7 +1,7 @@
 {
   "pages": [
-    "pages/installment/installment",
     "pages/index/index",
+    "pages/installment/installment",
     "pages/logs/logs"
   ],
   "tabBar": {

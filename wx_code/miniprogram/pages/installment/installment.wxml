@@ -1,3 +1,4 @@
+<wxs module="u" src="../../utils/util.wxs" />
 <view class="page">
   <view class="header_bar">
     <view class="copy btn" hover-class="def_hover" hover-stay-time="150" bindtap="copyTap">复制</view>
@@ -12,14 +13,14 @@
       </view>
       <block wx:if="{{ mm.isShowSub }}">
         <view wx:if="{{ item.type }}" wx:for="{{ mm.list }}" wx:key="id" class="cell {{item.isShowSubAnim ? 'list_show' : 'list_hide'}}">
-          <view class="main" hover-class="def_hover" hover-stay-time="150" data-mi="{{mmi}}" data-i="{{index}}" bindtap="cellMainTap">
+          <view class="main" hover-class="def_hover" hover-stay-time="150" data-i="{{[mmi, index]}}" bindtap="cellMainTap">
             <text class="title">[{{ item.cqs ? item.cqs : '-' }}/{{ item.qs }}] {{ item.tt }}</text>
-            <text class="num big">{{ item.cpS }}</text>
+            <text class="num big">{{ u.p2s(item.cp) }}</text>
           </view>
-          <view wx:if="{{item.isShowSub}}" class="info_box" hover-class="def_hover" hover-stay-time="150" bind:tap="cellEditTap">
+          <view wx:if="{{item.isShowSub}}" class="info_box" hover-class="def_hover" hover-stay-time="150" data-i="{{[mmi, index]}}" bind:tap="cellEditTap">
             <view class="item bj">
               <text class="title">本金</text>
-              <text class="num">{{ item.pS }}</text>
+              <text class="num">{{ u.p2s(item.p) }}</text>
             </view>
             <block wx:if="{{ item.type.ir }}">
               <view class="item zlx">
@@ -38,7 +39,7 @@
               </view>
             </block>
           </view>
-          <view wx:if="{{item.isShowSub}}" class="table_box" hover-class="def_hover" hover-stay-time="150" bindtap="cellMoreTap">
+          <view wx:if="{{item.isShowSub}}" class="table_box" hover-class="def_hover" hover-stay-time="150" data-i="{{[mmi, index]}}" bindtap="cellMoreTap">
             <block wx:if="{{ item.type.ir }}">
               <view class="thead">
                 <text>分期应还</text>
@@ -55,7 +56,7 @@
               <block wx:for="{{ item.list }}" wx:key="t">
                 <view wx:if="{{ item.isMore }}" class="more">······</view>
                 <view wx:else class="tr {{ item.state }}">
-                  <text>({{ item.qi }}) {{ item.pS }}</text>
+                  <text>({{ item.qi }}) {{ u.p2s(item.p) }}</text>
                   <text>{{ item.t }}</text>
                 </view>
               </block>
@@ -68,7 +69,7 @@
     <view class="cell_bs"></view>
   </scroll-view>
 
-  <modal-view show="{{addM.show}}" title="添加分期" bindconfirm="addModalConfirm">
+  <modal-view show="{{addM.show}}" title="{{addM.editIL.length ? '编辑' : '添加'}}分期" bindconfirm="addModalConfirm">
     <view class="modal_cell">
       <tip-input type="text" maxlength="50" placeholder="请输入标题" tips="{{addM.title_tips}}" model:value="{{addM_title}}" verifyTips="{{addM.verifyTips}}"></tip-input>
     </view>
@@ -92,6 +93,7 @@
       <text class="title">入账月份：</text>
       <sel-input placeholder="选择入账月份" mode="date" start="{{addM.st_rStart}}" end="{{addM.st_rEnd}}" fields="month" model:value="{{addM_st_r}}" tips="{{addM.st_rTips}}" verifyTips="{{addM.verifyTips}}"></sel-input>
     </view>
+    <button wx:if="{{addM.editIL.length}}" class="del_btn" bindtap="cellDelTap" hover-class="def_hover" hover-stay-time="150">删除</button>
   </modal-view>
 
 </view>

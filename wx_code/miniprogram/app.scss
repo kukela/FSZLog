@@ -124,7 +124,8 @@ page {
       justify-content: center;
       min-height: 100rpx;
       min-width: 150rpx;
-      padding-left: 30rpx;
+      padding: 12rpx 0 12rpx 30rpx;
+      box-sizing: border-box;
     }
 
     .main.s .num_box {

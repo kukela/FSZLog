@@ -51,6 +51,9 @@ function initTestData() {
   // ABCd | 2024-03-02 12:01:03 | +100
   // `
 
+  // wx.removeStorageSync("installment")
+  
+//   wx.removeStorageSync("installmentC")
 //   const testIM = `
 // 1 | 贷款 | 40000 | 等额本息_3.99 | 36 | 2024-01-11 | 2024-01
 // 2 | 贷款 | 40000 | 等额本金_3.99 | 36 | 2024-01-11 | 2024-01
@@ -58,10 +61,9 @@ function initTestData() {
 // 4 | 自行车2 | 598.8 | 免息 | 13 | 2023-12-11 | 2024-01
 // 5 | 自行车3 | 601 | 免息 | 6 | 2023-03-11 | 2023-04
 // 6 | 自行车4 | 601 | 免息 | 7 | 2023-03-11 | 2023-04
+// 7 | 自行车55 | 611 | 免息 | 3 | 2024-03-11 | 2024-04
 //   `
 //   wx.setStorageSync("installment", testIM)
-  // wx.removeStorageSync("installment")
-  // installmentC
 }
 
 module.exports = {

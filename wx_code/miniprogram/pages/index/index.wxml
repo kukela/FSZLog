@@ -1,8 +1,9 @@
+<wxs module="u" src="../../utils/util.wxs" />
 <view class="page">
   <view class="header_box" hover-class="def_hover" hover-stay-time="150" bindtap="budgetTap">
     <view class="num_box">
       <text class="num">预算:{{m.budget}}</text>
-      <text class="num big">剩余:{{m.sP2}}</text>
+      <text class="num big">剩余:{{u.p2s(m.sP)}}</text>
     </view>
     <view class="all_bar">
       <view class="h_bar _{{m.perType}}" style="width:{{m.per}}%;"></view>
@@ -12,12 +13,12 @@
     <view wx:for="{{m.tags}}" wx:key="index" class="cell {{item.isShowSubAnim ? 'list_show' : 'list_hide'}}">
       <view class="main" hover-class="def_hover" hover-stay-time="150" data-i="{{index}}" bindtap="cellMainTap">
         <view class="title">{{item.tag}}</view>
-        <text class="num big">{{item.aPio}}</text>
+        <text class="num big">{{u.p2IOs(item.aP)}}</text>
       </view>
       <block wx:if="{{item.isShowSub}}">
         <view wx:for="{{item.list}}" wx:key="i" class="sub" hover-class="def_hover" hover-stay-time="150" data-i="{{item.i}}" bindtap="cellSubTap">
           <text class="title">{{m.date}}-{{item.t}}</text>
-          <text class="num big">{{item.p}}</text>
+          <text class="num big">{{u.p2IOs(item.p)}}</text>
         </view>
       </block>
     </view>
