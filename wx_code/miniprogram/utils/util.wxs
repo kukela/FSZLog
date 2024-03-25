@@ -16,8 +16,16 @@ var dateStr2MonthNum = function (v) {
   return parseInt(v.split("-", 2)[1])
 }
 
+// 年月num转日期key
+var dateNum2Key = function (v) {
+  var arr = ("" + v).split('')
+  if (arr.length >= 6) arr.splice(4, 0, "-")
+  return arr.join('')
+}
+
 module.exports = {
   p2s: p2s,
   p2IOs: p2IOs,
-  dateStr2MonthNum: dateStr2MonthNum
+  dateStr2MonthNum: dateStr2MonthNum,
+  dateNum2Key: dateNum2Key
 }

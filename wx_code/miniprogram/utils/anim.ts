@@ -7,35 +7,35 @@ export default {
   // 展开子列表动画
   cellSubShowHide(self: any, key: string, isAnim: boolean = true, showType: number = -1): any {
     let m = util.key2Obj(self.data, key)
-    if (m.isShowSubAnim != undefined && m.isShowSub != m.isShowSubAnim) return
-    let isShowSub = false
+    if (m.isSSA != undefined && m.isSS != m.isSSA) return
+    let isSS = false
     switch (showType) {
       case 1:
-        isShowSub = true
+        isSS = true
         break;
       case 0:
-        isShowSub = false
+        isSS = false
         break;
       default:
-        isShowSub = !m.isShowSub
+        isSS = !m.isSS
         break;
     }
     if (isAnim) {
-      self.setData({ [`${key}.isShowSubAnim`]: isShowSub })
+      self.setData({ [`${key}.isSSA`]: isSS })
       setTimeout(() => {
-        self.setData({ [`${key}.isShowSub`]: isShowSub })
-      }, isShowSub ? 0 : this.anim_list_d);
+        self.setData({ [`${key}.isSS`]: isSS })
+      }, isSS ? 0 : this.anim_list_d);
     } else {
-      self.setData({ [`${key}.isShowSub`]: isShowSub })
+      self.setData({ [`${key}.isSS`]: isSS })
     }
     return m
   },
 
   // 设置数组所有isShowSub
-  setAllShowSub(list: Array<any>, isShowSub: boolean) {
+  setAllShowSub(list: Array<any>, isSS: boolean) {
     list.forEach((m: any) => {
-      m.isShowSub = isShowSub
-      m.isShowSubAnim = isShowSub
+      m.isSS = isSS
+      m.isSSA = isSS
     });
   },
 
@@ -44,13 +44,13 @@ export default {
     if (!newL || newL.length < 1 || !oldL || oldL.length < 1) return
     const isShowSubM: any = {}
     oldL.forEach(v => {
-      isShowSubM[v[key]] = v.isShowSub
+      isShowSubM[v[key]] = v.isSS
     });
     newL.forEach(v => {
-      const isShowSub = isShowSubM[v[key]]
-      if (isShowSub != undefined && isShowSub != null) {
-        v.isShowSub = isShowSub
-        v.isShowSubAnim = isShowSub
+      const isSS = isShowSubM[v[key]]
+      if (isSS != undefined && isSS != null) {
+        v.isSS = isSS
+        v.isSSA = isSS
       }
     });
   },

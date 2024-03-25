@@ -62,6 +62,7 @@ Page({
     }
     m.tags = this.data.m.tags
     data.genMonthTagsGroup(m)
+    console.log(m)
     this.setData({
       m: m
     })

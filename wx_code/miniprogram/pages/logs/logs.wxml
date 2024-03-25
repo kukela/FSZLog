@@ -9,15 +9,15 @@
     </picker>
   </view>
   <scroll-view class="list" scroll-y type="list">
-    <view wx:for="{{list}}" wx:key="date" class="cell {{item.isShowSubAnim ? 'list_show' : 'list_hide'}}">
+    <view wx:for="{{list}}" wx:key="date" class="cell {{item.isSSA ? 'list_show' : 'list_hide'}}">
       <view class="main" hover-class="def_hover" hover-stay-time="150" data-i="{{index}}" bindtap="cellTitleTap">
         <text class="title">{{u.dateStr2MonthNum(item.date)}}月</text>
         <view class="num_box">
           <text class="num big {{item.sP < 0 ? 'l' : 'p'}}">{{u.p2IOs(item.sP)}}</text>
-          <text wx:if="{{item.isShowSub}}" class="num">预算：{{item.budget}}</text>
+          <text wx:if="{{item.isSS}}" class="num">预算：{{item.budget}}</text>
         </view>
       </view>
-      <block wx:if="{{item.isShowSub}}">
+      <block wx:if="{{item.isSS}}">
         <view wx:for="{{item.list}}" wx:key="name" wx:for-item="tag" class="sub">
           <view class="title_box">
             <text class="title">{{tag.tt}}</text>

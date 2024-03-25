@@ -26,7 +26,6 @@ export default {
     tList.forEach((m: any) => {
       if (idList.has(m.id)) return
       idList.add(m.id)
-      if (!this.dataCalc(m)) return
       if (!m) return
       if (this.isCData(m)) {
         this.listC.push(m)
@@ -38,6 +37,7 @@ export default {
     this.saveList(true)
 
     console.log(this.list, this.listC)
+    // console.log(util.roughSizeOfObject(tList)) // 1874 1628 1396
     // console.log(wx.getStorageSync(this.installmentDataKey))
     // console.log(wx.getStorageSync(this.installmentDataCKey))
   },
@@ -96,6 +96,7 @@ export default {
     delete m.cp
     m.GI = 0
     m.list = []
+    m.o = []
     const qM = this.getFQDateRange()
     m.st_rv = dateU.date2YMNum(dateU.dateKey2Date(m.st_r))
     if (qM.c < m.st_rv) {
@@ -122,11 +123,11 @@ export default {
     }
     if (m.list) {
       const em = m.list[m.list.length - 1]
-      if (em) m.etv = parseInt(em.t.replace("-", ''))
+      if (em) m.etv = em.t
     }
-    if (m.isShowSub == undefined || m.isShowSub == null) {
-      m.isShowSub = false
-      m.isShowSubAnim = false
+    if (m.isSS == undefined || m.isSS == null) {
+      m.isSS = false
+      m.isSSA = false
     }
     return true
   },
@@ -151,9 +152,9 @@ export default {
   // 获取显示分期时间范围
   getFQDateRange(): any {
     const ssDate = new Date()
-    ssDate.setMonth(ssDate.getMonth() - 1)
+    dateU.monthMinus(ssDate)
     const seDate = new Date()
-    seDate.setMonth(seDate.getMonth() + 1)
+    dateU.monthPlus(seDate)
     return {
       s: dateU.date2YMNum(ssDate),
       c: dateU.date2YMNum(new Date()),
@@ -167,24 +168,26 @@ export default {
     const m_p = parseFloat(util.price2Str(m.p / m.qs))
     // console.log(m.st_rv)
     let lastQI = -1
+    const dateD = date.getDate()
     for (let i = 1; i <= m.qs; i++) {
-      date.setMonth(date.getMonth() + 1)
+      dateU.monthPlus(date, dateD)
+      // console.log(dateU.getYearMonthDayKey(date))
       const tv = dateU.date2YMNum(date)
-      // console.log(tv)
       if (i == m.qs && i > lastQI + 1) {
         m.list.push({ isMore: true })
       }
-      if (qsdrL.indexOf(tv) == -1 && i < m.qs) continue
       const mm: any = {
         p: m_p,
-        t: dateU.getYearMonthKey(date),
+        t: dateU.date2YMNum(date),
       }
+      m.o.push(mm)
+      if (qsdrL.indexOf(tv) == -1 && i < m.qs) continue
+      mm.qi = i
       m.list.push(mm)
       if (tv == qM.c) {
         m.cqs = i
         m.cp = mm.p
       }
-      mm.qi = i
       if (tv < m.st_rv) {
         mm.state = "dis"
       } else if (tv < qM.c) {
@@ -279,7 +282,6 @@ export default {
         this.sortList(this.list, 1)
         wx.setStorageSync(this.installmentDataKey, this.list2SaveStr(this.list, false))
       }
-
       return ""
     } catch (error) {
       return "保存失败"
@@ -303,5 +305,25 @@ export default {
   imType2SaveStr(t: any): string {
     if (t.t == "免息") return t.t
     return `${t.t}_${t.ir}`
-  }
+  },
+  // 将分期数据添加到月份tag数组中
+  imDataAdd2MonthData(m: any, isCurrentMonth: boolean = false) {
+    const list = <any>[]
+    list.push(...this.list)
+    if (!isCurrentMonth) list.push(...this.listC)
+    if (isCurrentMonth) {
+      const dateV = dateU.date2YMNum(m.date)
+      list.forEach((im: any) => {
+        const imq = im.list.find((v: any) => v.t == dateV)
+        const nm = {
+          tt: `[${imq.qi}/${im.qs}] ${im.tt}`,
+          p: 1,
+          t: "04 17:24:01"
+        }
+        m.list.push(nm)
+      });
+      console.log(list.length)
+    }
+
+  },
 }

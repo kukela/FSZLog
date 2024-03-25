@@ -1,4 +1,7 @@
 export default {
+  monthType: <any>{
+    0: 1, 1: -1, 2: 1, 3: 0, 4: 1, 5: 0, 6: 1, 7: 1, 8: 0, 9: 1, 10: 0, 11: 1
+  },
 
   formatTime(date: Date): string {
     const year = date.getFullYear()
@@ -13,7 +16,7 @@ export default {
       [hour, minute, second].map(this.formatNumber).join(':')
     )
   },
- 
+
   // 获取当前日期key
   getCurrentDateKey(): string {
     return this.getYearMonthKey(new Date())
@@ -55,6 +58,26 @@ export default {
   },
   dateKey2Time(v: string): number {
     return this.dateKey2Date(v).getTime();
+  },
+
+  // 设置月份，防止最后一天溢出
+  setMonthV(v: Date, m: number, date: number = -1): Date {
+    v.setMonth(m)
+    if (date > 0) v.setDate(date)
+    if (m != 12 && v.getMonth() != m) v.setDate(0)
+    return v
+  },
+
+  // 日期月份+1
+  monthPlus(v: Date, date: number = -1): Date {
+    this.setMonthV(v, v.getMonth() + 1, date)
+    return v
+  },
+
+  // 日期月份-1
+  monthMinus(v: Date, date: number = -1): Date {
+    this.setMonthV(v, v.getMonth() - 1, date)
+    return v
   },
 
   formatNumber(n: number): string {

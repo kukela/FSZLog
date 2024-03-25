@@ -119,6 +119,8 @@ export default {
           nList.push(tag)
         });
         m.list = nList
+        // 添加分期数据
+        IMData.imDataAdd2MonthData(m, dateU.getCurrentDateKey() == m.date)
         m.listS = ""
       }
       if (!m.list) m.list = []
@@ -153,8 +155,8 @@ export default {
     } else {
       m.perType = 1
     }
-    m.isShowSub = false
-    m.isShowSubAnim = false
+    m.isSS = false
+    m.isSSA = false
     if (isGenTagsGroup) this.genMonthTagsGroup(m)
     return m
   },

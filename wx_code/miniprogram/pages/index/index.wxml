@@ -10,12 +10,12 @@
     </view>
   </view>
   <scroll-view class="list" scroll-y type="list">
-    <view wx:for="{{m.tags}}" wx:key="index" class="cell {{item.isShowSubAnim ? 'list_show' : 'list_hide'}}">
+    <view wx:for="{{m.tags}}" wx:key="index" class="cell {{item.isSSA ? 'list_show' : 'list_hide'}}">
       <view class="main" hover-class="def_hover" hover-stay-time="150" data-i="{{index}}" bindtap="cellMainTap">
         <view class="title">{{item.tag}}</view>
         <text class="num big">{{u.p2IOs(item.aP)}}</text>
       </view>
-      <block wx:if="{{item.isShowSub}}">
+      <block wx:if="{{item.isSS}}">
         <view wx:for="{{item.list}}" wx:key="i" class="sub" hover-class="def_hover" hover-stay-time="150" data-i="{{item.i}}" bindtap="cellSubTap">
           <text class="title">{{m.date}}-{{item.t}}</text>
           <text class="num big">{{u.p2IOs(item.p)}}</text>

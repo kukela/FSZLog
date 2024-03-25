@@ -9,15 +9,15 @@
   <scroll-view class="list" scroll-y type="list">
     <block wx:for="{{ list }}" wx:for-item="mm" wx:for-index="mmi" wx:key="mmi">
       <view wx:if="{{ mm.isData }}" class="more_btn" hover-class="def_hover" hover-stay-time="150" bind:tap="onShowIMCListTap">
-        <text>{{ mm.isShowSub ? '隐藏' : '显示'}}已完成</text>
+        <text>{{ mm.isSS ? '隐藏' : '显示'}}已完成</text>
       </view>
-      <block wx:if="{{ mm.isShowSub }}">
-        <view wx:if="{{ item.type }}" wx:for="{{ mm.list }}" wx:key="id" class="cell {{item.isShowSubAnim ? 'list_show' : 'list_hide'}}">
+      <block wx:if="{{ mm.isSS }}">
+        <view wx:if="{{ item.type }}" wx:for="{{ mm.list }}" wx:key="id" class="cell {{item.isSSA ? 'list_show' : 'list_hide'}}">
           <view class="main" hover-class="def_hover" hover-stay-time="150" data-i="{{[mmi, index]}}" bindtap="cellMainTap">
             <text class="title">[{{ item.cqs ? item.cqs : '-' }}/{{ item.qs }}] {{ item.tt }}</text>
             <text class="num big">{{ u.p2s(item.cp) }}</text>
           </view>
-          <view wx:if="{{item.isShowSub}}" class="info_box" hover-class="def_hover" hover-stay-time="150" data-i="{{[mmi, index]}}" bind:tap="cellEditTap">
+          <view wx:if="{{item.isSS}}" class="info_box" hover-class="def_hover" hover-stay-time="150" data-i="{{[mmi, index]}}" bind:tap="cellEditTap">
             <view class="item bj">
               <text class="title">本金</text>
               <text class="num">{{ u.p2s(item.p) }}</text>
@@ -39,7 +39,7 @@
               </view>
             </block>
           </view>
-          <view wx:if="{{item.isShowSub}}" class="table_box" hover-class="def_hover" hover-stay-time="150" data-i="{{[mmi, index]}}" bindtap="cellMoreTap">
+          <view wx:if="{{item.isSS}}" class="table_box" hover-class="def_hover" hover-stay-time="150" data-i="{{[mmi, index]}}" bindtap="cellMoreTap">
             <block wx:if="{{ item.type.ir }}">
               <view class="thead">
                 <text>分期应还</text>
@@ -57,7 +57,7 @@
                 <view wx:if="{{ item.isMore }}" class="more">······</view>
                 <view wx:else class="tr {{ item.state }}">
                   <text>({{ item.qi }}) {{ u.p2s(item.p) }}</text>
-                  <text>{{ item.t }}</text>
+                  <text>{{ u.dateNum2Key(item.t) }}</text>
                 </view>
               </block>
             </block>

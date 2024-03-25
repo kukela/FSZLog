@@ -8,8 +8,8 @@ import util from '../../utils/util.js';
 Page({
   data: {
     list: [
-      { list: [], isData: false, isShowSub: true },
-      { list: [], isData: false, isShowSub: false }
+      { list: [], isData: false, isSS: true },
+      { list: [], isData: false, isSS: false }
     ],
     addM: {
       show: false,
@@ -108,8 +108,7 @@ Page({
   initAddModalData() {
     let d = this.data
     let stEnd = new Date()
-    stEnd.setMonth(stEnd.getMonth() + 2)
-    stEnd.setDate(0)
+    dateU.setMonthV(stEnd, stEnd.getMonth() + 1)
     this.setData({
       addM_title: "",
       addM_p: "",
@@ -133,7 +132,7 @@ Page({
     this.addModal_st_r_refData()
     if (this.data.addM_st_r) return
     const date = dateU.dateKey2Date(v.detail.v)
-    date.setMonth(date.getMonth() + 1)
+    dateU.monthPlus(date)
     this.setData({
       addM_st_r: dateU.getYearMonthKey(date)
     })
@@ -143,13 +142,13 @@ Page({
     const d = this.data
     if (!d.addM_st) return
     const tDate = dateU.dateKey2Date(d.addM_st)
-    tDate.setMonth(tDate.getMonth() + 1)
+    dateU.monthPlus(tDate)
     this.setData({
       ["addM.st_rStart"]: dateU.getYearMonthDayKey(tDate)
     })
     const qs = parseInt(d.addM_qs)
     if (isNaN(qs)) return
-    tDate.setMonth(tDate.getMonth() + qs - 1)
+    dateU.setMonthV(tDate, tDate.getMonth() + qs - 1)
     this.setData({ ["addM.st_rEnd"]: dateU.getYearMonthDayKey(tDate) })
   },
   // 验证入账月份
@@ -302,8 +301,8 @@ Page({
   onShowIMCListTap() {
     this.setData({ "list[1].list": IMData.listC })
     const m = anim.cellSubShowHide(this, `list[1]`, false)
-    if (m.isShowSub == false) {
-      anim.setAllShowSub(IMData.listC, m.isShowSub)
+    if (m.isSS == false) {
+      anim.setAllShowSub(IMData.listC, m.isSS)
     }
     this.setData({
       "list[1].list": IMData.listC,
