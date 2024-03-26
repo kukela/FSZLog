@@ -1,6 +1,7 @@
 import conf from './conf.js';
 import data from './data.js';
 import dateU from './date.js';
+import IMData from './IMData.js';
 import verify from './verify.js';
 import util from './util.js';
 
@@ -11,13 +12,14 @@ export default {
   yearList2CopyStr(list: Array<any>): string {
     const nList = JSON.parse(JSON.stringify(list))
     let str = ""
-    const sepS = this.sep
+    const sep = this.sep
     data.sortYearData(nList, 2)
     nList.forEach((v: any) => {
-      str += `${this.budget_type}${sepS}${v.budget}${sepS}${v.date}\n`
+      str += `${this.budget_type}${sep}${v.budget}${sep}${v.date}\n`
       data.sortMonthTagData(v, 2)
       v.list.forEach((vv: any) => {
-        str += `${vv.tt}${sepS}${util.price2IOStr(vv.p)}${sepS}${v.date}-${vv.t}\n`
+        if (vv.isNS) return
+        str += `${vv.tt}${sep}${util.price2IOStr(vv.p)}${sep}${v.date}-${vv.t}\n`
       });
     });
     return str
@@ -94,7 +96,9 @@ export default {
     const sep = this.sep
     let listS = ""
     if (m.list) {
+      data.sortMonthTagData(m, 2)
       m.list.forEach((v: any) => {
+        if (v.isNS) return
         listS += `${v.tt}${sep}${v.p}${sep}${v.t}\n`
       });
     }
@@ -109,6 +113,37 @@ export default {
       return "JSON格式转换失败"
     }
     return ""
+  },
+  // 分期数据转导出字符串
+  imData2CopyStr(list: Array<any>, listC: Array<any>): string {
+    const tList = [...list, ...listC]
+    let str = ""
+    const sep = this.sep
+    tList.forEach((v: any) => {
+      if (!v.type) return
+      const type = v.type.t
+      str += `${v.id}${sep}${v.tt}${sep}${v.p}${sep}${type}${sep}${v.qs}${sep}${v.st}${sep}${v.st_r}\n`
+    });
+    return str
+  },
+  // 导入分期数据字符串
+  importIMDataStr(str: String): Array<any> {
+    const list: Array<any> = []
+    const idList = new Set()
+    str.split("\n").forEach(v => {
+      const m = IMData.str2IMDataObj(v)
+      if (!m) return
+      if (idList.has(m.id)) IMData.genDataId(m)
+      idList.add(m.id)
+      list.push(m)
+    });
+    return list
+  },
+  // 导入分期数组
+  importIMListData(list: Array<any>): string {
+    IMData.init(list)
+    let isAllOk = true
+    return isAllOk ? "" : "部分数据错误"
   },
   // 文字去敏
   strDes(v: string): string {

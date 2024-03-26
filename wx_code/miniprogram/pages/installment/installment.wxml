@@ -15,7 +15,7 @@
         <view wx:if="{{ item.type }}" wx:for="{{ mm.list }}" wx:key="id" class="cell {{item.isSSA ? 'list_show' : 'list_hide'}}">
           <view class="main" hover-class="def_hover" hover-stay-time="150" data-i="{{[mmi, index]}}" bindtap="cellMainTap">
             <text class="title">[{{ item.cqs ? item.cqs : '-' }}/{{ item.qs }}] {{ item.tt }}</text>
-            <text class="num big">{{ u.p2s(item.cp) }}</text>
+            <text class="num big">{{ -u.p2s(item.cp) }}</text>
           </view>
           <view wx:if="{{item.isSS}}" class="info_box" hover-class="def_hover" hover-stay-time="150" data-i="{{[mmi, index]}}" bind:tap="cellEditTap">
             <view class="item bj">
@@ -63,6 +63,7 @@
             </block>
           </view>
         </view>
+        <view wx:if="{{ mm.isData }}" class="clist_tip">已完成超过90天的数据会自动归档到历史数据中！</view>
         <view wx:if="{{mm.list.length < 1}}" class="cell_no_data">还没有分期数据！</view>
       </block>
     </block>
@@ -77,11 +78,11 @@
       <tip-input type="digit" placeholder="本金" tips="{{addM.pTips}}" model:value="{{addM_p}}" verifyTips="{{addM.verifyTips}}" unit="￥" />
     </view>
     <view class="modal_cell">
-      <sel-input placeholder="选择计息方式" disabled="true" mode="selector" range="{{imTypeList}}" model:value="{{addM_imType}}" tips="{{addM.imTypeTips}}" verifyTips="{{addM.verifyTips}}" rBtnImgSrc="../../image/btn_help.png" bind:rBtnTap="imTypeHelpTap"></sel-input>
+      <sel-input placeholder="选择计息方式" mode="selector" range="{{imTypeList}}" model:value="{{addM_imType}}" tips="{{addM.imTypeTips}}" verifyTips="{{addM.verifyTips}}" rBtnImgSrc="../../image/btn_help.png" bind:rBtnTap="imTypeHelpTap"></sel-input>
     </view>
     <view class="modal_cell">
       <text class="title">年利率：</text>
-      <tip-input type="digit" placeholder="3.99" tips="{{addM.irTips}}" model:value="{{addM_ir}}" verifyTips="{{addM.verifyTips}}" unit="%" disabled="true" style="flex: 5;" />
+      <tip-input type="digit" placeholder="3.99" tips="{{addM.irTips}}" model:value="{{addM_ir}}" verifyTips="{{addM.verifyTips}}" unit="%" disabled="{{addM_imType == '免息'}}" style="flex: 5;" />
       <text class="title lrm">分</text>
       <tip-input type="number" placeholder="12" tips="{{addM.qsTips}}" model:value="{{addM_qs}}" verifyTips="{{addM.verifyTips}}" unit="期" style="flex: 4; min-width: 142rpx;" bind:input="addModal_qsChange" />
     </view>
@@ -94,6 +95,15 @@
       <sel-input placeholder="选择入账月份" mode="date" start="{{addM.st_rStart}}" end="{{addM.st_rEnd}}" fields="month" model:value="{{addM_st_r}}" tips="{{addM.st_rTips}}" verifyTips="{{addM.verifyTips}}"></sel-input>
     </view>
     <button wx:if="{{addM.editIL.length}}" class="del_btn" bindtap="cellDelTap" hover-class="def_hover" hover-stay-time="150">删除</button>
+  </modal-view>
+
+  <modal-view show="{{importM.show}}" title="导入数据" class="import_modal" bindconfirm="importModalConfirm">
+    <view class="tip">导入数据会覆盖掉原所有分期数据，已完成超过90天的数据会自动归档到历史数据中，请谨慎操作！</view>
+    <view wx:for="{{importM.list}}" wx:key="index" class="cell">
+      <text class="tt">[{{item.qs}}] {{item.tt}}</text>
+      <text class="p">{{item.p}}</text>
+      <text class="t">{{item.st}} {{item.type.t}}</text>
+    </view>
   </modal-view>
 
 </view>

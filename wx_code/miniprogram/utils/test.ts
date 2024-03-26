@@ -11,12 +11,12 @@ function initTestData() {
   // }]
   // wx.setStorageSync("ydata-2024", JSON.stringify(ydata))
 
-//   wx.clearStorageSync()
-//   const t_2023_11 = {
+  // wx.clearStorageSync()
+//   const t_2023_8 = {
 //     budget: 3000,
 //     listS: ``
 //   }
-//   const t_2023_12 = {
+//   const t_2023_9 = {
 //     budget: 3000,
 //     listS: `ABCd | -4000 | 10 18:00:01`
 //   }
@@ -33,16 +33,17 @@ function initTestData() {
 // 京东 | -100 | 04 17:24:01
 // ABC_1 | -100 | 01 18:00:01`
 //   }
-//   wx.setStorageSync("md-2023-11", JSON.stringify(t_2023_11))
-//   wx.setStorageSync("md-2023-12", JSON.stringify(t_2023_12))
+//   wx.setStorageSync("md-2023-08", JSON.stringify(t_2023_8))
+//   wx.setStorageSync("md-2023-09", JSON.stringify(t_2023_9))
+//   wx.setStorageSync("md-2023-12", JSON.stringify(t_2023_9))
 //   wx.setStorageSync("md-2024-02", JSON.stringify(t_2024_02))
 //   wx.setStorageSync("md-2024-03", JSON.stringify(t_2024_03))
-//   const tags = [
-//     { tt: "京东", t: 1710554711754 },
-//     { tt: "支付宝", t: 1710554711754 },
-//     { tt: "ABC_1", t: 1710554711754 }
-//   ]
-//   wx.setStorageSync("tags", JSON.stringify(tags))
+  // const tags = [
+  //   { tt: "京东", t: 1710554711754 },
+  //   { tt: "支付宝", t: 1710554711754 },
+  //   { tt: "ABC_1", t: 1710554711754 }
+  // ]
+  // wx.setStorageSync("tags", JSON.stringify(tags))
 
   // wx.removeStorageSync("md-2024-03")
 
@@ -53,17 +54,17 @@ function initTestData() {
 
   // wx.removeStorageSync("installment")
   
-  wx.removeStorageSync("installmentC")
-  const testIM = `
-1 | 贷款 | 40000 | 等额本息_3.99 | 36 | 2024-01-11 | 2024-01
-2 | 贷款 | 40000 | 等额本金_3.99 | 36 | 2024-01-11 | 2024-01
-3 | 自行车1 | 598.8 | 免息 | 12 | 2023-12-11 | 2024-01
-4 | 自行车2 | 598.8 | 免息 | 13 | 2023-12-11 | 2024-01
-5 | 自行车3 | 601 | 免息 | 6 | 2023-03-11 | 2023-04
-6 | 自行车4 | 601 | 免息 | 7 | 2023-03-11 | 2023-04
-7 | 自行车55 | 611 | 免息 | 3 | 2024-03-11 | 2024-04
-  `
-  wx.setStorageSync("installment", testIM)
+//   wx.removeStorageSync("installmentC")
+//   const testIM = `
+// 1 | 贷款 | 40000 | 等额本息_3.99 | 36 | 2024-01-11 | 2024-01
+// 2 | 贷款 | 40000 | 等额本金_3.99 | 36 | 2024-01-11 | 2024-01
+// 3 | 自行车1 | 598.8 | 免息 | 12 | 2023-12-11 | 2024-01
+// 4 | 自行车2 | 598.8 | 免息 | 13 | 2023-12-11 | 2024-01
+// 5 | 自行车3 | 601 | 免息 | 6 | 2023-03-11 | 2023-04
+// 6 | 自行车4 | 601 | 免息 | 10 | 2023-03-11 | 2023-04
+// 7 | 自行车5 | 611 | 免息 | 3 | 2024-03-11 | 2024-04
+//   `
+//   wx.setStorageSync("installment", testIM)
 }
 
 module.exports = {

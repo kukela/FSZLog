@@ -52,6 +52,13 @@ export default {
     return v.getFullYear() * 100 + v.getMonth() + 1
   },
 
+  // 年月num转日期key
+  dateNum2Key(v: number): string {
+    const arr = ("" + v).split('')
+    if (arr.length >= 6) arr.splice(4, 0, "-")
+    return arr.join('')
+  },
+
   // 日期key转时间
   dateKey2Date(v: string): Date {
     return new Date(Date.parse(v.replace(/-/g, '/')));
@@ -78,6 +85,13 @@ export default {
   monthMinus(v: Date, date: number = -1): Date {
     this.setMonthV(v, v.getMonth() - 1, date)
     return v
+  },
+
+  // 计算两个日期相差天数
+   getDaysBetween(startDate: Date, enDate: Date): number {
+    const sDate = startDate.getTime()
+    const eDate = enDate.getTime()
+    return (eDate - sDate) / (1 * 24 * 60 * 60 * 1000)
   },
 
   formatNumber(n: number): string {

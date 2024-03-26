@@ -1,6 +1,5 @@
 import conf from './conf.js';
 import dateU from './date.js';
-import util from './util.js';
 import verify from './verify.js';
 import IMData from './IMData.js'
 import anim from './anim.js';
@@ -108,6 +107,7 @@ export default {
   dateKey2DataObj(dateKey: string, sort: number = 0): any {
     try {
       const str = wx.getStorageSync(dateKey)
+      if(!str) return null
       const m = JSON.parse(str)
       m.date = dateKey.replace(conf.monthDataKey, "")
       if (m.listS) {
@@ -237,7 +237,6 @@ export default {
       }
     });
   },
-
   // 覆盖年份的isShowSub数据
   coverYearIsShowSub(newL: Array<any>, oldL: Array<any>) {
     anim.coverIsShowSub(newL, oldL, "date")

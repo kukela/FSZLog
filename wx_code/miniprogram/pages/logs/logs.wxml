@@ -32,7 +32,7 @@
   </scroll-view>
 
   <modal-view show="{{importM.show}}" title="导入数据" class="import_modal" bindconfirm="importModalConfirm">
-    <text class="tip">导入数据会覆盖掉原月份数据，请谨慎操作！</text>
+    <view class="tip">导入数据会覆盖掉原月份数据，请谨慎操作！</view>
     <view wx:for="{{importM.list}}" wx:key="index" class="cell">
       <text class="tt">{{item.tt}}</text>
       <text class="p">{{u.p2IOs(item.p)}}</text>

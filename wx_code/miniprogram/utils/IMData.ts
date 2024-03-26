@@ -1,32 +1,39 @@
 import util from './util.js';
 import dateU from './date.js';
 import verify from './verify.js';
+import date from './date.js';
+import data from './data.js';
+import IOData from './IOData.js';
 
 export default {
   installmentDataKey: "installment",
   installmentDataCKey: "installmentC",
   sep: " | ",
-  installment_type: "-$IM-",
-  installmentC_type: "-$IMC-",
 
   list: <any>[],
   listC: <any>[],
 
-  init() {
-    const tList = <any>[]
-    try {
-      tList.push(...this.getStorageList(false))
-    } catch (error) {
-    }
-    try {
-      tList.push(...this.getStorageList(true))
-    } catch (error) {
+  init(tList: any = null) {
+    if (tList) {
+      this.list = []
+      this.listC = []
+    } else {
+      tList = <any>[]
+      try {
+        tList.push(...this.getStorageList(false))
+      } catch (error) {
+      }
+      try {
+        tList.push(...this.getStorageList(true))
+      } catch (error) {
+      }
     }
     const idList = new Set()
     tList.forEach((m: any) => {
       if (idList.has(m.id)) return
       idList.add(m.id)
       if (!m) return
+      if (m.isArc && this.arcData(m)) return
       if (this.isCData(m)) {
         this.listC.push(m)
       } else {
@@ -40,6 +47,21 @@ export default {
     // console.log(util.roughSizeOfObject(tList)) // 1874 1628 1396
     // console.log(wx.getStorageSync(this.installmentDataKey))
     // console.log(wx.getStorageSync(this.installmentDataCKey))
+  },
+  // 归档分期数据
+  arcData(m: any): boolean {
+    let isAllOk = true
+    m.o.forEach((v: any, i: number) => {
+      const md = data.date2DataObj(dateU.dateNum2Key(v.t), 0)
+      if (!md) return
+      const nm = this.imData2MonthData(m, i)
+      if (!nm) return
+      md.list.push(nm)
+      if (IOData.saveMonthData(md)) {
+        isAllOk = false
+      }
+    });
+    return isAllOk
   },
   // 是否是已完成数据
   isCData(m: any): boolean {
@@ -65,7 +87,7 @@ export default {
     return list
   },
   // 字符串转分期数据
-  str2IMDataObj(v: string): any {
+  str2IMDataObj(v: string, isCalc: boolean = true): any {
     if (!v) return null
     try {
       const tDList = v.split(this.sep)
@@ -83,7 +105,7 @@ export default {
       ) return null
       m.type = this.str2TypeObj(tDList[3])
       if (!m.type) return null
-      if (!this.dataCalc(m)) return null
+      if (isCalc && !this.dataCalc(m)) return null
       return m
     } catch (error) {
       console.error(error)
@@ -106,7 +128,7 @@ export default {
     try {
       switch (m.type.t) {
         case "免息":
-          this.calc_IFE(m, qM)
+          this.calc_IFE(m)
           break
         case "等额本息":
           this.calc_ELP(m)
@@ -121,9 +143,16 @@ export default {
       console.error(error)
       return false
     }
+    if(m.o) {
+      this.genThumList(m, qM)
+    }
     if (m.list) {
       const em = m.list[m.list.length - 1]
       if (em) m.etv = em.t
+    }
+    if (this.isCData(m)) {
+      const et = `${date.dateNum2Key(m.etv)}-${m.st.slice(-2)}`
+      m.isArc = dateU.getDaysBetween(dateU.dateKey2Date(et), new Date()) > 90
     }
     if (m.isSS == undefined || m.isSS == null) {
       m.isSS = false
@@ -138,85 +167,108 @@ export default {
     if (list[0].indexOf("免息") != -1) {
       m = { t: "免息", ir: 0 }
     } else {
-      return null
-      // if (list.length != 2) return null
-      // m = {
-      //   t: list[0],
-      //   ir: parseFloat(list[1])
-      // }
-      // if (m.t != "ELP" && m.t == "EPP") return null
-      // if (isNaN(m.ir)) return null
+      if (list.length != 2) return null
+      m = {
+        t: list[0],
+        ir: parseFloat(list[1])
+      }
+      if (m.t != "等额本息" && m.t != "等额本金") return null
+      if (isNaN(m.ir)) return null
     }
     return m
   },
   // 获取显示分期时间范围
   getFQDateRange(): any {
-    const ssDate = new Date()
-    dateU.monthMinus(ssDate)
-    const seDate = new Date()
-    dateU.monthPlus(seDate)
     return {
-      s: dateU.date2YMNum(ssDate),
+      s: dateU.date2YMNum(dateU.monthMinus(new Date())),
       c: dateU.date2YMNum(new Date()),
-      e: dateU.date2YMNum(seDate),
+      e: dateU.date2YMNum(dateU.monthPlus(new Date())),
     }
   },
   // 免息计算
-  calc_IFE(m: any, qM: any) {
-    const qsdrL = [qM.s, qM.c, qM.e]
+  calc_IFE(m: any) {
     const date = dateU.dateKey2Date(m.st)
+    const dateD = date.getDate()
     const m_p = parseFloat(util.price2Str(m.p / m.qs))
     // console.log(m.st_rv)
-    let lastQI = -1
-    const dateD = date.getDate()
-    for (let i = 1; i <= m.qs; i++) {
+    for (let i = 0; i < m.qs; i++) {
       dateU.monthPlus(date, dateD)
-      // console.log(dateU.getYearMonthDayKey(date))
-      const tv = dateU.date2YMNum(date)
-      if (i == m.qs && i > lastQI + 1) {
-        m.list.push({ isMore: true })
-      }
       const mm: any = {
         p: m_p,
         t: dateU.date2YMNum(date),
       }
       m.o.push(mm)
-      if (qsdrL.indexOf(tv) == -1 && i < m.qs) continue
-      mm.qi = i
-      m.list.push(mm)
-      if (tv == qM.c) {
-        m.cqs = i
-        m.cp = mm.p
-      }
-      if (tv < m.st_rv) {
-        mm.state = "dis"
-      } else if (tv < qM.c) {
-        mm.state = "off"
-      }
-      lastQI = mm.qi
     }
   },
   // 等额本息 计算
-  calc_ELP(_: any) {
+  calc_ELP(m: any) {
+    const date = dateU.dateKey2Date(m.st)
+    const dateD = date.getDate()
+    for (let i = 0; i < m.qs; i++) {
+      dateU.monthPlus(date, dateD)
+      const mm: any = {
+        p: 1.1,
+        t: dateU.date2YMNum(date),
+      }
+      m.o.push(mm)
+    }
   },
   // 等额本金 计算
-  calc_EPP(_: any) {
+  calc_EPP(m: any) {
+    const date = dateU.dateKey2Date(m.st)
+    const dateD = date.getDate()
+    for (let i = 0; i < m.qs; i++) {
+      dateU.monthPlus(date, dateD)
+      const mm: any = {
+        p: 1.1,
+        t: dateU.date2YMNum(date),
+      }
+      m.o.push(mm)
+    }
+  },
+  // 生成缩略列表
+  genThumList(m: any, qM: any) {
+    let lastQI = -1
+    const qsdrL = [qM.s, qM.c, qM.e]
+    m.o.forEach((v: any, i: number) => {
+      const qi = i + 1
+      if (qi == m.qs && qi > lastQI + 1) {
+        m.list.push({ isMore: true })
+      }
+      if (qsdrL.indexOf(v.t) == -1 && qi < m.qs) return
+      v.qi = qi
+      m.list.push(v)
+      if (v.t == qM.c) {
+        m.cqs = qi
+        m.cp = v.p
+      }
+      if (v.t < m.st_rv) {
+        v.state = "dis"
+      } else if (v.t < qM.c) {
+        v.state = "off"
+      }
+      lastQI = v.qi
+    });
   },
   /**
    * 添加一条分期
-   * @param m 0（添加失败）、1（添加到了list）、2（添加到了listC）
+   * @param m 0（添加失败）、1（添加到了list）、2（添加到了listC）、3（归档数据）
    */
   addData(m: any): number {
-    m.id = new Date().getTime() - 1710992828056
+    this.genDataId(m)
     if (!this.dataCalc(m)) return 0
     const isC = this.isCData(m)
     if (isC) {
+      if (m.isArc) return 3
       this.listC.push(m)
     } else {
       this.list.push(m)
     }
     this.saveList(isC)
     return isC ? 2 : 1
+  },
+  genDataId(m: any) {
+    m.id = new Date().getTime() - 1710992828056
   },
   /**
    * 删除一条分期
@@ -234,15 +286,18 @@ export default {
   },
   /**
    * 编辑一条分期
-   * @param m 0（编辑失败）、1（编辑到了list）、2（编辑到了listC）、3（两个list都改了）
+   * @param m 空数组（编辑失败）、1（编辑到了list）、2（编辑到了listC）、3（归档数据）
    */
-  editData(m: any): number {
+  editData(m: any): Array<number> {
     const isOC = this.isCData(m)
-    if (!this.dataCalc(m)) return 0
+    if (!this.dataCalc(m)) return []
     const isC = this.isCData(m)
+    if (isC && m.isArc) {
+      return isOC ? [3, 2] : [3, 1]
+    }
     if (isOC == isC) {
       this.saveList(isC)
-      return isC ? 2 : 1
+      return isC ? [2] : [1]
     } else {
       this.delDataWithIsC(m, isOC)
       if (isC) {
@@ -251,7 +306,7 @@ export default {
         this.list.push(m)
       }
       this.saveList(isC)
-      return 3
+      return [1, 2]
     }
   },
   /**
@@ -311,19 +366,27 @@ export default {
     const list = <any>[]
     list.push(...this.list)
     if (!isCurrentMonth) list.push(...this.listC)
-    if (isCurrentMonth) {
-      const dateV = dateU.date2YMNum(m.date)
-      list.forEach((im: any) => {
-        const imq = im.list.find((v: any) => v.t == dateV)
-        const nm = {
-          tt: `[${imq.qi}/${im.qs}] ${im.tt}`,
-          p: 1,
-          t: "04 17:24:01"
-        }
-        m.list.push(nm)
-      });
-      console.log(list.length)
+    const dateV = dateU.date2YMNum(dateU.dateKey2Date(m.date))
+    list.forEach((im: any) => {
+      const imqI = im.o.findIndex((v: any) => v.t == dateV)
+      if (imqI < 0) return
+      const nm = this.imData2MonthData(im, imqI)
+      nm.isNS = true
+      if (!nm) return
+      m.list.push(nm)
+    });
+  },
+  // 分期数据转月份tag数据
+  imData2MonthData(m: any, index: number): any {
+    try {
+      const nm = {
+        tt: `[${index + 1}/${m.qs}] ${m.tt}`,
+        p: -m.o[index].p,
+        t: `${m.st.slice(-2)} 00:00:01`
+      }
+      return nm
+    } catch (error) {
+      return null
     }
-
   },
 }

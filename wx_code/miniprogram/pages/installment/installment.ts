@@ -60,8 +60,14 @@ Page({
     addM_st: "",
     addM_st_r: "",
     imTypeList: [
-      { t: "免息", v: "免息" }
+      { t: "免息", v: "免息" },
+      { t: "等额本金", v: "等额本金" },
+      { t: "等额本息", v: "等额本息" }
     ],
+    importM: {
+      show: false,
+      list: <any>[],
+    }
   },
   onLoad() {
     this.initAddModalData()
@@ -85,14 +91,59 @@ Page({
   },
   // 拷贝数据点击事件
   copyTap() {
-    wx.showModal({
-      title: '提示', content: '功能正在开发中！'
-    })
+    const copyStr = IOData.imData2CopyStr(IMData.list, IMData.listC)
+    if (copyStr.length > 0) {
+      wx.setClipboardData({
+        data: copyStr,
+        success() {
+          wx.showToast({ title: '分期数据已复制', icon: 'success' })
+        },
+        fail() {
+          wx.showToast({ title: '复制失败！', icon: 'error', duration: 2000 })
+        }
+      })
+    } else {
+      wx.showToast({ title: '暂无数据', icon: 'error', duration: 2000 })
+    }
   },
   // 导入数据点击事件
   importTap() {
-    wx.showModal({
-      title: '提示', content: '功能正在开发中！'
+    const self = this
+    wx.getClipboardData({
+      success(res) {
+        self.importStrData(res.data)
+      },
+      fail() {
+        wx.showToast({ title: '剪贴板复制失败', icon: 'error', duration: 2000 })
+      }
+    })
+  },
+  importStrData(v: string) {
+    const list = IOData.importIMDataStr(v)
+    if (list.length < 1) {
+      wx.showToast({ title: '剪贴板数据不对', icon: 'error', duration: 2000 })
+      return
+    }
+    console.log(list)
+    this.setData({
+      ["importM.list"]: list,
+      ["importM.show"]: true
+    })
+  },
+  importModalConfirm() {
+    const importTip = IOData.importIMListData(this.data.importM.list)
+    if (!importTip) {
+      this.setData({
+        "list[0].list": IMData.list,
+        "list[1].isData": IMData.isIMCList(),
+      })
+      wx.showToast({ title: '导入成功', icon: 'success' })
+    } else {
+      wx.showToast({ title: importTip, icon: 'error', duration: 2000 })
+    }
+    this.setData({
+      ["importM.list"]: [],
+      ["importM.show"]: false
     })
   },
   // 添加分期点击事件
@@ -198,33 +249,60 @@ Page({
     nm.st_r = d.addM_st_r
     const tList = []
     if (d.addM.editIL.length) {
-      const editT = IMData.editData(nm)
+      const editTL = IMData.editData(nm)
       // console.log(nm)
-      if (editT == 0) {
+      if (editTL.length <= 0) {
         wx.showToast({ title: '编辑失败！', icon: 'error', duration: 2000 })
         return
       }
-      if (editT == 3) {
-        tList.push(1, 2)
-      } else {
-        tList.push(editT)
+      if (editTL[0] == 3) {
+        this.imArcData(nm, () => {
+          IMData.delData(nm)
+          this.addModalConfirmSucc(editTL)
+        })
+        return
       }
+      tList.push(...editTL)
     } else {
       const addT = IMData.addData(nm)
       if (addT == 0) {
         wx.showToast({ title: '添加失败！', icon: 'error', duration: 2000 })
         return
       }
+      if (addT == 3) {
+        this.imArcData(nm, this.addModalConfirmSucc)
+        return
+      }
       tList.push(addT)
     }
-    tList.forEach(k => {
-      this.refListData(k == 2)
-    });
+    this.addModalConfirmSucc(tList)
+  },
+  addModalConfirmSucc(refList: Array<number>) {
+    if (refList) {
+      refList.forEach(k => {
+        if (k != 2 && k != 1) return
+        this.refListData(k == 2)
+      });
+    }
     this.setData({
       ["addM.show"]: false,
       ["addM.editIL"]: [],
     })
     this.initAddModalData()
+  },
+  // 将数据归档到历史列表
+  imArcData(m: any, succ: any = null) {
+    wx.showModal({
+      title: '提示', content: '当前数据已完成超过90天，点击确定会归档到历史数据中！',
+      success(res) {
+        if (!res.confirm) return
+        if (!IMData.arcData(m)) {
+          wx.showToast({ title: '归档失败！', icon: 'error', duration: 2000 })
+          return
+        }
+        succ && succ()
+      }
+    })
   },
   // 刷新数据
   refListData(isC: boolean) {
