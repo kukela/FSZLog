@@ -17,7 +17,6 @@ Component({
 
     placeholder: String,
     disabled: Boolean,
-    showText: String,
     tips: Array,
     verifyTips: {
       type: Boolean,
@@ -31,7 +30,9 @@ Component({
    * 组件的初始数据
    */
   data: {
-    tip: ""
+    tip: "",
+    // v: "",
+    showText: ""
   },
 
   observers: {
@@ -80,9 +81,9 @@ Component({
           break;
       }
     },
-    selectorChange(v: string) {
+    selectorChange(v: number) {
       try {
-        const d = this.data.range[parseInt(v)]
+        const d = this.data.range[v]
         if (!d.t || !d.v) return
         this.changeValue(d.v)
       } catch (error) {
@@ -103,11 +104,12 @@ Component({
       this.triggerEvent('change', { t: d.showText, v: d.value })
     },
     selectorValueChange(v: string) {
-      const m = this.data.range.find((item: any) => item.v == v)
-      if (m) this.setData({ showText: m.t })
+      const mI = this.data.range.findIndex((item: any) => item.v == v)
+      const m = this.data.range[mI]
+      if (m) this.setData({ showText: m.t, v: mI })
     },
     dateValueChange(v: string) {
-      this.setData({ showText: v })
+      this.setData({ showText: v, v: v })
     },
     rBtnTap() {
       this.triggerEvent('rBtnTap')

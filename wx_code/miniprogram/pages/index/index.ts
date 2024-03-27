@@ -120,6 +120,12 @@ Page({
       })
       return
     }
+    if(tag.isNS) {
+      wx.showModal({
+        title: '提示', content: '分期数据只能在分期页面修改！', showCancel: false
+      })
+      return
+    }
     const pM = util.pio2Obj(tag.p)
     const etlM = this.data.editTagListM
     etlM.show = true

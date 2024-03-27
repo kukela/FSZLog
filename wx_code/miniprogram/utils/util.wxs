@@ -23,9 +23,16 @@ var dateNum2Key = function (v) {
   return arr.join('')
 }
 
+// 分期类型转字符串
+var imType2Str = function(type) {
+  if (!type.t) return ""
+  return type.ir ? type.t + "_" + type.ir : type.t
+}
+
 module.exports = {
   p2s: p2s,
   p2IOs: p2IOs,
   dateStr2MonthNum: dateStr2MonthNum,
-  dateNum2Key: dateNum2Key
+  dateNum2Key: dateNum2Key,
+  imType2Str: imType2Str
 }

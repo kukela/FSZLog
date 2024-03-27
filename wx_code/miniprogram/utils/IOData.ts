@@ -120,11 +120,15 @@ export default {
     let str = ""
     const sep = this.sep
     tList.forEach((v: any) => {
-      if (!v.type) return
-      const type = v.type.t
+      const type = this.imType2Str(v.type)
+      if (!type) return
       str += `${v.id}${sep}${v.tt}${sep}${v.p}${sep}${type}${sep}${v.qs}${sep}${v.st}${sep}${v.st_r}\n`
     });
     return str
+  },
+  imType2Str(type: any): string {
+    if (!type.t) return ""
+    return type.ir ? `${type.t}_${type.ir}` : type.t
   },
   // 导入分期数据字符串
   importIMDataStr(str: String): Array<any> {

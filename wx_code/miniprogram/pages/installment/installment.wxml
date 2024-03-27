@@ -28,7 +28,7 @@
                 <text class="num">{{ item.GI }}</text>
               </view>
               <view class="item ll">
-                <text class="title">{{ item.type.tt }}</text>
+                <text class="title">{{ item.type.t }}</text>
                 <text class="num">{{ item.type.ir }}%</text>
               </view>
             </block>
@@ -40,26 +40,18 @@
             </block>
           </view>
           <view wx:if="{{item.isSS}}" class="table_box" hover-class="def_hover" hover-stay-time="150" data-i="{{[mmi, index]}}" bindtap="cellMoreTap">
-            <block wx:if="{{ item.type.ir }}">
-              <view class="thead">
-                <text>分期应还</text>
-                <text>利息</text>
-                <text>月份</text>
+            <view class="thead">
+              <text>月供</text>
+              <text wx:if="{{ item.type.ir }}">利息</text>
+              <text>月份</text>
+            </view>
+            <block wx:for="{{ item.list }}" wx:key="t">
+              <view wx:if="{{ item.isMore }}" class="more">······</view>
+              <view wx:else class="tr {{ item.state }}">
+                <text>({{ item.qi }}) {{ item.ir ? u.p2s(item.p + item.ir) : u.p2s(item.p) }}</text>
+                <text wx:if="{{ item.ir }}">{{ u.p2s(item.ir) }}</text>
+                <text>{{ u.dateNum2Key(item.t) }}</text>
               </view>
-              <view class="more">暂不支持</view>
-            </block>
-            <block wx:else>
-              <view class="thead">
-                <text>分期应还</text>
-                <text>月份</text>
-              </view>
-              <block wx:for="{{ item.list }}" wx:key="t">
-                <view wx:if="{{ item.isMore }}" class="more">······</view>
-                <view wx:else class="tr {{ item.state }}">
-                  <text>({{ item.qi }}) {{ u.p2s(item.p) }}</text>
-                  <text>{{ u.dateNum2Key(item.t) }}</text>
-                </view>
-              </block>
             </block>
           </view>
         </view>
@@ -78,7 +70,7 @@
       <tip-input type="digit" placeholder="本金" tips="{{addM.pTips}}" model:value="{{addM_p}}" verifyTips="{{addM.verifyTips}}" unit="￥" />
     </view>
     <view class="modal_cell">
-      <sel-input placeholder="选择计息方式" mode="selector" range="{{imTypeList}}" model:value="{{addM_imType}}" tips="{{addM.imTypeTips}}" verifyTips="{{addM.verifyTips}}" rBtnImgSrc="../../image/btn_help.png" bind:rBtnTap="imTypeHelpTap"></sel-input>
+      <sel-input placeholder="选择计息方式" mode="selector" range="{{imTypeList}}" model:value="{{addM_imType}}" tips="{{addM.imTypeTips}}" verifyTips="{{addM.verifyTips}}" rBtnImgSrc="../../image/btn_help.png" bind:change="addModal_imTypeChange" bind:rBtnTap="imTypeHelpTap"></sel-input>
     </view>
     <view class="modal_cell">
       <text class="title">年利率：</text>
@@ -102,7 +94,7 @@
     <view wx:for="{{importM.list}}" wx:key="index" class="cell">
       <text class="tt">[{{item.qs}}] {{item.tt}}</text>
       <text class="p">{{item.p}}</text>
-      <text class="t">{{item.st}} {{item.type.t}}</text>
+      <text class="t">{{item.st}} {{u.imType2Str(item.type)}}</text>
     </view>
   </modal-view>
 

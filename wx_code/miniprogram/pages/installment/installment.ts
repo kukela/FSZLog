@@ -124,7 +124,6 @@ Page({
       wx.showToast({ title: '剪贴板数据不对', icon: 'error', duration: 2000 })
       return
     }
-    console.log(list)
     this.setData({
       ["importM.list"]: list,
       ["importM.show"]: true
@@ -174,6 +173,35 @@ Page({
       ["addM.verifyTips"]: false,
     })
   },
+  // 计息方式改变事件
+  addModal_imTypeChange(_: any) {
+    const d = this.data
+    if (d.addM_imType == "免息") {
+      this.setData({ addM_ir: "0" })
+    } else {
+      if (d.addM_ir == "0") this.setData({ addM_ir: "" })
+    }
+  },
+  // 计息方式帮助按钮点击事件
+  imTypeHelpTap() {
+    let showText = ""
+    const t = this.data.addM_imType
+    switch (t) {
+      case "免息":
+        showText = "每月还款金额一致。"
+        break;
+      case "等额本金":
+        showText = "每月还款金额逐月递减，本金固定，利息逐月递减。"
+        break;
+      case "等额本息":
+        showText = "每月还款金额一致，本金逐月递增，利息逐月递减。"
+        break;
+      default:
+        showText = "未知分期类型！"
+        break;
+    }
+    wx.showModal({ title: t, content: showText, showCancel: false })
+  },
   // 添加分期 分期数输入框事件
   addModal_qsChange(_: any) {
     this.addModal_st_r_refData()
@@ -215,12 +243,6 @@ Page({
       if (vv > etNum) return true
     }
     return false
-  },
-  // 计息方式帮助按钮点击事件
-  imTypeHelpTap() {
-    wx.showModal({
-      title: '提示', content: '目前只有免息，有息功能正在开发中！'
-    })
   },
   // 添加分期弹窗确定事件
   addModalConfirm() {
@@ -370,9 +392,11 @@ Page({
     return `list[${iL[0]}].list[${iL[1]}]`
   },
   // 分期更多事件点击事件
-  cellMoreTap(_: any) {
-    wx.showModal({
-      title: '提示', content: '分期列表正在开发中！'
+  cellMoreTap(e: any) {
+    const iL = e.currentTarget.dataset.i
+    const m = this.iList2Data(iL)
+    wx.navigateTo({
+      url: `/pages/imInfo/imInfo?id=${m.id}`
     })
   },
   // 显示数据点击事件

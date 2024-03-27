@@ -187,6 +187,7 @@ export default {
       let tM = tags.find((item: any) => item.tag == v.tt)
       if (!tM) {
         tM = { tag: v.tt }
+        if(v.isNS) tM.isNS = true
         tags.push(tM)
       }
       let tList = tM.list
