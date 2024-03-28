@@ -103,16 +103,16 @@
       }
     }
 
+    .dis>text {
+      text-decoration-line: line-through;
+    }
+
     .more {
       font-size: 32rpx;
       color: $textDisabledColor;
       line-height: 36rpx;
       text-align: center;
     }
-  }
-
-  .cell .dis>text {
-    text-decoration-line: line-through;
   }
 
   .more_btn {

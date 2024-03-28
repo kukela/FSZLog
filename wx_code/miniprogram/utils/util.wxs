@@ -29,10 +29,18 @@ var imType2Str = function(type) {
   return type.ir ? type.t + "_" + type.ir : type.t
 }
 
+// 分期数据转class
+var imListData2State = function(item, st_rv, ctv) {
+  if(item.t < st_rv) return "dis"
+  if(item.t < ctv) return "off"
+  return ""
+}
+
 module.exports = {
   p2s: p2s,
   p2IOs: p2IOs,
   dateStr2MonthNum: dateStr2MonthNum,
   dateNum2Key: dateNum2Key,
-  imType2Str: imType2Str
+  imType2Str: imType2Str,
+  imListData2State: imListData2State
 }

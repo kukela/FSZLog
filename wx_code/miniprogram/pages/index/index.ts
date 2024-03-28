@@ -47,7 +47,7 @@ Page({
       }]
     },
     addM_title: "",
-    addM_piov: "",
+    addM_piov: ""
   },
   onLoad() {
     wx.setNavigationBarTitle({

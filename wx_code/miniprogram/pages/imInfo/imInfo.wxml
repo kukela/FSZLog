@@ -1,4 +1,42 @@
 <wxs module="u" src="../../utils/util.wxs" />
 <view class="page">
-  
+  <view class="header_box">
+    <view class="info_box">
+      <view class="item bj">
+        <text class="title">本金</text>
+        <text class="num">{{ u.p2s(m.p) }}</text>
+      </view>
+      <block wx:if="{{ m.type.ir }}">
+        <view class="item zlx">
+          <text class="title">总利息</text>
+          <text class="num">{{ m.GI }}</text>
+        </view>
+        <view class="item ll">
+          <text class="title">{{ m.type.t }}</text>
+          <text class="num">{{ m.type.ir }}%</text>
+        </view>
+      </block>
+      <block wx:else>
+        <view class="item ll">
+          <text class="title">-</text>
+          <text class="num">{{ m.type.t }}</text>
+        </view>
+      </block>
+    </view>
+    <view class="table_box">
+      <view class="thead">
+        <text>月供</text>
+        <text wx:if="{{ m.type.ir }}">利息</text>
+        <text>月份</text>
+      </view>
+    </view>
+  </view>
+  <scroll-view id="scrollview" class="list table_box" scroll-y type="list">
+    <view wx:for="{{ m.o }}" wx:key="t" class="tr {{ u.imListData2State(item, m.st_rv, ctv) }}" id="{{ 't'+item.t }}" hover-class="def_hover" hover-stay-time="150" data-i="{{index}}" bindtap="cellTap">
+      <text>({{ index + 1 }}) {{ item.ir ? u.p2s(item.p + item.ir) : u.p2s(item.p) }}</text>
+      <text wx:if="{{ item.ir }}">{{ u.p2s(item.ir) }}</text>
+      <text>{{ u.dateNum2Key(item.t) }}</text>
+    </view>
+    <view class="cell_bs"></view>
+  </scroll-view>
 </view>
