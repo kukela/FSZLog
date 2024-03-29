@@ -1,21 +1,17 @@
-<view class="keyboard">
-  <view class="row">
-    <view class="key" data-value="1">1</view>
-    <view class="key" data-value="2">2</view>
-    <view class="key" data-value="3">3</view>
-  </view>
-  <view class="row">
-    <view class="key" data-value="4">4</view>
-    <view class="key" data-value="5">5</view>
-    <view class="key" data-value="6">6</view>
-  </view>
-  <view class="row">
-    <view class="key" data-value="7">7</view>
-    <view class="key" data-value="8">8</view>
-    <view class="key" data-value="9">9</view>
-  </view>
-  <view class="row">
-    <view class="key" data-value="0">0</view>
-    <view class="key" data-value="delete">删除</view>
+<view wx:if='{{show2}}' class="keyboard_mask {{show ? 'mask_show' : 'mask_hide' }}">
+  <view class="box {{show ? 'modal_show' : 'modal_hide' }}">
+    <scroll-view class="c_input" scroll-x="true">
+      <view class="c_input_cxt">
+        <view class="t" wx:for="{{inputList1}}" wx:key="index" data-i="{{index}}" bind:tap="inputTap">{{item}}</view>
+        <view class="cursor"></view>
+        <view class="t" wx:for="{{inputList2}}" wx:key="index" data-i="{{inputList1.length + index}}" bind:tap="inputTap">{{item}}</view>
+        <view class="space"  data-i="{{inputList1.length + inputList2.length}}" bind:tap="inputTap"></view>
+      </view>
+    </scroll-view>
+    <text class="c_value">{{ isShowEQ ? "= " : ""}}{{v}}</text>
+    <view wx:for="{{list}}" wx:key="index" class="box_cell {{item.class}}">
+      <view wx:for="{{item.list}}" wx:key="t" class="item {{item.class}}" hover-class="def_hover" hover-stay-time="150" data-v="{{item.t}}" bind:tap="btnTap">{{item.t}}</view>
+    </view>
+    <view class="fs"></view>
   </view>
 </view>

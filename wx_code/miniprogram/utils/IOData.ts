@@ -151,7 +151,7 @@ export default {
   },
   // 文字去敏
   strDes(v: string): string {
-    return v.replace(/[ \f\n\r\t\v]/g, "_")
-      .replace(/\-\$budget\-/g, "_")
+    return v.replace(/[\f\n\r\t\v]/g, "_")
+      .replace(/\-\$budget\-/g, "_").trim()
   },
 }

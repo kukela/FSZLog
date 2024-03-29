@@ -1,6 +1,140 @@
-.keyboard {
+@import "../theme.scss";
+@import "../anim.scss";
+
+$border_height: 1rpx;
+
+.keyboard_mask {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+}
+
+.box {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  flex-direction: column;
   width: 100%;
-  height: 200rpx;
-  background-color: white;
-  z-index: 10000;
+  background-color: $bgCellColor;
+  border-radius: 40rpx 40rpx 0 0;
+}
+
+.c_input {
+  height: 100rpx;
+  margin-top: 40rpx;
+  padding: 0 40rpx;
+  box-sizing: border-box;
+
+  .c_input_cxt {
+    display: flex;
+    align-items: center;
+  }
+
+  .t {
+    flex-shrink: 0;
+    line-height: 100rpx;
+    font-size: 72rpx;
+    color: $textMainColor;
+    display: inline-block;
+  }
+
+  .cursor {
+    flex-shrink: 0;
+    display: inline-block;
+    width: 3rpx;
+    height: 90rpx;
+    background-color: $mainColor;
+  }
+
+  .space {
+    flex: 1;
+    height: 100rpx;
+    display: inline-block;
+  }
+
+}
+
+.c_value {
+  font-size: 48rpx;
+  color: $textNumColor;
+  line-height: 80rpx;
+  height: 80rpx;
+  margin: 20rpx 40rpx;
+}
+
+.box_cell {
+  padding: 0 30rpx 0 40rpx;
+  display: flex;
+  flex-direction: row;
+  height: 120rpx;
+  margin-bottom: 10rpx;
+
+  .item {
+    flex: 1;
+    margin-right: 10rpx;
+    border: $border_height solid $borderColor;
+    border-radius: 60rpx;
+    box-sizing: border-box;
+    color: $textMainColor;
+    font-size: 64rpx;
+    font-weight: bold;
+    text-align: center;
+    line-height: 120rpx;
+  }
+
+  .item.lt {
+    flex: none;
+    width: 120rpx;
+    margin-right: 20rpx;
+  }
+
+  .item.ok {
+    font-size: 40rpx;
+    background-color: $mainColor;
+    color: $bgCellColor;
+    border: none;
+  }
+}
+
+.box_cell.t {
+  height: 110rpx;
+  margin-bottom: 20rpx;
+
+  .item {
+    border-radius: 55rpx;
+    line-height: 110rpx;
+    font-size: 48rpx;
+  }
+
+  .item.cancel {
+    font-size: 38rpx;
+    font-weight: normal;
+  }
+
+  .item.s {
+    flex: 55;
+  }
+
+  .item.w {
+    flex: 65;
+  }
+
+  .item.d {
+    flex: 88;
+  }
+
+
+}
+
+.fs {
+  height: 100rpx;
 }

@@ -4,7 +4,6 @@ import IOData from '../../utils/IOData.js';
 import verifyU from '../../utils/verify.js';
 import util from '../../utils/util.js';
 import tags from '../../utils/tags.js';
-import evalMath from '../../utils/eval_math.js';
 import anim from '../../utils/anim.js';
 
 Page({
@@ -13,7 +12,6 @@ Page({
       t: "请输入正确的价格",
       f: verifyU.isNaNFloatFun
     }],
-    evalMathFun: evalMath.evalMath,
 
     m: <any>{},
     budgetM: {
@@ -47,7 +45,9 @@ Page({
       }]
     },
     addM_title: "",
-    addM_piov: ""
+    addM_piov: "",
+
+    showKeyboard: false,
   },
   onLoad() {
     wx.setNavigationBarTitle({
@@ -120,7 +120,7 @@ Page({
       })
       return
     }
-    if(tag.isNS) {
+    if (tag.isNS) {
       wx.showModal({
         title: '提示', content: '分期数据只能在分期页面修改！', showCancel: false
       })

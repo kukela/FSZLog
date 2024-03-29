@@ -36,7 +36,7 @@
   </modal-view>
 
   <modal-view show="{{editTagListM.show}}" title="编辑" class="edit_modal" bindconfirm="cellSubModalConfirm">
-    <pio-input class="modal_cell" p="{{editTagListM.p}}" pio="{{editTagListM.pio}}" tips="{{pioTips}}" model:v="{{editTagListM_v}}" verifyTips="{{editTagListM.verifyTips}}" evalMathFun="{{evalMathFun}}"></pio-input>
+    <pio-input class="modal_cell" p="{{editTagListM.p}}" pio="{{editTagListM.pio}}" tips="{{pioTips}}" model:v="{{editTagListM_v}}" verifyTips="{{editTagListM.verifyTips}}"></pio-input>
     <button class="del_btn" bindtap="cellSubDel" hover-class="def_hover" hover-stay-time="150">删除</button>
   </modal-view>
 
@@ -49,7 +49,9 @@
         <view wx:for="{{tagList}}" wx:key="tt" class="item" hover-class="def_hover" hover-stay-time="150" data-i="{{index}}" bindtap="tagTap" bind:longtap="tagLongTap">{{item.tt}}</view>
       </view>
     </scroll-view>
-    <pio-input class="modal_cell" p="{{addM.p}}" pio="{{addM.pio}}" tips="{{pioTips}}" model:v="{{addM_piov}}" verifyTips="{{addM.verifyTips}}" evalMathFun="{{evalMathFun}}"></pio-input>
+    <pio-input class="modal_cell" p="{{addM.p}}" pio="{{addM.pio}}" tips="{{pioTips}}" model:v="{{addM_piov}}" verifyTips="{{addM.verifyTips}}"></pio-input>
   </modal-view>
+
+  <math-keyboard show="{{showKeyboard}}"></math-keyboard>
 
 </view>
