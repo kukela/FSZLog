@@ -9,6 +9,5 @@
 
 介绍图
 
-![x](img/1.jpeg) ![x](img/2.jpeg)
-![x](img/3.jpeg) ![x](img/4.jpeg)
-![x](img/5.jpeg) 
+![x](img/1.jpg) ![x](img/2.jpg) ![x](img/3.jpg)
+![x](img/4.jpg) ![x](img/5.jpg) ![x](img/6.jpg) 
