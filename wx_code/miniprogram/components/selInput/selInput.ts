@@ -2,9 +2,6 @@ import tipsU from '../utils/tips.js'
 
 Component({
 
-  /**
-   * 组件的属性列表
-   */
   properties: {
     mode: String, // selector、date
     // selector
@@ -26,9 +23,6 @@ Component({
     rBtnImgSrc: String,
   },
 
-  /**
-   * 组件的初始数据
-   */
   data: {
     tip: "",
     // v: "",
@@ -61,9 +55,6 @@ Component({
     }
   },
 
-  /**
-   * 组件的方法列表
-   */
   methods: {
     tap() {
       this.triggerEvent('myTap')

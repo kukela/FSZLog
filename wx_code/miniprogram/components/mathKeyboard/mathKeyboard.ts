@@ -51,6 +51,7 @@ Component({
     'show': function (v) {
       if (this.data.show2 == v) return
       if (v) {
+        this.initInputList()
         wx.hideTabBar({})
       } else {
         wx.showTabBar({})
@@ -71,7 +72,7 @@ Component({
       // console.log(this.data.inputList1, this.data.inputList2)
     },
     btnTap(e: any) {
-      const v = e.currentTarget.dataset.v as String
+      const v = e.currentTarget.dataset.v
       let inputList1 = this.data.inputList1
       let inputList2 = this.data.inputList2
       // console.log(v)
@@ -98,7 +99,24 @@ Component({
       const inputList = this.getInputList()
       // console.log(inputList.join(''))
       const sv = evalM.evalMath(inputList.join(''))
-      if (!isNaN(sv)) this.setData({ v: sv, isShowEQ: true })
+      if (!isNaN(sv)) {
+        this.setData({ v: parseFloat(sv.toFixed(10)), isShowEQ: true })
+        return
+      }
+      if (inputList.length == 0) this.setData({ v: 0, isShowEQ: false })
+    },
+    btnLongTap(e: any) {
+      const v = e.currentTarget.dataset.v
+      if (v == "<") {
+        this.defData()
+      }
+    },
+    initInputList() {
+      if (this.data.v == 0) return
+      this.setData({
+        inputList1: `${this.data.v}`.split(''),
+        inputList2: []
+      })
     },
     defData() {
       this.setData({
@@ -141,6 +159,7 @@ Component({
       this.setData({ show: false })
     },
     ok() {
+      this.triggerEvent('ok', { v: this.data.v })
       this.setData({ show: false })
     }
   }

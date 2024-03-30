@@ -2,9 +2,6 @@ import tipsU from '../utils/tips.js'
 
 Component({
 
-  /**
-   * 组件的属性列表
-   */
   properties: {
     type: String,
     placeholder: String,
@@ -22,9 +19,6 @@ Component({
     unit: String,
   },
 
-  /**
-   * 组件的初始数据
-   */
   data: {
     tip: ""
   },
@@ -45,9 +39,6 @@ Component({
     }
   },
 
-  /**
-   * 组件的方法列表
-   */
   methods: {
     inputChange: function (e: any) {
       let v = e.detail.value
@@ -61,6 +52,9 @@ Component({
     changeValue(v: string) {
       this.setData({ value: v })
       this.triggerEvent('input', { value: v })
+    },
+    inputTap() {
+      this.triggerEvent('inputTap')
     }
   }
 })

@@ -11,21 +11,6 @@
   flex: 1;
 }
 
-.sel_input {
-  font-size: 32rpx;
-  text-align: start;
-  padding: 0 20rpx;
-  color: $textMainColor;
-  height: $def_input_height;
-  margin-top: -$border_height;
-  display: flex;
-  align-items: center;
-}
-
-.placeholder {
-  color: $textPlaceholderColor;
-}
-
 .r_img_btn {
   width: $def_input_height;
   height: 100%;

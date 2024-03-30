@@ -48,6 +48,8 @@ Page({
     addM_piov: "",
 
     showKeyboard: false,
+    mathKeyboardV: 0,
+    mathKeyboardType: ""
   },
   onLoad() {
     wx.setNavigationBarTitle({
@@ -235,6 +237,39 @@ Page({
     })
     this.saveData()
     tags.saveTags()
+  },
+  // 打开计算器键盘
+  openMathKeyboard(e: any) {
+    const type = e.currentTarget.dataset.t
+    let mathKeyboardV = 0
+    switch (type) {
+      case "add":
+        mathKeyboardV = parseFloat(this.data.addM.p)
+        break;
+      case "edit":
+        mathKeyboardV = parseFloat(this.data.editTagListM.p)
+        break;
+      default:
+        break;
+    }
+    if (isNaN(mathKeyboardV)) mathKeyboardV = 0
+    this.setData({
+      showKeyboard: true, mathKeyboardType: type, mathKeyboardV: mathKeyboardV
+    })
+  },
+  // 计算器键盘确定事件
+  mathKeyboardOk(e: any) {
+    const v = e.detail.v
+    switch (this.data.mathKeyboardType) {
+      case "add":
+        this.setData({ ["addM.p"]: `${v}` })
+        break;
+      case "edit":
+        this.setData({ ["editTagListM.p"]: `${v}` })
+        break;
+      default:
+        break;
+    }
   },
   // 保存数据
   saveData(m: any = null) {

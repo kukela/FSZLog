@@ -162,12 +162,26 @@ page {
 
 modal-view {
 
-  input {
+  input,
+  .input_btn,
+  .sel_input {
     font-size: 32rpx;
     text-align: start;
     padding: 0 20rpx;
     flex: 1;
     color: $textMainColor;
+  }
+
+  .input_btn,
+  .sel_input {
+    margin-top: -$border_height;
+    height: $def_input_height;
+    display: flex;
+    align-items: center;
+  }
+
+  .placeholder {
+    color: $textPlaceholderColor;
   }
 
   .modal_cell {

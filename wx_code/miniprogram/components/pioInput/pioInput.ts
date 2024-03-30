@@ -1,8 +1,5 @@
 Component({
 
-  /**
-   * 组件的属性列表
-   */
   properties: {
     pio: String,
     p: String,
@@ -19,9 +16,6 @@ Component({
     },
   },
 
-  /**
-   * 组件的初始数据
-   */
   data: {
     list: [
       { "title": "收入", "v": "in" },
@@ -35,9 +29,6 @@ Component({
     }
   },
 
-  /**
-   * 组件的方法列表
-   */
   methods: {
     radioChange: function (e: any) {
       this.setData({ pio: e.detail.value })
@@ -45,6 +36,9 @@ Component({
     },
     inputChange: function (e: any) {
       this.setData({ p: e.detail.value })
+    },
+    inputTap() {
+      this.triggerEvent('inputTap')
     },
     changeV() {
       let v = this.data.p

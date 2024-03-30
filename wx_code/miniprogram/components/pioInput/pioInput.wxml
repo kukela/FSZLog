@@ -4,4 +4,4 @@
     <text>{{item.title}}</text>
   </label>
 </radio-group>
-<tip-input type="digit" placeholder="请输入价格" value="{{p}}" bindinput="inputChange" tips="{{tips}}" verifyTips="{{verifyTips}}" unit="￥" />
+<tip-input type="pcalc" placeholder="请输入价格" value="{{p}}" bindinput="inputChange" tips="{{tips}}" verifyTips="{{verifyTips}}" unit="￥" bind:inputTap="inputTap" />

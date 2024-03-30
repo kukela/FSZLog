@@ -65,6 +65,11 @@ function initTestData() {
 // 7 | 自行车5 | 611 | 免息 | 3 | 2024-03-11 | 2024-04
 //   `
 //   wx.setStorageSync("installment", testIM)
+
+  // 提前还款 x重新计算每月还款额
+  // const testTQ = `
+
+  // `
 }
 
 module.exports = {

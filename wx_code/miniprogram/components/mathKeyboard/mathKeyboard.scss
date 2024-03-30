@@ -24,15 +24,24 @@ $border_height: 1rpx;
   display: flex;
   flex-direction: column;
   width: 100%;
+  max-height: 99%;
   background-color: $bgCellColor;
   border-radius: 40rpx 40rpx 0 0;
 }
 
-.c_input {
-  height: 100rpx;
+.c_input_sv {
   margin-top: 40rpx;
+  max-height: calc(99vh - 910rpx);
+  min-height: 100rpx;
+}
+
+.c_input {
+  min-height: 100rpx;
   padding: 0 40rpx;
   box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
 
   .c_input_cxt {
     display: flex;
@@ -41,7 +50,7 @@ $border_height: 1rpx;
 
   .t {
     flex-shrink: 0;
-    line-height: 100rpx;
+    line-height: 90rpx;
     font-size: 72rpx;
     color: $textMainColor;
     display: inline-block;
@@ -53,6 +62,7 @@ $border_height: 1rpx;
     width: 3rpx;
     height: 90rpx;
     background-color: $mainColor;
+    animation: cursorH 1s infinite ease-in-out;
   }
 
   .space {
@@ -72,6 +82,7 @@ $border_height: 1rpx;
 }
 
 .box_cell {
+  flex-shrink: 0;
   padding: 0 30rpx 0 40rpx;
   display: flex;
   flex-direction: row;
@@ -137,4 +148,14 @@ $border_height: 1rpx;
 
 .fs {
   height: 100rpx;
+}
+
+@keyframes cursorH {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
