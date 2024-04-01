@@ -80,8 +80,10 @@ page {
     .main .title {
       font-size: 32rpx;
       color: $textMainColor;
-      line-height: 100rpx;
+      line-height: 55rpx;
+      padding: 20rpx 0;
       flex: 1;
+      margin-right: 10rpx;
     }
 
     .sub_box {
@@ -92,9 +94,10 @@ page {
       display: flex;
       flex-direction: row;
       justify-content: space-between;
-      height: 80rpx;
+      min-height: 80rpx;
       align-items: center;
       margin-left: 10rpx;
+      padding: 4rpx 0;
     }
 
     .sub .title {

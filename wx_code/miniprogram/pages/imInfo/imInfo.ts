@@ -16,7 +16,7 @@ Page({
     wx.setNavigationBarTitle({
       title: m.tt
     })
-    console.log(m)
+    // console.log(m)
   },
   onShow() {
     // wx.pageScrollTo({

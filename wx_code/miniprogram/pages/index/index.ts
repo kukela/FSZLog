@@ -5,6 +5,7 @@ import verifyU from '../../utils/verify.js';
 import util from '../../utils/util.js';
 import tags from '../../utils/tags.js';
 import anim from '../../utils/anim.js';
+import conf from '../../utils/conf.js';
 
 Page({
   data: {
@@ -100,6 +101,7 @@ Page({
       m: this.monthDataChange(m),
       ["budgetM.show"]: false
     })
+    conf.setDefBudget(m.budget)
     this.saveData()
   },
   // 列表展开

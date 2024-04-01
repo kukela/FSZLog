@@ -8,6 +8,7 @@ import util from './util.js';
 export default {
   sep: " | ",
   budget_type: "-$budget-",
+  budget_type2: "-$B-",
   // 年数组数据转导出格式字符串
   yearList2CopyStr(list: Array<any>): string {
     const nList = JSON.parse(JSON.stringify(list))
@@ -15,7 +16,7 @@ export default {
     const sep = this.sep
     data.sortYearData(nList, 2)
     nList.forEach((v: any) => {
-      str += `${this.budget_type}${sep}${v.budget}${sep}${v.date}\n`
+      str += `${this.budget_type2}${sep}${v.budget}${sep}${v.date}\n`
       data.sortMonthTagData(v, 2)
       v.list.forEach((vv: any) => {
         if (vv.isNS) return
@@ -40,7 +41,7 @@ export default {
       if (verify.isEmptyFun(tt) || verify.isNaNFloatFun(p) || isNaN(tTime)) return
       if (tTime > cTime) return
       const tag = { tt: tt, p: parseFloat(p), t: "" }
-      if (tt == this.budget_type) {
+      if (tt == this.budget_type || tt == this.budget_type2) {
         tag.t = dateU.getYearMonthKey(tDate)
       } else {
         tag.t = t
@@ -59,7 +60,7 @@ export default {
         m = {}
         mM[key] = m
       }
-      if (v.tt == this.budget_type) {
+      if (v.tt == this.budget_type || v.tt == this.budget_type2) {
         m.budget = parseFloat(v.p)
       } else {
         v.t = v.t.replace(`${key}-`, '')

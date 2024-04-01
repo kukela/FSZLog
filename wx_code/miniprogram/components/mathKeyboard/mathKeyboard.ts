@@ -63,7 +63,7 @@ Component({
   },
   methods: {
     inputTap(e: any) {
-      const i = e.currentTarget.dataset.i + 1
+      const i = e.currentTarget.dataset.i 
       const inputList = this.getInputList()
       this.setData({
         inputList1: inputList.slice(0, i),
@@ -152,7 +152,7 @@ Component({
       v *= 10000
       const vsList = `${v}`.split('')
       nList.push(...vsList)
-      console.log(nList)
+      // console.log(nList)
       return nList
     },
     cancel() {

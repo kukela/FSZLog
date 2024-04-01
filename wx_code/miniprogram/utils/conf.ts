@@ -2,7 +2,7 @@ import dateU from './date.js';
 
 export default {
   // 0 正式环境
-  env: 0,
+  env: 1,
   // 当前数据版本号
   currentDataVer: 2,
   // 月数据key开头

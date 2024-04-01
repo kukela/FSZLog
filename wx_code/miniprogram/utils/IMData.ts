@@ -7,6 +7,7 @@ import IOData from './IOData.js';
 export default {
   installmentDataKey: "installment",
   installmentDataCKey: "installmentC",
+  TQ_type: "-$TQ-",
   sep: " | ",
 
   list: <any>[],
@@ -90,9 +91,17 @@ export default {
     if (!v) return null
     try {
       const tDList = v.split(this.sep)
-      if (!tDList || tDList.length < 7) return
+      if(!tDList || tDList.length < 2) return null
+      const td0 = tDList[0]
+      if(td0 == this.TQ_type && tDList.length >= 5) {
+        console.log(tDList)
+        return {
+          
+        }
+      }
+      if (tDList.length < 7) return null
       const m = <any>{
-        id: parseInt(tDList[0]),
+        id: parseInt(td0),
         tt: tDList[1],
         p: parseFloat(tDList[2]),
         qs: parseFloat(tDList[4]),

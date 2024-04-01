@@ -119,11 +119,11 @@ export default {
           nList.push(tag)
         });
         m.list = nList
-        // 添加分期数据
-        IMData.imDataAdd2MonthData(m, dateU.getCurrentDateKey() == m.date)
         m.listS = ""
       }
       if (!m.list) m.list = []
+       // 添加分期数据
+       IMData.imDataAdd2MonthData(m, dateU.getCurrentDateKey() == m.date)
       if (sort >= 0) this.monthCalc(m, sort)
       return m
     } catch (e) {
