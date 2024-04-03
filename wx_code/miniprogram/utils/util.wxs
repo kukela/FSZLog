@@ -31,7 +31,7 @@ var imType2Str = function(type) {
 
 // 分期数据转class
 var imListData2State = function(item, st_rv, ctv) {
-  if(item.t < st_rv) return "dis"
+  if(item.t < st_rv || item.p <= 0) return "dis"
   if(item.t < ctv) return "off"
   return ""
 }

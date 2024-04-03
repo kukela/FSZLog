@@ -78,6 +78,8 @@ Page({
     })
   },
   onShow() {
+    this.refListDataWithList(IMData.imRefList)
+    IMData.imRefList = []
   },
   onShareAppMessage() {
     return {
@@ -120,6 +122,7 @@ Page({
   },
   importStrData(v: string) {
     const list = IOData.importIMDataStr(v)
+    // console.log(list)
     if (list.length < 1) {
       wx.showToast({ title: '剪贴板数据不对', icon: 'error', duration: 2000 })
       return
@@ -269,62 +272,37 @@ Page({
     nm.qs = parseInt(d.addM_qs)
     nm.st = d.addM_st
     nm.st_r = d.addM_st_r
-    const tList = []
     if (d.addM.editIL.length) {
-      const editTL = IMData.editData(nm)
-      // console.log(nm)
-      if (editTL.length <= 0) {
-        wx.showToast({ title: '编辑失败！', icon: 'error', duration: 2000 })
-        return
-      }
-      if (editTL[0] == 3) {
-        this.imArcData(nm, () => {
-          IMData.delData(nm)
-          this.addModalConfirmSucc(editTL)
-        })
-        return
-      }
-      tList.push(...editTL)
+      IMData.editDataU(nm, this.addModalConfirmSucc)
     } else {
+      const tList = []
       const addT = IMData.addData(nm)
       if (addT == 0) {
         wx.showToast({ title: '添加失败！', icon: 'error', duration: 2000 })
         return
       }
       if (addT == 3) {
-        this.imArcData(nm, this.addModalConfirmSucc)
+        IMData.imArcDataU(nm, this.addModalConfirmSucc)
         return
       }
       tList.push(addT)
+      this.addModalConfirmSucc(tList)
     }
-    this.addModalConfirmSucc(tList)
   },
   addModalConfirmSucc(refList: Array<number>) {
-    if (refList) {
-      refList.forEach(k => {
-        if (k != 2 && k != 1) return
-        this.refListData(k == 2)
-      });
-    }
+    this.refListDataWithList(refList)
     this.setData({
       ["addM.show"]: false,
       ["addM.editIL"]: [],
     })
     this.initAddModalData()
   },
-  // 将数据归档到历史列表
-  imArcData(m: any, succ: any = null) {
-    wx.showModal({
-      title: '提示', content: '当前数据已完成超过90天，点击确定会归档到历史数据中！',
-      success(res) {
-        if (!res.confirm) return
-        if (!IMData.arcData(m)) {
-          wx.showToast({ title: '归档失败！', icon: 'error', duration: 2000 })
-          return
-        }
-        succ && succ()
-      }
-    })
+  refListDataWithList(refList: Array<number>) {
+    if (!refList) return
+    refList.forEach(k => {
+      if (k != 2 && k != 1) return
+      this.refListData(k == 2)
+    });
   },
   // 刷新数据
   refListData(isC: boolean) {
@@ -370,7 +348,7 @@ Page({
       content: '删除操作会删除所有关联数据，并且删除后不可撤销，是否删除？',
       success(res) {
         if (!res.confirm) return
-        const delT = IMData.delData(m)
+        const delT = IMData.delDataWithId(m.id)
         if (delT == 0) {
           wx.showToast({ title: '删除失败！', icon: 'error', duration: 2000 })
           return

@@ -1,39 +1,18 @@
 .def_hover {
   opacity: 0.75;
+  transform: scale(0.98);
 }
 
 // 列表
 
 .list_show {
-  animation: list_show 0.2s ease;
+  transition: max-height 0.2s ease;
+  max-height: 100%;
 }
 
 .list_hide {
-  animation: list_hide 0.2s ease;
-}
-
-@keyframes list_show {
-  from {
-    clip-path: ellipse(110% 100rpx at 50% 50rpx);
-    max-height: 0;
-  }
-
-  to {
-    clip-path: ellipse(110% 115% at 50% 0);
-    max-height: 100%;
-  }
-}
-
-@keyframes list_hide {
-  from {
-    clip-path: ellipse(110% 115% at 50% 0);
-    max-height: 100%;
-  }
-
-  to {
-    clip-path: ellipse(110% 100rpx at 50% 50rpx);
-    max-height: 0;
-  }
+  transition: max-height 0.2s ease;
+  max-height: 0;
 }
 
 // 背景遮罩

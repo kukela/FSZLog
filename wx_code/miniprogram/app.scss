@@ -18,7 +18,7 @@ page {
   color: $textNumColor;
   font-size: 26rpx;
   text-align: end;
-  padding: 4rpx 0;
+  line-height: 42rpx;
 }
 
 .num.big {
@@ -73,17 +73,24 @@ page {
       display: flex;
       flex-direction: row;
       justify-content: space-between;
-      align-items: center;
+      // align-items: center;
       min-height: 100rpx;
-    }
 
-    .main .title {
-      font-size: 32rpx;
-      color: $textMainColor;
-      line-height: 55rpx;
-      padding: 20rpx 0;
-      flex: 1;
-      margin-right: 10rpx;
+      .title {
+        font-size: 32rpx;
+        color: $textMainColor;
+        line-height: 55rpx;
+        padding: 20rpx 0;
+        flex: 1;
+        margin-right: 20rpx;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+      }
+
+      .title+.num {
+        line-height: 100rpx;
+      }
     }
 
     .sub_box {
@@ -134,6 +141,11 @@ page {
     .main.s .num_box {
       min-height: 120rpx;
     }
+  }
+
+  .list_show .main .title {
+    white-space: pre-wrap;
+    line-height: 55rpx;
   }
 
   .cell>view,
@@ -228,6 +240,9 @@ modal-view {
       display: inline-block;
       border-radius: $def_btn_radius;
       margin: 0 20rpx 20rpx 0;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
     }
 
   }
@@ -255,17 +270,24 @@ modal-view {
     display: flex;
     justify-content: space-between;
 
+    &.sub {
+      text {
+        line-height: 36rpx;
+      }
+    }
+
     text {
       font-size: 26rpx;
       color: $textMainColor;
       line-height: 50rpx;
-      padding: 0 5rpx;
+      padding: 0 6rpx;
       text-align: start;
       overflow: auto;
     }
 
     .tt {
       flex: 2;
+      white-space: nowrap;
     }
 
     .p {

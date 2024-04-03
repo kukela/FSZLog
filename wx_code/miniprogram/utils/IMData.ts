@@ -7,11 +7,12 @@ import IOData from './IOData.js';
 export default {
   installmentDataKey: "installment",
   installmentDataCKey: "installmentC",
-  TQ_type: "-$TQ-",
   sep: " | ",
 
   list: <any>[],
   listC: <any>[],
+
+  imRefList: <any>[],
 
   init(tList: any = null) {
     if (tList) {
@@ -91,14 +92,8 @@ export default {
     if (!v) return null
     try {
       const tDList = v.split(this.sep)
-      if(!tDList || tDList.length < 2) return null
+      if (!tDList || tDList.length < 2) return null
       const td0 = tDList[0]
-      if(td0 == this.TQ_type && tDList.length >= 5) {
-        console.log(tDList)
-        return {
-          
-        }
-      }
       if (tDList.length < 7) return null
       const m = <any>{
         id: parseInt(td0),
@@ -113,6 +108,10 @@ export default {
       ) return null
       m.type = this.str2TypeObj(tDList[3])
       if (!m.type) return null
+      if (tDList.length > 7) {
+        const tq = this.str2TQObj(tDList[7])
+        if (tq) m.tq = tq
+      }
       if (isCalc && !this.dataCalc(m)) return null
       return m
     } catch (error) {
@@ -153,7 +152,6 @@ export default {
     }
     if (m.o) {
       const fT = m.o[0].t
-      const eT = m.o[m.o.length - 1].t
       const qM = this.getFQDateRange()
       m.st_rv = dateU.date2YMNum(dateU.dateKey2Date(m.st_r))
       if (m.st_rv < fT) {
@@ -164,7 +162,10 @@ export default {
         m.cqs = 0
         m.cp = 0
       }
-      if (eT) m.etv = eT
+      let eTi = m.o.findIndex((v: any) => v.p <= 0)
+      eTi = eTi > 0 ? eTi - 1 : m.o.length - 1
+      let eT = m.o[eTi]
+      if (eT) m.etv = eT.t
       this.genThumList(m, qM)
     }
     if (this.isCData(m)) {
@@ -194,6 +195,26 @@ export default {
     }
     return m
   },
+  // 字符串转提前还款数组
+  str2TQObj(v: string): any {
+    const tqList = v.split(',')
+    const list = <any>[]
+    tqList.forEach((s: string) => {
+      const vList = s.split('_')
+      if (!vList || vList.length < 3) return
+      const m = {
+        t: parseInt(vList[0]),
+        p: parseFloat(vList[1]),
+        m_t: parseInt(vList[2]),
+      }
+      if (isNaN(m.t) || isNaN(m.p) || isNaN(m.m_t)) return
+      list.push(m)
+    });
+    list.sort((a: any, b: any) => {
+      return a.t - b.t
+    });
+    return list
+  },
   // 获取显示分期时间范围
   getFQDateRange(): any {
     return {
@@ -202,17 +223,37 @@ export default {
       e: dateU.date2YMNum(dateU.monthPlus(new Date())),
     }
   },
+  // 获取提前还款
+  getTQData(tq: Array<any>, t: number): any {
+    if (!tq) return null
+    const tqm = tq.find((v: any) => v.t == t)
+    if (!tqm || isNaN(tqm.p)) return null
+    return tqm
+  },
   // 免息计算
   calc_IFE(m: any) {
     let ap = m.p
-    const m_p = this.num2P(m.p / m.qs)
+    let m_p = 0
+    let calcMP = (qs: number) => {
+      m_p = this.num2P(ap / qs)
+    }
+    calcMP(m.qs)
+    if (isNaN(m_p)) return
     const lastI = m.o.length - 1
     m.o.forEach((mm: any, i: number) => {
-      if (i != lastI) {
-        mm.p = m_p
-        ap -= mm.p
+      if (i != lastI && ap > 0) {
+        const tqm = this.getTQData(m.tq, mm.t)
+        if (tqm && tqm.p > m_p) {
+          mm.p = tqm.p
+          ap -= mm.p
+          calcMP(m.qs - i - 1)
+        } else {
+          mm.p = m_p
+          ap -= mm.p
+        }
       } else {
         mm.p = this.num2P(ap)
+        ap = 0
       }
     });
   },
@@ -220,18 +261,30 @@ export default {
   calc_ELP(m: any) {
     const irv = this.getImIrValue(m.type)
     let ap = m.p
-    const amirv = Math.pow(1 + irv, m.qs)
-    const m_p = (ap * irv * amirv) / (amirv - 1)
+    let m_p = 0
+    let calcMP = (qs: number) => {
+      const amirv = Math.pow(1 + irv, qs)
+      m_p = (ap * irv * amirv) / (amirv - 1)
+    }
+    calcMP(m.qs)
     if (isNaN(m_p)) return
     let gi = 0
     const lastI = m.o.length - 1
     m.o.forEach((mm: any, i: number) => {
       mm.ir = this.num2P(ap * irv)
-      if (i != lastI) {
-        mm.p = this.num2P(m_p - mm.ir)
-        ap -= mm.p
+      if (i != lastI && ap > 0) {
+        const tqm = this.getTQData(m.tq, mm.t)
+        if (tqm && tqm.p > m_p) {
+          mm.p = tqm.p - mm.ir
+          ap -= mm.p
+          calcMP(m.qs - i - 1)
+        } else {
+          mm.p = this.num2P(m_p - mm.ir)
+          ap -= mm.p
+        }
       } else {
         mm.p = this.num2P(ap)
+        ap = 0
       }
       gi += mm.ir
     });
@@ -241,16 +294,29 @@ export default {
   calc_EPP(m: any) {
     const irv = this.getImIrValue(m.type)
     let ap = m.p
-    const m_p = this.num2P(m.p / m.qs)
+    let m_p = 0
+    let calcMP = (qs: number) => {
+      m_p = this.num2P(ap / qs)
+    }
+    calcMP(m.qs)
+    if (isNaN(m_p)) return
     let gi = 0
     const lastI = m.o.length - 1
     m.o.forEach((mm: any, i: number) => {
       mm.ir = this.num2P(ap * irv)
-      if (i != lastI) {
-        mm.p = m_p
-        ap -= mm.p
+      if (i != lastI && ap > 0) {
+        const tqm = this.getTQData(m.tq, mm.t)
+        if (tqm && tqm.p > m_p) {
+          mm.p = tqm.p - mm.ir
+          ap -= mm.p
+          calcMP(m.qs - i - 1)
+        } else {
+          mm.p = m_p
+          ap -= mm.p
+        }
       } else {
         mm.p = this.num2P(ap)
+        ap = 0
       }
       gi += mm.ir
     });
@@ -278,13 +344,8 @@ export default {
       v.qi = qi
       m.list.push(v)
       if (v.t == qM.c) {
-        m.cqs = qi
         m.cp = v.ir ? v.p + v.ir : v.p
-      }
-      if (v.t < m.st_rv) {
-        v.state = "dis"
-      } else if (v.t < qM.c) {
-        v.state = "off"
+        if (m.cp > 0) m.cqs = qi
       }
       lastQI = v.qi
     });
@@ -313,15 +374,21 @@ export default {
    * 删除一条分期
    * @param m @param m 0（删除失败）、1（从list删除）、2（从listC删除）
    */
-  delData(m: any): number {
-    return this.delDataWithIsC(m, this.isCData(m))
-  },
-  delDataWithIsC(m: any, isC: boolean): number {
-    const list = isC ? this.listC : this.list
-    const i = list.findIndex((v: any) => v.id == m.id)
-    list.splice(i, 1)
-    this.saveList(isC)
-    return isC ? 2 : 1
+  delDataWithId(id: number): number {
+    // return this.delDataWithIsC(m, this.isCData(m))
+    let i = this.list.findIndex((v: any) => v.id == id)
+    if (i >= 0) {
+      this.list.splice(i, 1)
+      this.saveList(false)
+      return 1
+    }
+    i = this.listC.findIndex((v: any) => v.id == id)
+    if (i >= 0) {
+      this.listC.splice(i, 1)
+      this.saveList(true)
+      return 2
+    }
+    return 0
   },
   /**
    * 编辑一条分期
@@ -338,7 +405,7 @@ export default {
       this.saveList(isC)
       return isC ? [2] : [1]
     } else {
-      this.delDataWithIsC(m, isOC)
+      this.delDataWithId(m.id)
       if (isC) {
         this.listC.push(m)
       } else {
@@ -347,6 +414,39 @@ export default {
       this.saveList(isC)
       return [1, 2]
     }
+  },
+  editDataU(m: any, succ: any = null): Array<number> {
+    const editTL = this.editData(m)
+    // console.log(nm)
+    if (editTL.length <= 0) {
+      wx.showToast({ title: '编辑失败！', icon: 'error', duration: 2000 })
+      return []
+    }
+    if (editTL[0] == 3) {
+      const self = this
+      this.imArcDataU(m, () => {
+        self.delDataWithId(m.id)
+        succ && succ(editTL)
+      })
+      return []
+    }
+    succ && succ(editTL)
+    return editTL
+  },
+  // 将数据归档到历史列表
+  imArcDataU(m: any, succ: any = null) {
+    const self = this
+    wx.showModal({
+      title: '提示', content: '当前数据已完成超过90天，点击确定会归档到历史数据中！',
+      success(res) {
+        if (!res.confirm) return
+        if (!self.arcData(m)) {
+          wx.showToast({ title: '归档失败！', icon: 'error', duration: 2000 })
+          return
+        }
+        succ && succ()
+      }
+    })
   },
   /**
    * 排序数组
@@ -371,10 +471,10 @@ export default {
     try {
       if (isC) {
         this.sortList(this.listC, 2)
-        wx.setStorageSync(this.installmentDataCKey, this.list2SaveStr(this.listC, false))
+        wx.setStorageSync(this.installmentDataCKey, this.list2SaveStr(this.listC))
       } else {
         this.sortList(this.list, 1)
-        wx.setStorageSync(this.installmentDataKey, this.list2SaveStr(this.list, false))
+        wx.setStorageSync(this.installmentDataKey, this.list2SaveStr(this.list))
       }
       return ""
     } catch (error) {
@@ -382,23 +482,33 @@ export default {
     }
   },
   // 数组转保存字符串
-  list2SaveStr(list: Array<any>, isIO: boolean): string {
-    let sS = ""
+  list2SaveStr(list: Array<any>, sep: String = ""): string {
+    let str = ""
+    if (!sep) sep = this.sep
     list.forEach((v: any) => {
-      sS += this.imData2SaveStr(v, isIO)
+      let type = this.imType2SaveStr(v.type)
+      if (!type) return
+      str += `${v.id}${sep}${v.tt}${sep}${v.p}${sep}${type}${sep}${v.qs}${sep}${v.st}${sep}${v.st_r}`
+      if (v.tq) {
+        str += `${sep}${this.imTQ2SaveStr(v.tq)}\n`
+      } else {
+        str += "\n"
+      }
     });
-    return sS
-  },
-  // 分期数据转保存字符串
-  imData2SaveStr(m: any, isIO: boolean): string {
-    let s = isIO ? "" : `${m.id} | `
-    s += `${m.tt} | ${m.p} | ${this.imType2SaveStr(m.type)} | ${m.qs} | ${m.st} | ${m.st_r}\n`
-    return s
+    return str
   },
   // 分期类型转字符串
   imType2SaveStr(t: any): string {
     if (t.t == "免息") return t.t
     return `${t.t}_${t.ir}`
+  },
+  // 提前还款数据转字符串
+  imTQ2SaveStr(tq: Array<any>): string {
+    let s = ""
+    tq.forEach((v: any) => {
+      s += `${v.t}_${v.p}_${v.m_t},`
+    });
+    return s
   },
   // 将分期数据添加到月份tag数组中
   imDataAdd2MonthData(m: any, isCurrentMonth: boolean = false) {

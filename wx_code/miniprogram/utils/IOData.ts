@@ -117,19 +117,7 @@ export default {
   },
   // 分期数据转导出字符串
   imData2CopyStr(list: Array<any>, listC: Array<any>): string {
-    const tList = [...list, ...listC]
-    let str = ""
-    const sep = this.sep
-    tList.forEach((v: any) => {
-      const type = this.imType2Str(v.type)
-      if (!type) return
-      str += `${v.id}${sep}${v.tt}${sep}${v.p}${sep}${type}${sep}${v.qs}${sep}${v.st}${sep}${v.st_r}\n`
-    });
-    return str
-  },
-  imType2Str(type: any): string {
-    if (!type.t) return ""
-    return type.ir ? `${type.t}_${type.ir}` : type.t
+    return IMData.list2SaveStr([...list, ...listC], this.sep)
   },
   // 导入分期数据字符串
   importIMDataStr(str: String): Array<any> {

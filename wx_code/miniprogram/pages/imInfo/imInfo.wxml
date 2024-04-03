@@ -39,4 +39,18 @@
     </view>
     <view class="cell_bs"></view>
   </scroll-view>
+
+  <modal-view show="{{tqM.show}}" title="{{tqM.isEdit ? '编辑' : '添加'}}还款" bindconfirm="tqModalConfirm">
+    <view class="modal_cell">
+      <text class="title">{{u.dateNum2Key(tqM_t)}} 提前还款：</text>
+    </view>
+    <view class="modal_cell">
+      <sel-input placeholder="选择提前还款方式" mode="selector" range="{{tqTypeList}}" model:value="{{tqM_type}}" tips="{{tqM.tqTypeTips}}" verifyTips="{{tqM.verifyTips}}" rBtnImgSrc="../../image/btn_help.png"  bind:rBtnTap="tqTypeHelpTap" disabled="true"></sel-input>
+    </view>
+    <view class="modal_cell">
+      <tip-input type="digit" placeholder="请输入还款额" tips="{{tqM.tqPTips}}" model:value="{{tqM_p}}" verifyTips="{{tqM.verifyTips}}" unit="￥" />
+    </view>
+    <button wx:if="{{tqM.isEdit}}" class="del_btn" bindtap="cellDel" hover-class="def_hover" hover-stay-time="150">删除</button>
+  </modal-view>
+
 </view>

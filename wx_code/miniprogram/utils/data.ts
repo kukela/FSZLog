@@ -1,6 +1,8 @@
 import conf from './conf.js';
 import dateU from './date.js';
 import verify from './verify.js';
+import data from './data.js'
+import IOData from './IOData.js'
 import IMData from './IMData.js'
 import anim from './anim.js';
 
@@ -26,6 +28,11 @@ export default {
     }
     conf.saveDataVer()
 
+    let m = data.date2DataObj(dateU.getCurrentDateKey(), 2)
+    if (!m) {
+      m = data.newMonthData()
+      IOData.saveMonthData(m)
+    }
     IMData.init()
   },
   // 新建当月的月份数据
@@ -107,7 +114,7 @@ export default {
   dateKey2DataObj(dateKey: string, sort: number = 0): any {
     try {
       const str = wx.getStorageSync(dateKey)
-      if(!str) return null
+      if (!str) return null
       const m = JSON.parse(str)
       m.date = dateKey.replace(conf.monthDataKey, "")
       if (m.listS) {
@@ -122,8 +129,8 @@ export default {
         m.listS = ""
       }
       if (!m.list) m.list = []
-       // 添加分期数据
-       IMData.imDataAdd2MonthData(m, dateU.getCurrentDateKey() == m.date)
+      // 添加分期数据
+      IMData.imDataAdd2MonthData(m, dateU.getCurrentDateKey() == m.date)
       if (sort >= 0) this.monthCalc(m, sort)
       return m
     } catch (e) {
@@ -187,7 +194,7 @@ export default {
       let tM = tags.find((item: any) => item.tag == v.tt)
       if (!tM) {
         tM = { tag: v.tt }
-        if(v.isNS) tM.isNS = true
+        if (v.isNS) tM.isNS = true
         tags.push(tM)
       }
       let tList = tM.list

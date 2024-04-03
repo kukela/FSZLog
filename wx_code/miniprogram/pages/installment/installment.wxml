@@ -47,7 +47,7 @@
             </view>
             <block wx:for="{{ item.list }}" wx:key="t">
               <view wx:if="{{ item.isMore }}" class="more">······</view>
-              <view wx:else class="tr {{ item.state }}">
+              <view wx:else class="tr {{ u.imListData2State(item, m.st_rv, ctv) }}">
                 <text>({{ item.qi }}) {{ item.ir ? u.p2s(item.p + item.ir) : u.p2s(item.p) }}</text>
                 <text wx:if="{{ item.ir }}">{{ u.p2s(item.ir) }}</text>
                 <text>{{ u.dateNum2Key(item.t) }}</text>
@@ -56,9 +56,9 @@
           </view>
         </view>
         <view wx:if="{{ mm.isData }}" class="clist_tip">已完成超过90天的数据会自动归档到历史数据中！</view>
-        <view wx:if="{{mm.list.length < 1}}" class="cell_no_data">还没有分期数据！</view>
       </block>
     </block>
+    <view wx:if="{{list[0].list.length == 0 && !list[1].isData}}" class="cell_no_data">还没有分期数据！</view>
     <view class="cell_bs"></view>
   </scroll-view>
 
@@ -91,11 +91,18 @@
 
   <modal-view show="{{importM.show}}" title="导入数据" class="import_modal" bindconfirm="importModalConfirm">
     <view class="tip">导入数据会覆盖掉原所有分期数据，已完成超过90天的数据会自动归档到历史数据中，请谨慎操作！</view>
-    <view wx:for="{{importM.list}}" wx:key="index" class="cell">
-      <text class="tt">[{{item.qs}}] {{item.tt}}</text>
-      <text class="p">{{item.p}}</text>
-      <text class="t">{{item.st}} {{u.imType2Str(item.type)}}</text>
-    </view>
+    <block wx:for="{{importM.list}}" wx:key="id">
+      <view class="cell">
+        <text class="tt">[{{item.qs}}] {{item.tt}}</text>
+        <text class="p">{{item.p}}</text>
+        <text class="t">{{item.st}} {{u.imType2Str(item.type)}}</text>
+      </view>
+      <view  wx:for="{{item.tq}}" wx:key="index" class="cell sub">
+        <text class="tt"></text>
+        <text class="p">{{item.p}}</text>
+        <text class="t">{{u.dateNum2Key(item.t)}}</text>
+      </view>
+    </block>
   </modal-view>
 
 </view>

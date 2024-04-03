@@ -2,7 +2,7 @@ import util from './util.js';
 
 export default {
   // 列表动画时长
-  anim_list_d: 180,
+  anim_list_d: 198,
 
   // 展开子列表动画
   cellSubShowHide(self: any, key: string, isAnim: boolean = true, showType: number = -1): any {
