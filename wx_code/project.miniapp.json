@@ -1,7 +1,7 @@
 {
   "miniVersion": "v2",
   "name": "%name%",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "i18nFilePath": "i18n",
   "mini-android": {
     "sdkVersion": "1.2.9",
@@ -27,7 +27,8 @@
     "enableVConsole": "open",
     "privacy": {
       "enable": true
-    }
+    },
+    "targetSdkVersion": 22
   },
   "mini-ios": {
     "sdkVersion": "1.2.13",
@@ -59,5 +60,6 @@
       "enable": false
     },
     "enableOpenUrlNavigate": true
-  }
+  },
+  "versionCode": 1
 }
