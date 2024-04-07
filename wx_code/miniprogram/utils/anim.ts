@@ -24,7 +24,8 @@ export default {
       self.setData({ [`${key}.isSSA`]: isSS })
       setTimeout(() => {
         self.setData({ [`${key}.isSS`]: isSS })
-      }, isSS ? 0 : this.anim_list_d);
+      }, 0);
+    // }, isSS ? 0 : this.anim_list_d);
     } else {
       self.setData({ [`${key}.isSS`]: isSS })
     }

@@ -28,18 +28,41 @@ export default {
     }
     conf.saveDataVer()
 
+    this.checkCurrentMonthData()
+    this.checkNextMonthData()
+
+    IMData.init()
+  },
+  // 检查当月数据并生成，返回当月数据
+  checkCurrentMonthData(): any {
     let m = data.date2DataObj(dateU.getCurrentDateKey(), 2)
     if (!m) {
       m = data.newMonthData()
       IOData.saveMonthData(m)
     }
-    IMData.init()
+    return m
+  },
+  // 检查下月数据并生成
+  checkNextMonthData(): any {
+    const ndKey = dateU.getYearMonthKey(dateU.monthPlus(new Date()))
+    let nm = data.date2DataObj(ndKey, 2)
+    let isChange = true
+    if (nm) {
+      const defB = conf.getDefBudget()
+      isChange = defB != nm.budget
+      nm.budget = defB
+    } else {
+      nm = data.newMonthData(ndKey)
+    }
+    if (isChange) IOData.saveMonthData(nm)
+    return nm
   },
   // 新建当月的月份数据
-  newMonthData(): any {
+  newMonthData(key: String = ""): any {
+    if (!key) key = dateU.getCurrentDateKey()
     const nm = {
       budget: conf.getDefBudget(),
-      date: dateU.getCurrentDateKey(),
+      date: key,
       listS: ""
     }
     this.monthCalc(nm, 2)

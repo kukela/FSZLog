@@ -517,6 +517,7 @@ export default {
     if (!isCurrentMonth) list.push(...this.listC)
     const dateV = dateU.date2YMNum(dateU.dateKey2Date(m.date))
     list.forEach((im: any) => {
+      if(dateV < im.st_rv) return
       const imqI = im.o.findIndex((v: any) => v.t == dateV)
       if (imqI < 0) return
       const nm = this.imData2MonthData(im, imqI)

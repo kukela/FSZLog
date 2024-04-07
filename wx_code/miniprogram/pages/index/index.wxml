@@ -31,7 +31,7 @@
 
   <modal-view show="{{budgetM.show}}" title="设置预算" bindconfirm="budgetModalConfirm">
     <view class="modal_cell">
-      <tip-input type="digit" placeholder="请输入预算" tips="{{budgetM.budgetTips}}" model:value="{{budgetM_budget}}" verifyTips="{{budgetM.verifyTips}}" unit="￥" />
+      <tip-input type="pcalc" placeholder="请输入预算" tips="{{budgetM.budgetTips}}" model:value="{{budgetM.v}}" verifyTips="{{budgetM.verifyTips}}" unit="￥" data-t="b" bind:inputTap="openMathKeyboard" />
     </view>
   </modal-view>
 

@@ -21,9 +21,9 @@ Page({
       budgetTips: [{
         t: "请输入正确的预算",
         f: verifyU.isNaNFloatFun
-      }]
+      }],
+      v: "",
     },
-    budgetM_budget: "",
 
     editTagListM: {
       show: false,
@@ -58,16 +58,13 @@ Page({
     })
   },
   onShow() {
-    let m = data.date2DataObj(dateU.getCurrentDateKey(), 2)
-    if (!m) {
-      m = data.newMonthData()
-      this.saveData()
-    }
+    let m = data.checkCurrentMonthData()
     m.tags = this.data.m.tags
     data.genMonthTagsGroup(m)
     this.setData({
       m: m
     })
+    // console.log(m)
   },
   onShareAppMessage() {
     return {
@@ -84,14 +81,14 @@ Page({
     this.setData({
       ["budgetM.show"]: true,
       ["budgetM.verifyTips"]: false,
-      budgetM_budget: this.data.m.budget
+      ["budgetM.v"]: this.data.m.budget
     })
   },
   // 预算弹窗确定事件
   budgetModalConfirm() {
     this.setData({ ["budgetM.verifyTips"]: true })
     const d = this.data
-    const t_budget = d.budgetM_budget
+    const t_budget = d.budgetM.v
     if (verifyU.vTips(d.budgetM.budgetTips, t_budget)) {
       return
     }
@@ -245,6 +242,9 @@ Page({
     const type = e.currentTarget.dataset.t
     let mathKeyboardV = 0
     switch (type) {
+      case "b":
+        mathKeyboardV = parseFloat(this.data.budgetM.v)
+        break
       case "add":
         mathKeyboardV = parseFloat(this.data.addM.p)
         break;
@@ -263,6 +263,9 @@ Page({
   mathKeyboardOk(e: any) {
     const v = e.detail.v
     switch (this.data.mathKeyboardType) {
+      case "b":
+        this.setData({ ["budgetM.v"]: `${v}` })
+        break
       case "add":
         this.setData({ ["addM.p"]: `${v}` })
         break;

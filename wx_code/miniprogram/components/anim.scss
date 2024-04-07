@@ -6,13 +6,15 @@
 // 列表
 
 .list_show {
-  transition: max-height 0.2s ease;
-  max-height: 100%;
+  // transition: max-height 0.2s ease;
+  // max-height: 100%;
+  // grid-template-rows: 1fr !important;
 }
 
 .list_hide {
-  transition: max-height 0.2s ease;
-  max-height: 0;
+  // transition: max-height 0.2s ease;
+  // max-height: 0;
+  // grid-template-rows: 0fr !important;
 }
 
 // 背景遮罩

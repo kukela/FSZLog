@@ -67,7 +67,10 @@ Page({
     importM: {
       show: false,
       list: <any>[],
-    }
+    },
+
+    showKeyboard: false,
+    mathKeyboardV: 0
   },
   onLoad() {
     this.initAddModalData()
@@ -388,5 +391,16 @@ Page({
       "list[1].list": IMData.listC,
       "list[1].isData": IMData.isIMCList()
     })
+  },
+  // 打开计算器键盘
+  openMathKeyboard(_: any) {
+    this.setData({
+      showKeyboard: true, mathKeyboardV: parseFloat(this.data.addM_p)
+    })
+  },
+   // 计算器键盘确定事件
+   mathKeyboardOk(e: any) {
+    const v = e.detail.v
+    this.setData({ ["addM_p"]: `${v}` })
   },
 })

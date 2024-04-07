@@ -45,12 +45,12 @@
               <text wx:if="{{ item.type.ir }}">利息</text>
               <text>月份</text>
             </view>
-            <block wx:for="{{ item.list }}" wx:key="t">
-              <view wx:if="{{ item.isMore }}" class="more">······</view>
-              <view wx:else class="tr {{ u.imListData2State(item, m.st_rv, ctv) }}">
-                <text>({{ item.qi }}) {{ item.ir ? u.p2s(item.p + item.ir) : u.p2s(item.p) }}</text>
-                <text wx:if="{{ item.ir }}">{{ u.p2s(item.ir) }}</text>
-                <text>{{ u.dateNum2Key(item.t) }}</text>
+            <block wx:for="{{ item.list }}" wx:for-item="oitem" wx:key="t">
+              <view wx:if="{{ oitem.isMore }}" class="more">······</view>
+              <view wx:else class="tr {{ u.imListData2State(oitem, item.st_rv, ctv) }}">
+                <text>({{ oitem.qi }}) {{ oitem.ir ? u.p2s(oitem.p + oitem.ir) : u.p2s(oitem.p) }}</text>
+                <text wx:if="{{ oitem.ir }}">{{ u.p2s(oitem.ir) }}</text>
+                <text>{{ u.dateNum2Key(oitem.t) }}</text>
               </view>
             </block>
           </view>
@@ -67,7 +67,7 @@
       <tip-input type="text" maxlength="50" placeholder="请输入标题" tips="{{addM.title_tips}}" model:value="{{addM_title}}" verifyTips="{{addM.verifyTips}}"></tip-input>
     </view>
     <view class="modal_cell">
-      <tip-input type="digit" placeholder="本金" tips="{{addM.pTips}}" model:value="{{addM_p}}" verifyTips="{{addM.verifyTips}}" unit="￥" />
+      <tip-input type="pcalc" placeholder="本金" tips="{{addM.pTips}}" model:value="{{addM_p}}" verifyTips="{{addM.verifyTips}}" unit="￥" bind:inputTap="openMathKeyboard" />
     </view>
     <view class="modal_cell">
       <sel-input placeholder="选择计息方式" mode="selector" range="{{imTypeList}}" model:value="{{addM_imType}}" tips="{{addM.imTypeTips}}" verifyTips="{{addM.verifyTips}}" rBtnImgSrc="../../image/btn_help.png" bind:change="addModal_imTypeChange" bind:rBtnTap="imTypeHelpTap"></sel-input>
@@ -104,5 +104,7 @@
       </view>
     </block>
   </modal-view>
+
+  <math-keyboard show="{{showKeyboard}}" model:v="{{mathKeyboardV}}" bind:ok="mathKeyboardOk"></math-keyboard>
 
 </view>

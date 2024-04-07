@@ -16,6 +16,7 @@ Page({
     }
   },
   onShow() {
+    data.checkNextMonthData()
     this.refPageData(conf.getDefYear())
   },
   onShareAppMessage() {

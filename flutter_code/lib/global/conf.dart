@@ -2,7 +2,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class Conf {
   // 0 正式环境
-  static int env = 0;
+  static int env = 1;
 
   // 当前数据版本号
   static int currentDataVer = 2;
