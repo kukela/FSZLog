@@ -16,7 +16,6 @@ Page({
     }
   },
   onShow() {
-    data.checkNextMonthData()
     this.refPageData(conf.getDefYear())
   },
   onShareAppMessage() {
@@ -39,6 +38,9 @@ Page({
     }
     const list = data.year2List(year, 2)
     data.coverYearIsShowSub(list, this.data.list)
+    const nmData = data.getNextMonthData()
+    nmData.isNMData = true
+    list.unshift(nmData)
     this.setData({
       date: year,
       startDate: startDate,

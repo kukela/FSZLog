@@ -1,11 +1,13 @@
 import IMData from '../../utils/IMData.js'
 import dateU from '../../utils/date.js'
 import verifyU from '../../utils/verify.js';
+import util from '../../utils/util.js';
 
 Page({
   data: {
     m: <any>{},
     ctv: 0,
+    cellSelIndex: 0,
     tqM: {
       show: false,
       isEdit: false,
@@ -23,6 +25,8 @@ Page({
           return false
         }
       }],
+      rp: 0,
+      rpt: 0,
     },
     tqM_t: 0,
     tqM_type: "1",
@@ -80,18 +84,22 @@ Page({
         })
         return
       }
-      const mP = om.p + om.ir
+      // const mP = om.p + om.ir
+      const rpl = IMData.calcResP(m, i - 1)
       this.setData({
+        cellSelIndex: i,
         ['tqM.show']: true,
         ['tqM.isEdit']: tqm != null,
-        ['tqM.tqPTips[1]']: {
-          t: `还款额不能低于${mP}`,
-          f: function (v: string) {
-            return parseFloat(v) < mP
-          }
-        },
+        // ['tqM.tqPTips[1]']: {
+        //   t: `还款额不能低于${mP}`,
+        //   f: function (v: string) {
+        //     return parseFloat(v) < mP
+        //   }
+        // },
         tqM_t: om.t,
-        tqM_p: tqm ? `${tqm.p}` : ""
+        tqM_p: tqm ? `${tqm.p}` : "",
+        ['tqM.rp']: rpl - om.p,
+        ['tqM.rpt']: rpl + om.ir
       })
     } catch (error) {
       wx.showToast({
@@ -157,10 +165,15 @@ Page({
       }
     })
   },
-  // 保存数据
-  saveData() {
-    IMData.editDataU(this.data.m, this.tqModalConfirmSuccs)
+  // 提前还款输入还款额事件
+  tqmPInputChange(e: any) {
+    const v = parseFloat(e.detail.value)
+    if (isNaN(v)) return
+    this.setData({
+      ['tqM.rp']: this.data.tqM.rpt - v
+    })
   },
+  // 提前还款确定事件
   tqModalConfirmSuccs(refList: Array<number>) {
     if (!refList || refList.length <= 0 || refList[0] == 3) {
       wx.navigateBack()
@@ -175,5 +188,22 @@ Page({
       ['tqM.isEdit']: false,
       ["tqM.verifyTips"]: false
     })
+  },
+  // 剩余还款额点击事件
+  tqModalRPTap() {
+    const d = this.data
+    const om = d.m.o[d.cellSelIndex]
+    const p = d.tqM_p ? d.tqM_p : om.p + om.ir
+    const s = `本期还款${util.price2Str(p)}，包含利息${util.price2Str(om.ir)}，剩余${util.price2Str(d.tqM.rp)}`
+    wx.setClipboardData({
+      data: s,
+      success() {
+        wx.showToast({ title: '还款信息已拷贝', icon: 'success' })
+      }
+    })
+  },
+  // 保存数据
+  saveData() {
+    IMData.editDataU(this.data.m, this.tqModalConfirmSuccs)
   },
 })

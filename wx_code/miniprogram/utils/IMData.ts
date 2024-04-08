@@ -243,7 +243,8 @@ export default {
     m.o.forEach((mm: any, i: number) => {
       if (i != lastI && ap > 0) {
         const tqm = this.getTQData(m.tq, mm.t)
-        if (tqm && tqm.p > m_p) {
+        if (tqm) {
+          // if (tqm && tqm.p > m_p) {
           mm.p = tqm.p
           ap -= mm.p
           calcMP(m.qs - i - 1)
@@ -511,13 +512,11 @@ export default {
     return s
   },
   // 将分期数据添加到月份tag数组中
-  imDataAdd2MonthData(m: any, isCurrentMonth: boolean = false) {
-    const list = <any>[]
-    list.push(...this.list)
-    if (!isCurrentMonth) list.push(...this.listC)
+  imDataAdd2MonthData(m: any) {
+    const list = <any>[...this.list, ...this.listC]
     const dateV = dateU.date2YMNum(dateU.dateKey2Date(m.date))
     list.forEach((im: any) => {
-      if(dateV < im.st_rv) return
+      if (dateV < im.st_rv) return
       const imqI = im.o.findIndex((v: any) => v.t == dateV)
       if (imqI < 0) return
       const nm = this.imData2MonthData(im, imqI)
@@ -549,4 +548,15 @@ export default {
     tM = this.listC.find((item: any) => item.id == idv)
     return tM
   },
+  // 计算剩余还款额
+  calcResP(m: any, oIndex: number): number {
+    let ap = 0
+    if (oIndex >= 0 && oIndex < m.o.length) {
+      for (let j = 0; j <= oIndex; j++) {
+        const om = m.o[j]
+        ap += om.p
+      }
+    }
+    return m.p - ap
+  }
 }

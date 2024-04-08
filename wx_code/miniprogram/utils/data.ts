@@ -1,7 +1,6 @@
 import conf from './conf.js';
 import dateU from './date.js';
 import verify from './verify.js';
-import data from './data.js'
 import IOData from './IOData.js'
 import IMData from './IMData.js'
 import anim from './anim.js';
@@ -26,35 +25,28 @@ export default {
     if (ver < 2) {
       wx.removeStorageSync("installment")
     }
+    if (ver < 3) {
+      wx.removeStorageSync("md-2024-05")
+    }
     conf.saveDataVer()
 
     this.checkCurrentMonthData()
-    this.checkNextMonthData()
 
     IMData.init()
   },
   // 检查当月数据并生成，返回当月数据
   checkCurrentMonthData(): any {
-    let m = data.date2DataObj(dateU.getCurrentDateKey(), 2)
+    let m = this.date2DataObj(dateU.getCurrentDateKey(), 2)
     if (!m) {
-      m = data.newMonthData()
+      m = this.newMonthData()
       IOData.saveMonthData(m)
     }
     return m
   },
-  // 检查下月数据并生成
-  checkNextMonthData(): any {
+  // 获取下月数据
+  getNextMonthData(): any {
     const ndKey = dateU.getYearMonthKey(dateU.monthPlus(new Date()))
-    let nm = data.date2DataObj(ndKey, 2)
-    let isChange = true
-    if (nm) {
-      const defB = conf.getDefBudget()
-      isChange = defB != nm.budget
-      nm.budget = defB
-    } else {
-      nm = data.newMonthData(ndKey)
-    }
-    if (isChange) IOData.saveMonthData(nm)
+    let nm = this.newMonthData(ndKey)
     return nm
   },
   // 新建当月的月份数据
@@ -152,8 +144,6 @@ export default {
         m.listS = ""
       }
       if (!m.list) m.list = []
-      // 添加分期数据
-      IMData.imDataAdd2MonthData(m, dateU.getCurrentDateKey() == m.date)
       if (sort >= 0) this.monthCalc(m, sort)
       return m
     } catch (e) {
@@ -169,6 +159,7 @@ export default {
   monthCalc(m: any, sort: number = 0, isGenTagsGroup: boolean = false): any {
     if (!m) return m
     if (!m.list) m.list = []
+    IMData.imDataAdd2MonthData(m) // 添加分期数据
     this.sortMonthTagData(m, sort)
     m.aP = 0.0
     m.list.forEach((v: any) => {

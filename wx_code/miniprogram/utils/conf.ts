@@ -4,7 +4,7 @@ export default {
   // 0 正式环境
   env: 0,
   // 当前数据版本号
-  currentDataVer: 2,
+  currentDataVer: 3,
   // 月数据key开头
   monthDataKey: "md-",
 
