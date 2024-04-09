@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_code/global/conf.dart';
-import 'package:flutter_code/page/index_page.dart';
 import 'package:flutter_code/global/theme.dart';
+import 'package:flutter_code/page/index_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -13,7 +13,10 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+
     Conf.init();
+    
+    // print(object)
 
     return MaterialApp(
       title: '反赊账记录器',

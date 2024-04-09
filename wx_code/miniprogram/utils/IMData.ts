@@ -515,6 +515,7 @@ export default {
   imDataAdd2MonthData(m: any) {
     const list = <any>[...this.list, ...this.listC]
     const dateV = dateU.date2YMNum(dateU.dateKey2Date(m.date))
+    m.list = m.list.filter((m: any) => !m.isNS)
     list.forEach((im: any) => {
       if (dateV < im.st_rv) return
       const imqI = im.o.findIndex((v: any) => v.t == dateV)

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_code/page/c_month/c_month_page.dart';
 import 'package:flutter_code/page/installment/installment_page.dart';
 import 'package:flutter_code/page/logs/logs_page.dart';
+import 'package:flutter_code/page/month/month_page.dart';
 
 class IndexPage extends StatefulWidget {
   const IndexPage({super.key});
@@ -12,7 +12,7 @@ class IndexPage extends StatefulWidget {
 
 class _IndexPageState extends State<IndexPage> {
   final List tabBodies = [
-    const CMonthPage(),
+    const MonthPage(),
     const InstallmentPage(),
     const LogsPage(),
   ];

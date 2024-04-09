@@ -46,7 +46,7 @@
     </view>
     <scroll-view class="modal_cell" type="custom" scroll-y="true">
       <view class="item_box">
-        <view wx:for="{{tagList}}" wx:key="tt" class="item" hover-class="def_hover" hover-stay-time="150" data-i="{{index}}" bindtap="tagTap" bind:longtap="tagLongTap">{{item.tt}}</view>
+        <view wx:for="{{tagList}}" wx:key="*this" class="item" hover-class="def_hover" hover-stay-time="150" data-i="{{index}}" bindtap="tagTap" bind:longtap="tagLongTap">{{item.tt}}</view>
       </view>
     </scroll-view>
     <pio-input class="modal_cell" p="{{addM.p}}" pio="{{addM.pio}}" tips="{{pioTips}}" model:v="{{addM_piov}}" verifyTips="{{addM.verifyTips}}" data-t="add" bind:inputTap="openMathKeyboard"></pio-input>

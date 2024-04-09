@@ -159,7 +159,7 @@ export default {
   monthCalc(m: any, sort: number = 0, isGenTagsGroup: boolean = false): any {
     if (!m) return m
     if (!m.list) m.list = []
-    IMData.imDataAdd2MonthData(m) // 添加分期数据
+    IMData.imDataAdd2MonthData(m)
     this.sortMonthTagData(m, sort)
     m.aP = 0.0
     m.list.forEach((v: any) => {

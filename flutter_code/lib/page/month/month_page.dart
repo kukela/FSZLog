@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_code/page/month/page_header.dart';
 
-class CMonthPage extends StatefulWidget {
-  const CMonthPage({super.key});
+class MonthPage extends StatefulWidget {
+  const MonthPage({super.key});
 
   @override
-  State<CMonthPage> createState() => _CMonthPageState();
+  State<MonthPage> createState() => _MonthPageState();
 }
 
-class _CMonthPageState extends State<CMonthPage> {
+class _MonthPageState extends State<MonthPage> {
   void _incrementCounter() {
     setState(() {});
   }
@@ -20,10 +21,13 @@ class _CMonthPageState extends State<CMonthPage> {
       ),
       body: const Center(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[Text('本月')],
+          children: <Widget>[
+            PageHeader()
+          ],
         ),
       ),
     );
   }
+
+
 }
