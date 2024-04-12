@@ -47,7 +47,7 @@ Page({
       endDate: endDate,
       list: list
     })
-    console.log(list)
+    // console.log(list)
   },
   // 拷贝数据
   copyTap() {
