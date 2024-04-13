@@ -1,6 +1,8 @@
 <view class="def_input {{disabled ? 'disabled' : ''}}">
-  <input wx:if="{{type != 'pcalc'}}" class="tip_input" type="{{type}}" placeholder="{{placeholder}}" model:value="{{value}}" bindinput="inputChange" maxlength="{{maxlength}}" disabled="{{disabled}}" />
-  <view wx:else class="input_btn {{value ? '' : 'placeholder'}}" hover-class="{{disabled ? '' : 'def_hover'}}" hover-stay-time="150" bind:tap="inputTap">{{value ? value : placeholder}}</view>
+  <input wx:if="{{type != 'pcalc'}}" class="tip_input" type="{{type}}" placeholder="{{placeholder}}" model:value="{{value}}" bindinput="inputChange" maxlength="{{maxlength}}" disabled="{{disabled}}" password="{{password}}" />
+  <view wx:else class="input_btn {{value ? '' : 'placeholder'}}" hover-class="{{disabled ? '' : 'def_hover'}}" hover-stay-time="150" bind:tap="inputTap">
+    <text>{{value ? value : placeholder}}</text>
+  </view>
   <text class="unit" wx:if="{{unit}}">{{unit}}</text>
 </view>
 <text wx:if="{{tip}}" class="input_tips">{{tip}}</text>

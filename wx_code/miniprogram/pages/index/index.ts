@@ -182,7 +182,7 @@ Page({
   },
   // 添加事件
   showAddModalTap: function () {
-    if(this.data.tagList.length <= 0) tags.init()
+    if (this.data.tagList.length <= 0) tags.init()
     this.setData({
       ["addM.show"]: true,
       ["addM.verifyTips"]: false,

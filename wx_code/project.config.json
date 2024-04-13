@@ -3,6 +3,8 @@
   "miniprogramRoot": "miniprogram/",
   "compileType": "miniprogram",
   "setting": {
+    "packNpmManually": true,
+    "packNpmRelationList": [],
     "useCompilerPlugins": [
       "typescript",
       "sass"
@@ -17,7 +19,6 @@
     "minified": false,
     "enhance": true,
     "showShadowRootInWxmlPanel": false,
-    "packNpmRelationList": [],
     "ignoreUploadUnusedFiles": true,
     "compileHotReLoad": false,
     "skylineRenderEnable": true,

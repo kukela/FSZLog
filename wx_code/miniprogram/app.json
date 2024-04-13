@@ -1,9 +1,10 @@
 {
   "pages": [
+    "pages/sync/sync",
     "pages/index/index",
     "pages/installment/installment",
-    "pages/imInfo/imInfo",
-    "pages/logs/logs"
+    "pages/logs/logs",
+    "pages/imInfo/imInfo"
   ],
   "tabBar": {
     "color": "@tabBarColor",
@@ -28,6 +29,12 @@
         "text": "历史",
         "iconPath": "@iconPathLog",
         "selectedIconPath": "@selectedIconPathLog"
+      },
+      {
+        "pagePath": "pages/sync/sync",
+        "text": "同步",
+        "iconPath": "@iconPathSync",
+        "selectedIconPath": "@selectedIconPathSync"
       }
     ]
   },

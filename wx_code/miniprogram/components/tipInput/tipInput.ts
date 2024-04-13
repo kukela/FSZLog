@@ -17,6 +17,7 @@ Component({
       value: false
     },
     unit: String,
+    password: Boolean,
   },
 
   data: {

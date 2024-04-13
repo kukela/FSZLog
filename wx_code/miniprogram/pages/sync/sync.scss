@@ -1,0 +1,62 @@
+@import "../../components/theme.scss";
+
+.page_cell {
+  margin: 10rpx 40rpx 0 40rpx;
+  display: flex;
+
+  .title {
+    line-height: 60rpx;
+    font-size: 32rpx;
+    color: $textMainColor;
+  }
+
+  .btn {
+    flex-shrink: 0;
+    padding: 0 20rpx;
+    font-size: 32rpx;
+    color: $bgCellColor;
+    line-height: $def_input_height;
+    white-space: nowrap;
+    height: $def_input_height;
+    background-color: $mainColor;
+    font-weight: bold;
+    margin-left: 10rpx;
+    border-radius: $def_btn_radius;
+  }
+}
+
+.cell_title {
+  line-height: 50rpx;
+  font-size: 32rpx;
+  color: $textMainColor;
+  margin: 20rpx 40rpx 0 40rpx;
+}
+
+.page_cell.switch {
+  height: $def_input_height;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.text_btn {
+  font-size: 32rpx;
+  color: $mainColor;
+  font-weight: bold;
+  line-height: $def_input_height;
+  margin: 20rpx 40rpx 0 40rpx;
+}
+
+.info_msg {
+  margin: 10rpx 40rpx 0 40rpx;
+  font-size: 32rpx;
+  line-height: 60rpx;
+  color: $textMainColor;
+
+  text {
+    color: $textRedColor;
+  }
+}
+
+.space {
+  height: 80rpx;
+}
