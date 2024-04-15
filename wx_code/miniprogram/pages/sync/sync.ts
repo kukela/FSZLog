@@ -1,6 +1,7 @@
 import COS from './cos/cos-wx-sdk-v5.min.js'
 import base64 from '../../utils/base64.js'
 import MD5 from '../../utils/md5.js'
+import conf from '../../utils/conf.js'
 import verifyU from '../../utils/verify.js';
 
 Page({
@@ -26,6 +27,8 @@ Page({
   },
   onLoad() {
     this.setData({
+      userID: conf.getUserID(),
+      dataPW: conf.getDataPW(),
       'userID_tips[0].f': this.vUserID,
       'dataPW_tips[0].f': this.vDataPW,
     })
@@ -60,8 +63,7 @@ Page({
     // });
   },
   onShow() {
-    const uuid = this.generateUuid()
-    console.log(uuid, uuid.length)
+    this.switchSync()
   },
   onShareAppMessage() {
     return {
@@ -73,21 +75,92 @@ Page({
       title: '反赊账记录器',
     }
   },
-  // 启用同步
-  syncSwitch(e: any) {
+  // 启用同步切换按钮事件
+  syncSwitchChange(e: any) {
     const v = e.detail.value
-    console.log(v)
+    conf.setIsSync(v)
+    this.switchSync()
+    if (v) {
+      conf.setUserID(this.data.userID)
+      conf.setDataPW(this.data.dataPW)
+    }
+  },
+  // 启用同步切换
+  switchSync() {
+    const isSync = conf.getIsSync()
     this.setData({
+      isSync: isSync,
       userID_verify: true,
       dataPW_verify: true
     })
+    if (!isSync) {
+      this.stopSync()
+      return
+    }
+    if (!this.verifySync()) return
+    this.startSync()
+  },
+  // 验证是否能启用同步
+  verifySync(): boolean {
+    const d = this.data
+    if (verifyU.vTips(d.userID_tips, d.userID) ||
+      verifyU.vTips(d.dataPW_tips, d.dataPW)) {
+      this.setData({ isSync: false })
+      return false
+    }
+    this.setData({
+      isSync: true,
+    })
+    return true
+  },
+  // 启动同步
+  startSync() {
+    console.log("startSync")
+  },
+  // 停止同步
+  stopSync() {
+    console.log("stopSync")
+  },
+  // 清空原账号所有数据
+  clearOldUserData() {
+    console.log("clearOldUserData")
+  },
+  // 从剪贴板导入账号信息
+  importUserInfoTap() {
+    const self = this
+    wx.getClipboardData({
+      success(res) {
+        self.importUserInfo(res.data)
+      },
+      fail() {
+        wx.showToast({ title: '剪贴板复制失败', icon: 'error', duration: 2000 })
+      }
+    })
+  },
+  importUserInfo(s: string) {
+  // fszlog_uinfo:rnexzihk41g5oij1t1vyu1cklv0gbp36w0veglv3bbym6hszjmbtg1cqz7ym5868
+    if(s.slice(0, 12) != "fszlog_uinfo") return
+
+    console.log(s.slice(13))
+  },
+  // 拷贝账号信息到剪贴板
+  copyUserInfo() {
+    const d = this.data
+    const s = `fszlog_uinfo:${d.userID}${d.dataPW}`
+    wx.setClipboardData({
+      data: s,
+      success() {
+        wx.showToast({ title: '账号信息已复制', icon: 'success' })
+      },
+      fail() {
+        wx.showToast({ title: '复制失败！', icon: 'error', duration: 2000 })
+      }
+    })
   },
   // 账号
-  copyUserInfo() {
-  },
   genUserID() {
     this.setData({
-      userID: this.generateUuid()
+      userID: this.genUUID()
     })
   },
   vUserID(v: string): boolean {
@@ -96,25 +169,28 @@ Page({
   },
   // 密码
   genDataPW() {
-
+    let pw = ""
+    for (let i = 0; i < 32; i++) {
+      let r = (Math.random() * 36) % 36 | 0;
+      pw += r.toString(36)
+    }
+    // console.log(pw, pw.length)
+    this.setData({ dataPW: pw })
   },
   vDataPW(v: string): boolean {
-    if (verifyU.isEmptyFun(v)) return true
-    return false
-  },
-  // 立即同步
-  imSync() {
-
+    if (verifyU.isEmptyFun(v) || v.length < 7 || v.length > 32) return true
+    return !/^[0-9a-zA-Z]*$/.test(v)
   },
   // 生成唯一id
-  generateUuid: function () {
+  genUUID: function () {
     let d = new Date().getTime();
-    let uuid = ""
-    for (let i = 0; i < 32; i++) {
+    let uuid = d.toString(36)
+    const l = 32 - uuid.length
+    for (let i = 0; i < l; i++) {
       let r = (d + Math.random() * 36) % 36 | 0;
-      uuid += r.toString(36)
+      uuid = r.toString(36) + uuid
       d = Math.floor(d / 16);
     }
     return uuid;
-  }
+  },
 })

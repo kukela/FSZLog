@@ -55,6 +55,7 @@ Component({
       this.triggerEvent('input', { value: v })
     },
     inputTap() {
+      if (this.data.disabled) return
       this.triggerEvent('inputTap')
     }
   }

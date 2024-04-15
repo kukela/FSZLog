@@ -45,5 +45,26 @@ export default {
   getMonthDataKey(month: string): string {
     return `${this.monthDataKey}${month}`
   },
+  // 是否启用同步
+  setIsSync(v: boolean) {
+    wx.setStorageSync("isSync", v)
+  },
+  getIsSync(): boolean {
+    return wx.getStorageSync("isSync")
+  },
+  // 同步账号ID
+  setUserID(v: string) {
+    wx.setStorageSync("userID", v)
+  },
+  getUserID(): string {
+    return wx.getStorageSync("userID")
+  },
+  // 同步数据密码
+  setDataPW(v: string) {
+    wx.setStorageSync("dataPW", v)
+  },
+  getDataPW(): string {
+    return wx.getStorageSync("dataPW")
+  }
 
 }
