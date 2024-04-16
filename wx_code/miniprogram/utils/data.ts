@@ -100,7 +100,7 @@ export default {
    */
   year2List(year: string, sort: number = 0): any[] {
     const yKeys = this.getMonthDataKeys(false, 2, year)
-    console.log(yKeys)
+    // console.log(yKeys)
     const list: any[] = []
     yKeys.forEach((k: string) => {
       const d = this.date2DataObj(k, sort)

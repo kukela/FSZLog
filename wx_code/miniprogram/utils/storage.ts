@@ -1,11 +1,11 @@
 export default {
-
   // 本地数据版本
   getDataVer(): number {
     return parseInt(wx.getStorageSync("dataVer"))
   },
   setDataVer(v: number) {
     wx.setStorageSync("dataVer", v)
+    this._changeConf()
   },
   // 当前选择的年
   getDefYear(): string {
@@ -13,6 +13,7 @@ export default {
   },
   setDefYear(v: string) {
     wx.setStorageSync("defYear", v)
+    this._changeConf()
   },
   // 月预算
   getDefBudget(): number {
@@ -20,6 +21,7 @@ export default {
   },
   setDefBudget(v: number) {
     wx.setStorageSync("defBudget", v)
+    this._changeConf()
   },
   // 是否启用同步
   setIsSync(v: boolean) {
@@ -53,6 +55,7 @@ export default {
   setTags(v: JSON): boolean {
     try {
       wx.setStorageSync("tags", JSON.stringify(v))
+      this._changeLastUpdateKey("tags")
       return true
     } catch (error) {
       return false
@@ -73,6 +76,7 @@ export default {
   },
   setInstallment(v: string) {
     wx.setStorageSync("installment", v)
+    this._changeLastUpdateKey("installment")
   },
   // 已完成分期数据
   getInstallmentCStr(): string {
@@ -88,6 +92,7 @@ export default {
   },
   setInstallmentC(v: string) {
     wx.setStorageSync("installmentC", v)
+    this._changeLastUpdateKey("installmentC")
   },
   // 月数据
   monthDataHKey: "md-",
@@ -99,10 +104,55 @@ export default {
     }
   },
   setMonthData(mdateStr: string, v: any = null): any {
-    wx.setStorageSync(`${this.monthDataHKey}${mdateStr}`, v)
+    const key = `${this.monthDataHKey}${mdateStr}`
+    wx.setStorageSync(key, v)
+    this._changeLastUpdateKey(key)
   },
   removeMonthData(mdateStr: string) {
     wx.removeStorageSync(`${this.monthDataHKey}${mdateStr}`)
   },
-
+  // 数据最后更新时间
+  lastUpdate: <any>{
+    // conf: 0,
+    // tags: 0,
+    // installment: 0,
+    // installmentC: 0,
+    // 'md-*': 0
+  },
+  initLastUpdate() {
+    let d = <any>{}
+    try {
+      d = JSON.parse(wx.getStorageSync("lastUpdate"))
+    } catch (error) {
+    }
+    this.lastUpdate = d
+    this._checkLastUpdateKey("conf")
+    this._checkLastUpdateKey("tags")
+    this._checkLastUpdateKey("installment")
+    this._checkLastUpdateKey("installmentC")
+    const keys = wx.getStorageInfoSync().keys
+    let fKey = this.monthDataHKey
+    keys.forEach(v => {
+      if (v.indexOf(fKey) == -1) return
+      this._checkLastUpdateKey(v)
+    })
+    this._saveLastUpdate()
+  },
+  _checkLastUpdateKey(key: string) {
+    if (isNaN(this.lastUpdate[key])) {
+      this._changeLastUpdateKey(key)
+    }
+  },
+  _changeLastUpdateKey(key: string) {
+    this.lastUpdate[key] = new Date().getTime();
+  },
+  _saveLastUpdate() {
+    try {
+      wx.setStorageSync("lastUpdate", JSON.stringify(this.lastUpdate))
+    } catch (error) {
+    }
+  },
+  _changeConf() {
+    this._changeLastUpdateKey("conf")
+  }
 }

@@ -1,8 +1,11 @@
 import verifyU from './verify.js';
 import conf from './conf.js'
-import COS from './cos/cos-wx-sdk-v5.min.js'
+import S from './storage.js';
+import COS from './cos/cos-wx-sdk-v5.js'
 import base64 from './base64.js'
 import MD5 from './md5.js'
+
+let cos: any;
 
 export default {
   isSync: false,
@@ -16,13 +19,16 @@ export default {
     t: "请输入字母和数字组成的7~32位密码",
     f: verifyU.isEmptyFun
   }],
+
   // 初始化
   init() {
+    S.initLastUpdate()
     this.isSync = conf.getIsSync()
     this.userID = conf.getUserID()
     this.dataPW = conf.getDataPW()
     this.userID_tips[0].f = this.vUserID
     this.dataPW_tips[0].f = this.vDataPW
+    this.startSync()
   },
   // 导入账号信息
   importUser(userID: string, dataPW: string) {
@@ -52,34 +58,16 @@ export default {
   },
   // 验证数据是否需要同步
   startSync() {
-    // const cos = new COS({
-    //   SecretId: 'AKIDJXjpxCXlUDrtoxDat5CC5nO4r0HzeEnJ',
-    //   SecretKey: 'Vet0fRDvWwWBxpwwnS1QfyNavvHrOnDj',
-    //   SimpleUploadMethod: 'putObject',
-    // });
-    // Global kukela
-    // cos.getObject({
-    //   Bucket: 'fsz-log-1256625630',
-    //   Region: 'ap-nanjing',
-    //   Key: 'Global/test1/t.txt',
-    // }, function (err, data) {
-    //   console.log(err || data.Body);
-    // });
+    if (!conf.getIsSync()) return
+    cos = new COS({
+      SecretId: 'AKIDJXjpxCXlUDrtoxDat5CC5nO4r0HzeEnJ',
+      SecretKey: 'Vet0fRDvWwWBxpwwnS1QfyNavvHrOnDj',
+      SimpleUploadMethod: 'putObject',
+    });
 
-    // const customerKey = '0123456789ABCDEF0123456789ABCDEF'
-    // const key = base64.base64Encode(customerKey)
-    // const md5 = `${MD5.b64MD5(customerKey)}==`
-    // cos.putObject({
-    //   Bucket: 'fsz-log-1256625630',
-    //   Region: 'ap-nanjing',
-    //   Key: 'Global/test2/t1.txt',
-    //   Body: 'hello!5',
-    //   SSECustomerAlgorithm: 'AES256',
-    //   SSECustomerKey: key,
-    //   SSECustomerKeyMD5: md5,
-    // }, function (err, data) {
-    //   console.log(err || data);
-    // });
+    // this.putCOSData('test', "test")
+    this.getCOSData('test')
+
   },
   // 验证是否能启用同步
   verifySync(uid: string = "", dpw: string = ""): boolean {
@@ -118,4 +106,48 @@ export default {
     }
     return uuid;
   },
+  // 从cos获取数据
+  getCOSData(key: string) {
+    cos.getObject({
+      Key: this._getCOSPath(key),
+      ...this._getCOS_OBJ_SSE()
+    }, function (err: any, data: any) {
+      console.log(err || data.Body);
+    });
+  },
+  // 向cos传递数据
+  putCOSData(key: string, v: string) {
+    cos.putObject({
+      Key: this._getCOSPath(key),
+      Body: v,
+      ...this._getCOS_OBJ_SSE()
+    }, function (err: any, data: any) {
+      console.log(err || data);
+    });
+  },
+  // 获取COS路径
+  _getCOSPath(key: string): string {
+    return `Global/${this.userID}/${this.dataPW}_${key}`
+  },
+  // 获取COS数据密码
+  _getCOSDataPW(): string {
+    let pw = this.dataPW
+    for(let i = pw.length; i < 32; i++) {
+      pw += "0"
+    }
+    return pw
+  },
+  // 获取COS对象操作公用信息
+  _getCOS_OBJ_SSE() {
+    const pw = this._getCOSDataPW()
+    const cKey = base64.base64Encode(pw)
+    const cMD5 = `${MD5.b64MD5(pw)}==`
+    return {
+      Bucket: 'fsz-log-1256625630',
+      Region: 'ap-nanjing',
+      SSECustomerAlgorithm: 'AES256',
+      SSECustomerKey: cKey,
+      SSECustomerKeyMD5: cMD5,
+    }
+  }
 }
