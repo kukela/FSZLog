@@ -14,7 +14,7 @@
     <button class="btn" disabled="{{isSync}}" hover-class="def_hover" hover-stay-time="150" bind:tap="genDataPW">生成</button>
   </view>
   <view class="text_btn" hover-class="def_hover" hover-stay-time="150" bind:tap="copyUserInfo">复制账号信息到剪贴板</view>
-  <text class="info_msg">重要提示：\n请妥善保存账号信息，<text>丢失后无法获取原账号所有数据。</text>\n丢失账号后可以新建一个账号重新同步。</text>
+  <text class="info_msg">重要提示：\n请妥善保存账号信息，<text>丢失后无法获取原账号所有数据。</text></text>
   <!-- <text class="cell_title">同步间隔：</text> -->
   <!-- <view class="page_cell">
     <sel-input placeholder="请选择同步间隔" mode="selector" range="{{syncTypeList}}" model:value="{{syncType}}" />
