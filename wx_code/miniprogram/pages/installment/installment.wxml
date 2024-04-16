@@ -50,7 +50,7 @@
               <view wx:else class="tr {{ u.imListData2State(oitem, item.st_rv, ctv) }}">
                 <text>({{ oitem.qi }}) {{ oitem.ir ? u.p2s(oitem.p + oitem.ir) : u.p2s(oitem.p) }}</text>
                 <text wx:if="{{ oitem.ir }}">{{ u.p2s(oitem.ir) }}</text>
-                <text>{{ u.dateNum2Key(oitem.t) }}</text>
+                <text>{{ u.YMNum2date(oitem.t) }}</text>
               </view>
             </block>
           </view>
@@ -100,7 +100,7 @@
       <view  wx:for="{{item.tq}}" wx:key="index" class="cell sub">
         <text class="tt"></text>
         <text class="p">{{item.p}}</text>
-        <text class="t">{{u.dateNum2Key(item.t)}}</text>
+        <text class="t">{{u.YMNum2date(item.t)}}</text>
       </view>
     </block>
   </modal-view>

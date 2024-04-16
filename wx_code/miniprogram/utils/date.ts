@@ -1,7 +1,4 @@
 export default {
-  monthType: <any>{
-    0: 1, 1: -1, 2: 1, 3: 0, 4: 1, 5: 0, 6: 1, 7: 1, 8: 0, 9: 1, 10: 0, 11: 1
-  },
 
   formatTime(date: Date): string {
     const year = date.getFullYear()
@@ -17,11 +14,6 @@ export default {
     )
   },
 
-  // 获取当前日期key
-  getCurrentDateKey(): string {
-    return this.getYearMonthKey(new Date())
-  },
-
   // 获取当前年
   getCurrentYear(): string {
     return `${new Date().getFullYear()}`;
@@ -32,15 +24,20 @@ export default {
     return this.formatTime(new Date())
   },
 
-  // 日期转年月key
-  getYearMonthKey(date: Date): string {
+  // 获取当前年月
+  getCurrentYearMonth(): string {
+    return this.getYearMonth(new Date())
+  },
+
+  // 日期转年月
+  getYearMonth(date: Date): string {
     const year = date.getFullYear()
     const month = date.getMonth() + 1
     return [year, month].map(this.formatNumber).join('-')
   },
 
-  // 日期转年月日key
-  getYearMonthDayKey(date: Date): string {
+  // 日期转年月日
+  getYearMonthDay(date: Date): string {
     const year = date.getFullYear()
     const month = date.getMonth() + 1
     const day = date.getDate()
@@ -52,19 +49,19 @@ export default {
     return v.getFullYear() * 100 + v.getMonth() + 1
   },
 
-  // 年月num转日期key
-  dateNum2Key(v: number): string {
+  // 年月数字转日期
+  YMNum2date(v: number): string {
     const arr = ("" + v).split('')
     if (arr.length >= 6) arr.splice(4, 0, "-")
     return arr.join('')
   },
 
-  // 日期key转时间
-  dateKey2Date(v: string): Date {
+  // 日期字符串转时间
+  str2Date(v: string): Date {
     return new Date(Date.parse(v.replace(/-/g, '/')));
   },
-  dateKey2Time(v: string): number {
-    return this.dateKey2Date(v).getTime();
+  str2Time(v: string): number {
+    return this.str2Date(v).getTime();
   },
 
   // 设置月份，防止最后一天溢出

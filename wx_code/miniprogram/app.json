@@ -1,9 +1,9 @@
 {
   "pages": [
-    "pages/sync/sync",
     "pages/index/index",
     "pages/installment/installment",
     "pages/logs/logs",
+    "pages/sync/sync",
     "pages/imInfo/imInfo"
   ],
   "tabBar": {

@@ -11,13 +11,13 @@ var p2IOs = function (v, type) {
   return parseFloat(vs) > 0 ? "+" + vs : vs
 }
 
-// 日期key转月份数字
+// 日期字符串转月份数字
 var dateStr2MonthNum = function (v) {
   return parseInt(v.split("-", 2)[1])
 }
 
-// 年月num转日期key
-var dateNum2Key = function (v) {
+// 年月num转日期
+var YMNum2date = function (v) {
   var arr = ("" + v).split('')
   if (arr.length >= 6) arr.splice(4, 0, "-")
   return arr.join('')
@@ -40,7 +40,7 @@ module.exports = {
   p2s: p2s,
   p2IOs: p2IOs,
   dateStr2MonthNum: dateStr2MonthNum,
-  dateNum2Key: dateNum2Key,
+  YMNum2date: YMNum2date,
   imType2Str: imType2Str,
   imListData2State: imListData2State
 }

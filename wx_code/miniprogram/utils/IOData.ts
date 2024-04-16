@@ -4,6 +4,7 @@ import dateU from './date.js';
 import IMData from './IMData.js';
 import verify from './verify.js';
 import util from './util.js';
+import S from './storage.js';
 
 export default {
   sep: " | ",
@@ -36,13 +37,13 @@ export default {
       const tt = tDList[0]
       const p = tDList[1]
       const t = tDList[2]
-      const tDate = dateU.dateKey2Date(t)
+      const tDate = dateU.str2Date(t)
       const tTime = tDate.getTime()
       if (verify.isEmptyFun(tt) || verify.isNaNFloatFun(p) || isNaN(tTime)) return
       if (tTime > cTime) return
       const tag = { tt: tt, p: parseFloat(p), t: "" }
       if (tt == this.budget_type || tt == this.budget_type2) {
-        tag.t = dateU.getYearMonthKey(tDate)
+        tag.t = dateU.getYearMonth(tDate)
       } else {
         tag.t = t
       }
@@ -80,7 +81,7 @@ export default {
     let isAllOk = true
     keys.forEach(month => {
       const mm = mM[month]
-      mm.date = month.replace(conf.monthDataKey, "")
+      mm.date = month.replace(S.monthDataHKey, "")
       const st = this.saveMonthData(mm)
       if (st) {
         isAllOk = false
@@ -93,7 +94,7 @@ export default {
     if (!m || !m.date || isNaN(m.budget)) {
       return "内容不全！"
     }
-    if (isNaN(dateU.dateKey2Date(m.date).getTime())) return "日期格式错误！"
+    if (isNaN(dateU.str2Date(m.date).getTime())) return "日期格式错误！"
     const sep = this.sep
     let listS = ""
     if (m.list) {
@@ -108,8 +109,7 @@ export default {
       listS: listS
     }
     try {
-      const smStr = JSON.stringify(sM)
-      wx.setStorageSync(conf.getMonthDataKey(m.date), smStr)
+      S.setMonthData(m.date, JSON.stringify(sM))
     } catch (error) {
       return "JSON格式转换失败"
     }

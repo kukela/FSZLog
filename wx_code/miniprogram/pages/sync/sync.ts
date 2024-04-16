@@ -24,7 +24,7 @@ Page({
     })
   },
   onShow() {
-    if(!syncD.verifySync()) {
+    if (!syncD.verifySync()) {
       this.closeSync()
     }
     this.setData({
@@ -125,8 +125,13 @@ Page({
   },
   // 拷贝账号信息到剪贴板
   copyUserInfo() {
+    const s = syncD.exportUserInfo()
+    if (s.length < 13 + 32 + 7) {
+      wx.showToast({ title: '账号信息不全', icon: 'error', duration: 2000 })
+      return
+    }
     wx.setClipboardData({
-      data: syncD.exportUserInfo(),
+      data: s,
       success() {
         wx.showToast({ title: '账号信息已复制', icon: 'success' })
       },

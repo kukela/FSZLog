@@ -24,7 +24,7 @@ export default {
   },
 
   isNoDateStrFun(v: string): boolean {
-    return isNaN(dateU.dateKey2Time(v))
+    return isNaN(dateU.str2Time(v))
   },
 
   vTips(tips: Array<any>, v: string): string {

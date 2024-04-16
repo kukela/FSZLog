@@ -1,16 +1,4 @@
 function initTestData() {
-  // wx.clearStorageSync()
-  // const ydata = [{
-  //   date: "2024-03",
-  //   budget: 3000,
-  //   list: [
-  //     { tt: "京东", p: "-100", t: "01 18:00:01" },
-  //     { tt: "支付宝", p: "-1000.1", t: "02 18:00:01" },
-  //     { tt: "京东", p: "-101", t: "03 18:00:01" }
-  //   ]
-  // }]
-  // wx.setStorageSync("ydata-2024", JSON.stringify(ydata))
-
 //   wx.clearStorageSync()
 //   const t_2023_8 = {
 //     budget: 3000,

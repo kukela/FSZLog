@@ -172,7 +172,7 @@ Page({
       addM_ir: "0",
       addM_qs: "",
       addM_st: "",
-      ["addM.stEnd"]: dateU.getYearMonthDayKey(stEnd),
+      ["addM.stEnd"]: dateU.getYearMonthDay(stEnd),
       addM_st_r: "",
       ["addM.st_rStart"]: "",
       ["addM.st_rEnd"]: "",
@@ -216,36 +216,36 @@ Page({
   addModal_stChange(v: any) {
     this.addModal_st_r_refData()
     if (this.data.addM_st_r) return
-    const date = dateU.dateKey2Date(v.detail.v)
+    const date = dateU.str2Date(v.detail.v)
     dateU.monthPlus(date)
     this.setData({
-      addM_st_r: dateU.getYearMonthKey(date)
+      addM_st_r: dateU.getYearMonth(date)
     })
   },
   // 添加分期 入账月份限制条件
   addModal_st_r_refData() {
     const d = this.data
     if (!d.addM_st) return
-    const tDate = dateU.dateKey2Date(d.addM_st)
+    const tDate = dateU.str2Date(d.addM_st)
     dateU.monthPlus(tDate)
     this.setData({
-      ["addM.st_rStart"]: dateU.getYearMonthDayKey(tDate)
+      ["addM.st_rStart"]: dateU.getYearMonthDay(tDate)
     })
     const qs = parseInt(d.addM_qs)
     if (isNaN(qs)) return
     dateU.setMonthV(tDate, tDate.getMonth() + qs - 1)
-    this.setData({ ["addM.st_rEnd"]: dateU.getYearMonthDayKey(tDate) })
+    this.setData({ ["addM.st_rEnd"]: dateU.getYearMonthDay(tDate) })
   },
   // 验证入账月份
   verify_addM_st_r(v: string): boolean {
-    const vv = dateU.date2YMNum(dateU.dateKey2Date(v))
+    const vv = dateU.date2YMNum(dateU.str2Date(v))
     const addM = this.data.addM
     if (addM.st_rStart) {
-      const stNum = dateU.date2YMNum(dateU.dateKey2Date(addM.st_rStart))
+      const stNum = dateU.date2YMNum(dateU.str2Date(addM.st_rStart))
       if (vv < stNum) return true
     }
     if (addM.st_rEnd) {
-      const etNum = dateU.date2YMNum(dateU.dateKey2Date(addM.st_rEnd))
+      const etNum = dateU.date2YMNum(dateU.str2Date(addM.st_rEnd))
       if (vv > etNum) return true
     }
     return false

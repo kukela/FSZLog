@@ -54,7 +54,7 @@ Page({
   },
   onLoad() {
     wx.setNavigationBarTitle({
-      title: dateU.getCurrentDateKey()
+      title: dateU.getCurrentYearMonth()
     })
   },
   onShow() {

@@ -3,10 +3,9 @@ import dateU from './date.js';
 import verify from './verify.js';
 import data from './data.js';
 import IOData from './IOData.js';
+import S from './storage.js';
 
 export default {
-  installmentDataKey: "installment",
-  installmentDataCKey: "installmentC",
   sep: " | ",
 
   list: <any>[],
@@ -46,14 +45,14 @@ export default {
 
     // console.log(this.list, this.listC)
     // console.log(util.roughSizeOfObject(tList)) // 1874 1628 1396
-    // console.log(wx.getStorageSync(this.installmentDataKey))
-    // console.log(wx.getStorageSync(this.installmentDataCKey))
+    // console.log(S.getInstallment())
+    // console.log(S.getInstallmentC())
   },
   // 归档分期数据
   arcData(m: any): boolean {
     let isAllOk = true
     m.o.forEach((v: any, i: number) => {
-      const md = data.date2DataObj(dateU.dateNum2Key(v.t), 0)
+      const md = data.date2DataObj(dateU.YMNum2date(v.t), 0)
       if (!md) return
       const nm = this.imData2MonthData(m, i)
       if (!nm) return
@@ -75,11 +74,7 @@ export default {
   // 获取本地数据
   getStorageList(isC: boolean): Array<any> {
     const list: Array<any> = []
-    let sList = []
-    try {
-      sList = wx.getStorageSync(isC ? this.installmentDataCKey : this.installmentDataKey).split("\n")
-    } catch (error) {
-    }
+    let sList = isC ? S.getInstallment() : S.getInstallmentC()
     sList.forEach((v: any) => {
       const m = this.str2IMDataObj(v)
       if (!m) return
@@ -104,7 +99,7 @@ export default {
         st_r: tDList[6]
       }
       if (isNaN(m.id) || verify.isEmptyFun(m.tt) || isNaN(m.p) || isNaN(m.qs) ||
-        isNaN(dateU.dateKey2Time(m.st)) || isNaN(dateU.dateKey2Time(m.st_r))
+        isNaN(dateU.str2Time(m.st)) || isNaN(dateU.str2Time(m.st_r))
       ) return null
       m.type = this.str2TypeObj(tDList[3])
       if (!m.type) return null
@@ -126,7 +121,7 @@ export default {
     m.GI = 0
     m.list = []
     m.o = []
-    const stD = dateU.dateKey2Date(m.st)
+    const stD = dateU.str2Date(m.st)
     const stDD = stD.getDate()
     for (let i = 0; i < m.qs; i++) {
       dateU.monthPlus(stD, stDD)
@@ -153,9 +148,9 @@ export default {
     if (m.o) {
       const fT = m.o[0].t
       const qM = this.getFQDateRange()
-      m.st_rv = dateU.date2YMNum(dateU.dateKey2Date(m.st_r))
+      m.st_rv = dateU.date2YMNum(dateU.str2Date(m.st_r))
       if (m.st_rv < fT) {
-        m.st_r = dateU.dateNum2Key(fT)
+        m.st_r = dateU.YMNum2date(fT)
         m.st_rv = fT
       }
       if (qM.c < fT) {
@@ -169,8 +164,8 @@ export default {
       this.genThumList(m, qM)
     }
     if (this.isCData(m)) {
-      const et = `${dateU.dateNum2Key(m.etv)}-${m.st.slice(-2)}`
-      m.isArc = dateU.getDaysBetween(dateU.dateKey2Date(et), new Date()) > 90
+      const et = `${dateU.YMNum2date(m.etv)}-${m.st.slice(-2)}`
+      m.isArc = dateU.getDaysBetween(dateU.str2Date(et), new Date()) > 90
     }
     if (m.isSS == undefined || m.isSS == null) {
       m.isSS = false
@@ -472,10 +467,10 @@ export default {
     try {
       if (isC) {
         this.sortList(this.listC, 2)
-        wx.setStorageSync(this.installmentDataCKey, this.list2SaveStr(this.listC))
+        S.setInstallmentC(this.list2SaveStr(this.listC))
       } else {
         this.sortList(this.list, 1)
-        wx.setStorageSync(this.installmentDataKey, this.list2SaveStr(this.list))
+        S.setInstallment(this.list2SaveStr(this.list))
       }
       return ""
     } catch (error) {
@@ -514,7 +509,7 @@ export default {
   // 将分期数据添加到月份tag数组中
   imDataAdd2MonthData(m: any) {
     const list = <any>[...this.list, ...this.listC]
-    const dateV = dateU.date2YMNum(dateU.dateKey2Date(m.date))
+    const dateV = dateU.date2YMNum(dateU.str2Date(m.date))
     m.list = m.list.filter((m: any) => !m.isNS)
     list.forEach((im: any) => {
       if (dateV < im.st_rv) return

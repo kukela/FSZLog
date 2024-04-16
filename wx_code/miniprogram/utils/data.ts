@@ -4,31 +4,19 @@ import verify from './verify.js';
 import IOData from './IOData.js'
 import IMData from './IMData.js'
 import anim from './anim.js';
+import S from './storage.js';
 
 export default {
   sep: " | ",
 
   // app打开初始化数据
   initData() {
-    if (conf.env != 0) require('./test.js').initTestData()
-
     const ver = conf.getDataVer()
-    if (ver < 1) {
-      const state = require('./verData.js').update_0_to_1()
-      if (state != "") {
-        wx.showToast({
-          title: `本地数据转换失败${state}，请联系管理员`, icon: 'none', duration: 5000
-        })
-        return
+    if(ver != conf.currentDataVer) {
+      if(require('./verData.js').updata(ver)) {
+        conf.saveDataVer()
       }
     }
-    if (ver < 2) {
-      wx.removeStorageSync("installment")
-    }
-    if (ver < 3) {
-      wx.removeStorageSync("md-2024-05")
-    }
-    conf.saveDataVer()
 
     this.checkCurrentMonthData()
 
@@ -36,7 +24,7 @@ export default {
   },
   // 检查当月数据并生成，返回当月数据
   checkCurrentMonthData(): any {
-    let m = this.date2DataObj(dateU.getCurrentDateKey(), 2)
+    let m = this.date2DataObj(dateU.getCurrentYearMonth(), 2)
     if (!m) {
       m = this.newMonthData()
       IOData.saveMonthData(m)
@@ -45,13 +33,13 @@ export default {
   },
   // 获取下月数据
   getNextMonthData(): any {
-    const ndKey = dateU.getYearMonthKey(dateU.monthPlus(new Date()))
+    const ndKey = dateU.getYearMonth(dateU.monthPlus(new Date()))
     let nm = this.newMonthData(ndKey)
     return nm
   },
   // 新建当月的月份数据
   newMonthData(key: String = ""): any {
-    if (!key) key = dateU.getCurrentDateKey()
+    if (!key) key = dateU.getCurrentYearMonth()
     const nm = {
       budget: conf.getDefBudget(),
       date: key,
@@ -69,12 +57,12 @@ export default {
   getMonthDataKeys(isMonth: boolean, sort: number = 0, year: string = ""): string[] {
     const keys = wx.getStorageInfoSync().keys
     const list: string[] = []
-    const fKey = conf.monthDataKey + year
+    const fKey = S.monthDataHKey + year
     keys.forEach(v => {
       if (v.indexOf(fKey) == -1) return
-      const m = v.replace(conf.monthDataKey, '')
-      if (isNaN(dateU.dateKey2Time(m))) {
-        wx.removeStorageSync(v)
+      const m = v.replace(S.monthDataHKey, '')
+      if (isNaN(dateU.str2Time(m))) {
+        S.removeMonthData(m)
         return
       }
       list.push(isMonth || sort > 0 ? m : v)
@@ -83,7 +71,7 @@ export default {
     this.sortYearData(list, 2)
     if (!isMonth) {
       list.forEach((v, i) => {
-        list[i] = `${conf.monthDataKey}${v}`
+        list[i] = v
       });
     }
     return list
@@ -112,9 +100,11 @@ export default {
    */
   year2List(year: string, sort: number = 0): any[] {
     const yKeys = this.getMonthDataKeys(false, 2, year)
+    console.log(yKeys)
     const list: any[] = []
     yKeys.forEach((k: string) => {
-      list.push(this.dateKey2DataObj(k, sort))
+      const d = this.date2DataObj(k, sort)
+      if (d) list.push(d)
     });
     return list
   },
@@ -123,15 +113,11 @@ export default {
    * @param date 年-月
    * @param sort 0（不排序）、1（从小到大）、2（从大到小）
    */
-  date2DataObj(date: string, sort: number = 0): any {
-    return this.dateKey2DataObj(`${conf.monthDataKey}${date}`, sort)
-  },
-  dateKey2DataObj(dateKey: string, sort: number = 0): any {
+  date2DataObj(mdateStr: string, sort: number = 0): any {
+    const m = S.getMonthData(mdateStr)
+    if (m == null) return null
     try {
-      const str = wx.getStorageSync(dateKey)
-      if (!str) return null
-      const m = JSON.parse(str)
-      m.date = dateKey.replace(conf.monthDataKey, "")
+      m.date = mdateStr
       if (m.listS) {
         const cTime = new Date().getTime();
         const nList: Array<any> = []
@@ -194,7 +180,7 @@ export default {
     const tt = tdList[0]
     const p = tdList[1]
     const t = tdList[2]
-    const tDate = dateU.dateKey2Date(date ? `${date}-${t}` : t)
+    const tDate = dateU.str2Date(date ? `${date}-${t}` : t)
     const tTime = tDate.getTime()
     if (verify.isEmptyFun(tt) || verify.isNaNFloatFun(p) || isNaN(tTime)) return null
     if (cTime > 0 && tTime > cTime) return null
@@ -234,9 +220,9 @@ export default {
     list.sort((a: string, b: string) => {
       try {
         if (sort == 2) {
-          return dateU.dateKey2Time(b) - dateU.dateKey2Time(a)
+          return dateU.str2Time(b) - dateU.str2Time(a)
         } else {
-          return dateU.dateKey2Time(a) - dateU.dateKey2Time(b)
+          return dateU.str2Time(a) - dateU.str2Time(b)
         }
       } catch (e) {
         return 0
@@ -249,9 +235,9 @@ export default {
     m.list.sort((a: any, b: any) => {
       try {
         if (sort == 2) {
-          return dateU.dateKey2Time(`${m.date}-${b.t}`) - dateU.dateKey2Time(`${m.date}-${a.t}`)
+          return dateU.str2Time(`${m.date}-${b.t}`) - dateU.str2Time(`${m.date}-${a.t}`)
         } else {
-          return dateU.dateKey2Time(`${m.date}-${a.t}`) - dateU.dateKey2Time(`${m.date}-${b.t}`)
+          return dateU.str2Time(`${m.date}-${a.t}`) - dateU.str2Time(`${m.date}-${b.t}`)
         }
       } catch (e) {
         console.error(e)

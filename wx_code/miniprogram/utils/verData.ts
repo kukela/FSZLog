@@ -2,7 +2,26 @@ import dateU from './date.js';
 
 module.exports = {
 
-  update_0_to_1(): string {
+  updata(ver: number): boolean {
+    if (ver < 1) {
+      const state = this.updata_0_to_1()
+      if (state != "") {
+        wx.showToast({
+          title: `本地数据转换失败${state}_0t1，请联系管理员`, icon: 'none', duration: 6000
+        })
+        return false
+      }
+    }
+    if (ver < 2) {
+      wx.removeStorageSync("installment")
+    }
+    if (ver < 3) {
+      wx.removeStorageSync("md-2024-05")
+    }
+    return true
+  },
+
+  updata_0_to_1(): string {
     const ydKey = "ydata-"
     const mdKey = "md-"
     const sep = " | "
@@ -19,7 +38,7 @@ module.exports = {
       }
       list.forEach((m: any) => {
         try {
-          if (isNaN(dateU.dateKey2Time(m.date)) ||
+          if (isNaN(dateU.str2Time(m.date)) ||
             isNaN(parseFloat(m.budget))) return
           let listS = ""
           if (m.list) {
@@ -30,7 +49,7 @@ module.exports = {
                 return
               }
               listS += `${v.tt}${sep}${v.p}${sep}${v.t}\n`
-              const tTime = dateU.dateKey2Time(`${m.date}-${v.t}`)
+              const tTime = dateU.str2Time(`${m.date}-${v.t}`)
               if (!tags[v.tt] || tTime > tags[v.tt]) {
                 tags[v.tt] = tTime
               }
