@@ -1,4 +1,5 @@
 import S from './storage.js';
+
 export default {
   list: <any>[],
 

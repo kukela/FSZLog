@@ -32,6 +32,7 @@ Page({
       userID: syncD.userID,
       dataPW: syncD.dataPW,
     })
+    syncD.startSync()
   },
   onShareAppMessage() {
     return {
@@ -46,6 +47,7 @@ Page({
   // 启用同步切换按钮事件
   syncSwitchChange(e: any) {
     const v = e.detail.value
+    // todo : bug修改
     syncD.importUser(this.data.userID, this.data.dataPW)
     if (!v || !syncD.verifySync()) {
       this.setData({
@@ -80,6 +82,7 @@ Page({
   },
   importUserInfo(s: string) {
     // fszlog_uinfo:rnexzihk41g5oij1t1vyu1cklv0gbp36d4d0ov9jcoeymgbm9p5ff5ek55xcec
+    // fszlog_uinfo:u9epehwzkgfud4nmsle9ce1rlv3vk1asbwcrze5rs96a47hif2q8imxhndr0qfyf
     if (s.slice(0, 12) != "fszlog_uinfo") {
       wx.showToast({ title: '账号信息错误', icon: 'error', duration: 2000 })
       return
@@ -111,6 +114,7 @@ Page({
         if (!res.confirm) return
         syncD.clearOldUserData()
         self.importUserInfo2(userID, dataPW)
+        syncD.startSync()
       }
     })
   },

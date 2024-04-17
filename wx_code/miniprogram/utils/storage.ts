@@ -7,7 +7,6 @@ export default {
   },
   setDataVer(v: number) {
     wx.setStorageSync("dataVer", v)
-    this._changeConf()
   },
   // 当前选择的年
   getDefYear(): string {
@@ -20,9 +19,9 @@ export default {
   getDefBudget(): number {
     return parseFloat(wx.getStorageSync("defBudget"))
   },
-  setDefBudget(v: number) {
+  setDefBudget(v: number, isSync: boolean = true) {
     wx.setStorageSync("defBudget", v)
-    this._changeConf()
+    if (isSync) this._changeConf()
   },
   // 是否启用同步
   setIsSync(v: boolean) {
@@ -55,12 +54,15 @@ export default {
   },
   setTags(v: JSON): boolean {
     try {
-      wx.setStorageSync("tags", JSON.stringify(v))
-      this._changeLastUpdateKey("tags")
+      this.setTagsStr(JSON.stringify(v))
       return true
     } catch (error) {
       return false
     }
+  },
+  setTagsStr(v: string, isSync: boolean = true) {
+    wx.setStorageSync("tags", v)
+    if (isSync) this._changeLastUpdateKey("tags")
   },
   // 分期数据
   getInstallmentStr(): string {
@@ -75,10 +77,10 @@ export default {
     }
     return sList
   },
-  setInstallment(v: string) {
+  setInstallment(v: string, isSync: boolean = true) {
     const isEq = this.getInstallmentStr() == v
     wx.setStorageSync("installment", v)
-    if (!isEq) this._changeLastUpdateKey("installment")
+    if (isSync && !isEq) this._changeLastUpdateKey("installment")
   },
   // 已完成分期数据
   getInstallmentCStr(): string {
@@ -92,10 +94,10 @@ export default {
     }
     return sList
   },
-  setInstallmentC(v: string) {
+  setInstallmentC(v: string, isSync: boolean = true) {
     const isEq = this.getInstallmentCStr() == v
     wx.setStorageSync("installmentC", v)
-    if (!isEq) this._changeLastUpdateKey("installmentC")
+    if (isSync && !isEq) this._changeLastUpdateKey("installmentC")
   },
   // 月数据
   monthDataHKey: "md-",
@@ -106,10 +108,10 @@ export default {
       return def ? def : null
     }
   },
-  setMonthData(mdateStr: string, v: any = null): any {
+  setMonthData(mdateStr: string, v: any = null, isSync: boolean = true): any {
     const key = `${this.monthDataHKey}${mdateStr}`
     wx.setStorageSync(key, v)
-    this._changeLastUpdateKey(key)
+    if (isSync) this._changeLastUpdateKey(key)
   },
   removeMonthData(mdateStr: string) {
     wx.removeStorageSync(`${this.monthDataHKey}${mdateStr}`)
@@ -150,7 +152,7 @@ export default {
   },
   _changeLastUpdateKey(key: string) {
     this.lastUpdate[key] = new Date().getTime();
-    console.log(`sync: ${key}`)
+    // console.log(`sync: ${key}`)
     syncD.startSync()
   },
   _saveLastUpdate() {
@@ -171,5 +173,27 @@ export default {
       return JSON.stringify(conf)
     }
     return wx.getStorageSync(key)
+  },
+  // 同步方法更新本地数据
+  setSyncData(key: string, v: string): boolean {
+    if (key == "conf") {
+      try {
+        let conf = JSON.parse(v)
+        let defBudget = parseFloat(conf.defBudget)
+        if (isNaN(defBudget)) return false
+        this.setDefBudget(defBudget, false)
+      } catch (error) {
+        return false
+      }
+    } else if (key == "tags") {
+      this.setTagsStr(v, false)
+    } else if (key == "installment") {
+      this.setInstallment(v, false)
+    } else if (key == "installmentC") {
+      this.setInstallmentC(v, false)
+    } else if (key.indexOf(this.monthDataHKey) == 0) {
+      this.setMonthData(key.replace(this.monthDataHKey, ''), v, false)
+    }
+    return true
   }
 }

@@ -2,6 +2,7 @@ import IMData from '../../utils/IMData.js'
 import dateU from '../../utils/date.js'
 import verifyU from '../../utils/verify.js';
 import util from '../../utils/util.js';
+import syncD from '../../utils/syncData.js'
 
 Page({
   data: {
@@ -59,6 +60,11 @@ Page({
     // console.log(m)
   },
   onShow() {
+    syncD.updatePage = (keyList: Array<string>) => {
+      if (!keyList.includes("IM")) return
+      wx.showToast({ title: '分期数据已修改！' })
+      wx.navigateBack()
+    }
   },
   onShareAppMessage() {
     return {

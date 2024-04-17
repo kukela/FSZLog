@@ -6,6 +6,7 @@ import util from '../../utils/util.js';
 import tags from '../../utils/tags.js';
 import anim from '../../utils/anim.js';
 import conf from '../../utils/conf.js';
+import syncD from '../../utils/syncData.js'
 
 Page({
   data: {
@@ -58,13 +59,11 @@ Page({
     })
   },
   onShow() {
-    let m = data.checkCurrentMonthData()
-    m.tags = this.data.m.tags
-    data.genMonthTagsGroup(m)
-    this.setData({
-      m: m
-    })
-    // console.log(m)
+    this.updatePage()
+    syncD.updatePage = (keyList: Array<string>) => {
+      if (keyList.length <= 0) return
+      this.updatePage()
+    }
   },
   onShareAppMessage() {
     return {
@@ -75,6 +74,19 @@ Page({
     return {
       title: '反赊账记录器',
     }
+  },
+  // 更新页面
+  updatePage() {
+    let m = data.checkCurrentMonthData()
+    m.tags = this.data.m.tags
+    data.genMonthTagsGroup(m)
+    this.setData({
+      m: m
+    })
+    if (this.data.addM.show) {
+      this.setData({ tagList: tags.list })
+    }
+    // console.log(m)
   },
   // 预算点击事件
   budgetTap() {

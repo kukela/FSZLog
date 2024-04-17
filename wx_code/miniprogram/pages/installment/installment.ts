@@ -4,6 +4,7 @@ import IOData from '../../utils/IOData.js'
 import verifyU from '../../utils/verify.js';
 import anim from '../../utils/anim.js';
 import util from '../../utils/util.js';
+import syncD from '../../utils/syncData.js'
 
 Page({
   data: {
@@ -83,6 +84,11 @@ Page({
   onShow() {
     this.refListDataWithList(IMData.imRefList)
     IMData.imRefList = []
+    syncD.updatePage = (keyList: Array<string>) => {
+      if(!keyList.includes("IM")) return
+      this.refListData(false)
+      this.refListData(true)
+    }
   },
   onShareAppMessage() {
     return {
@@ -398,8 +404,8 @@ Page({
       showKeyboard: true, mathKeyboardV: parseFloat(this.data.addM_p)
     })
   },
-   // 计算器键盘确定事件
-   mathKeyboardOk(e: any) {
+  // 计算器键盘确定事件
+  mathKeyboardOk(e: any) {
     const v = e.detail.v
     this.setData({ ["addM_p"]: `${v}` })
   },

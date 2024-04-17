@@ -3,6 +3,7 @@ import data from '../../utils/data.js'
 import dateU from '../../utils/date.js';
 import IOData from '../../utils/IOData.js'
 import anim from '../../utils/anim.js';
+import syncD from '../../utils/syncData.js'
 
 Page({
   data: {
@@ -17,6 +18,10 @@ Page({
   },
   onShow() {
     this.refPageData(conf.getDefYear())
+    syncD.updatePage = (keyList: Array<string>) => {
+      if (keyList.length <= 0) return
+      this.refPageData(conf.getDefYear())
+    }
   },
   onShareAppMessage() {
     return {
