@@ -4,8 +4,9 @@ import S from './storage.js';
 import COS from './cos/cos-wx-sdk-v5.js'
 import base64 from './base64.js'
 import MD5 from './md5.js'
+import md5 from './md5.js';
 
-let cos: any;
+let cos: any = null;
 
 export default {
   isSync: false,
@@ -19,6 +20,10 @@ export default {
     t: "请输入字母和数字组成的7~32位密码",
     f: verifyU.isEmptyFun
   }],
+  // 云端数据最后更新时间
+  cosLastUpdate: <any>{
+    // conf: "0,3",
+  },
 
   // 初始化
   init() {
@@ -56,18 +61,62 @@ export default {
     this.closeSync()
     console.log("clearOldUserData")
   },
-  // 验证数据是否需要同步
+  // 开始同步
   startSync() {
     if (!conf.getIsSync()) return
-    cos = new COS({
-      SecretId: 'AKIDJXjpxCXlUDrtoxDat5CC5nO4r0HzeEnJ',
-      SecretKey: 'Vet0fRDvWwWBxpwwnS1QfyNavvHrOnDj',
-      SimpleUploadMethod: 'putObject',
+    if (!cos) {
+      cos = new COS({
+        SecretId: 'AKIDJXjpxCXlUDrtoxDat5CC5nO4r0HzeEnJ',
+        SecretKey: 'Vet0fRDvWwWBxpwwnS1QfyNavvHrOnDj',
+        SimpleUploadMethod: 'putObject',
+      });
+    }
+    this.getCOSData('lastUpdate', (v: string) => {
+      // this.sync(this.checkLastUpdate(v))
+    })
+    // this.putCOSData('test', "test", () => { console.log("ok") })
+  },
+  // 检查需要同步的数据
+  checkLastUpdate(luJsonStr: string): any {
+    this.cosLastUpdate = S.parseLastUpdate(luJsonStr)
+    let syncMap = <any>{}
+    Object.keys(S.lastUpdate).forEach(k => {
+      let cvv = 0
+      let cv = 0
+      try {
+        const cvL = this.cosLastUpdate[k].split(',')
+        cvv = parseInt(cvL[1])
+        cv = parseInt(cvL[0])
+      } catch (error) {
+        syncMap[k] = 1
+        return
+      }
+      const v = S.lastUpdate[k]
+      if (isNaN(cvv) || isNaN(cv) || cvv < conf.getDataVer()) {
+        syncMap[k] = 1
+      } else {
+        syncMap[k] = v - cv
+      }
+    })
+    return syncMap
+  },
+  // 同步操作
+  sync(map: any) {
+    console.log(map)
+    let okKeyList = []
+    Object.keys(map).forEach(k => {
+      const v = map[k]
+      if (v == 0) return
+      if (v > 0) {
+        this.putCOSData(k, S.getSyncData(k), () => {
+          okKeyList.push(k)
+        })
+      } else {
+        this.getCOSData(k, (v: string) => {
+          okKeyList.push(k)
+        })
+      }
     });
-
-    // this.putCOSData('test', "test")
-    this.getCOSData('test')
-
   },
   // 验证是否能启用同步
   verifySync(uid: string = "", dpw: string = ""): boolean {
@@ -107,32 +156,42 @@ export default {
     return uuid;
   },
   // 从cos获取数据
-  getCOSData(key: string) {
+  getCOSData(key: string, suss: any) {
     cos.getObject({
       Key: this._getCOSPath(key),
       ...this._getCOS_OBJ_SSE()
     }, function (err: any, data: any) {
-      console.log(err || data.Body);
+      if (err && err.statusCode != 404) {
+        console.error(err)
+        wx.showToast({ title: `获取失败${err.statusCode}`, icon: 'error' })
+        return
+      }
+      suss && suss(data ? data.Body : "")
     });
   },
   // 向cos传递数据
-  putCOSData(key: string, v: string) {
+  putCOSData(key: string, v: string, suss: any) {
     cos.putObject({
       Key: this._getCOSPath(key),
       Body: v,
       ...this._getCOS_OBJ_SSE()
     }, function (err: any, data: any) {
-      console.log(err || data);
+      if (err || data.statusCode != 200) {
+        console.error(err)
+        wx.showToast({ title: `上传失败${err.statusCode}`, icon: 'error' })
+        return
+      }
+      suss && suss()
     });
   },
   // 获取COS路径
   _getCOSPath(key: string): string {
-    return `Global/${this.userID}/${this.dataPW}_${key}`
+    return `Global/${this.userID}/${md5.b64MD5(`${this.dataPW}${key}`)}`
   },
   // 获取COS数据密码
   _getCOSDataPW(): string {
     let pw = this.dataPW
-    for(let i = pw.length; i < 32; i++) {
+    for (let i = pw.length; i < 32; i++) {
       pw += "0"
     }
     return pw

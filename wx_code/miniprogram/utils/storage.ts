@@ -1,3 +1,5 @@
+import syncD from './syncData.js';
+
 export default {
   // 本地数据版本
   getDataVer(): number {
@@ -13,7 +15,6 @@ export default {
   },
   setDefYear(v: string) {
     wx.setStorageSync("defYear", v)
-    this._changeConf()
   },
   // 月预算
   getDefBudget(): number {
@@ -75,8 +76,9 @@ export default {
     return sList
   },
   setInstallment(v: string) {
+    const isEq = this.getInstallmentStr() == v
     wx.setStorageSync("installment", v)
-    this._changeLastUpdateKey("installment")
+    if (!isEq) this._changeLastUpdateKey("installment")
   },
   // 已完成分期数据
   getInstallmentCStr(): string {
@@ -91,8 +93,9 @@ export default {
     return sList
   },
   setInstallmentC(v: string) {
+    const isEq = this.getInstallmentCStr() == v
     wx.setStorageSync("installmentC", v)
-    this._changeLastUpdateKey("installmentC")
+    if (!isEq) this._changeLastUpdateKey("installmentC")
   },
   // 月数据
   monthDataHKey: "md-",
@@ -120,12 +123,7 @@ export default {
     // 'md-*': 0
   },
   initLastUpdate() {
-    let d = <any>{}
-    try {
-      d = JSON.parse(wx.getStorageSync("lastUpdate"))
-    } catch (error) {
-    }
-    this.lastUpdate = d
+    this.lastUpdate = this.parseLastUpdate(wx.getStorageSync("lastUpdate"))
     this._checkLastUpdateKey("conf")
     this._checkLastUpdateKey("tags")
     this._checkLastUpdateKey("installment")
@@ -138,6 +136,13 @@ export default {
     })
     this._saveLastUpdate()
   },
+  parseLastUpdate(v: string): any {
+    try {
+      return JSON.parse(v)
+    } catch (error) {
+      return {}
+    }
+  },
   _checkLastUpdateKey(key: string) {
     if (isNaN(this.lastUpdate[key])) {
       this._changeLastUpdateKey(key)
@@ -145,6 +150,8 @@ export default {
   },
   _changeLastUpdateKey(key: string) {
     this.lastUpdate[key] = new Date().getTime();
+    console.log(`sync: ${key}`)
+    syncD.startSync()
   },
   _saveLastUpdate() {
     try {
@@ -154,5 +161,15 @@ export default {
   },
   _changeConf() {
     this._changeLastUpdateKey("conf")
+  },
+  // 同步方法从本地获取数据
+  getSyncData(key: string): string {
+    if (key == 'conf') {
+      const conf = {
+        defBudget: wx.getStorageSync('defBudget'),
+      }
+      return JSON.stringify(conf)
+    }
+    return wx.getStorageSync(key)
   }
 }
