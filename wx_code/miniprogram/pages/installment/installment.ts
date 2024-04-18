@@ -82,13 +82,15 @@ Page({
     })
   },
   onShow() {
-    this.refListDataWithList(IMData.imRefList)
-    IMData.imRefList = []
-    syncD.updatePage = (keyList: Array<string>) => {
-      if(!keyList.includes("IM")) return
-      this.refListData(false)
-      this.refListData(true)
-    }
+    // this.refListDataWithList(IMData.imRefList)
+    // IMData.imRefList = []
+    // syncD.updatePage = (keyList: Array<string>) => {
+    //   if(!keyList.includes("IM")) return
+    //   this.refListData(false)
+    //   this.refListData(true)
+    // }
+    this.refListData(false)
+    this.refListData(true)
   },
   onHide() {
     syncD.updatePage = () => { }

@@ -120,11 +120,17 @@ Page({
       title: '提示',
       content: '切换账号后，本地数据会全部删除。是否执行切换操作？',
       success(res) {
-        if (!res.confirm) return
-        syncD.clearOldUserData()
-        self.importUserInfo2(userID, dataPW)
-        wx.showToast({ title: '账号切换成功', icon: 'success' })
-        comp && comp(2)
+        if (res.cancel) {
+          self.closeSync()
+          self.importUserInfo2(conf.getUserID(), conf.getDataPW())
+          return
+        }
+        if (res.confirm) {
+          syncD.clearOldUserData()
+          self.importUserInfo2(userID, dataPW)
+          wx.showToast({ title: '账号切换成功', icon: 'success' })
+          comp && comp(2)
+        }
       }
     })
   },

@@ -14,10 +14,9 @@ export default {
   imRefList: <any>[],
 
   init(tList: any = null) {
-    if (tList) {
-      this.list = []
-      this.listC = []
-    } else {
+    this.list = []
+    this.listC = []
+    if (!tList) {
       tList = <any>[]
       try {
         tList.push(...this.getStorageList(false))
@@ -29,6 +28,7 @@ export default {
       }
     }
     const idList = new Set()
+    // console.log(tList)
     tList.forEach((m: any) => {
       if (idList.has(m.id)) return
       idList.add(m.id)

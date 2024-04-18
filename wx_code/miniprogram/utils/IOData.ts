@@ -90,7 +90,7 @@ export default {
     return isAllOk ? "" : "部分数据错误"
   },
   // 保存月数据
-  saveMonthData(m: any): string {
+  saveMonthData(m: any, isSync: boolean = true): string {
     if (!m || !m.date || isNaN(m.budget)) {
       return "内容不全！"
     }
@@ -109,7 +109,7 @@ export default {
       listS: listS
     }
     try {
-      S.setMonthData(m.date, JSON.stringify(sM))
+      S.setMonthData(m.date, JSON.stringify(sM), isSync)
     } catch (error) {
       return "JSON格式转换失败"
     }

@@ -20,10 +20,9 @@ export default {
     return parseFloat(wx.getStorageSync("defBudget"))
   },
   setDefBudget(v: number, isSync: boolean = true) {
-    isSync = this.getDefBudget() != v
-    if (!isSync) return
+    const isEq = this.getDefBudget() == v
     wx.setStorageSync("defBudget", v)
-    this._changeConf()
+    if (isSync && !isEq) this._changeConf()
   },
   // 是否启用同步
   setIsSync(v: boolean) {
@@ -66,10 +65,9 @@ export default {
     }
   },
   setTagsStr(v: string, isSync: boolean = true) {
-    isSync = this.getTagsStr() != v
-    if (!isSync) return
+    const isEq = this.getTagsStr() == v
     wx.setStorageSync("tags", v)
-    this._changeLastUpdateKey("tags")
+    if (isSync && !isEq) this._changeLastUpdateKey("tags")
   },
   // 分期数据
   getInstallmentStr(): string {
@@ -85,10 +83,9 @@ export default {
     return sList
   },
   setInstallment(v: string, isSync: boolean = true) {
-    isSync = this.getInstallmentStr() != v
-    if (!isSync) return
+    const isEq = this.getInstallmentStr() == v
     wx.setStorageSync("installment", v)
-    this._changeLastUpdateKey("installment")
+    if (isSync && !isEq) this._changeLastUpdateKey("installment")
   },
   // 已完成分期数据
   getInstallmentCStr(): string {
@@ -103,10 +100,9 @@ export default {
     return sList
   },
   setInstallmentC(v: string, isSync: boolean = true) {
-    isSync = this.getInstallmentCStr() != v
-    if (!isSync) return
+    const isEq = this.getInstallmentCStr() == v
     wx.setStorageSync("installmentC", v)
-    this._changeLastUpdateKey("installmentC")
+    if (isSync && !isEq) this._changeLastUpdateKey("installmentC")
   },
   // 月数据
   monthDataHKey: "md-",
@@ -121,11 +117,10 @@ export default {
     }
   },
   setMonthData(mdateStr: string, v: any = null, isSync: boolean = true): any {
-    isSync = this.getMonthDataStr(mdateStr) != v
-    if (!isSync) return
+    const isEq = this.getMonthDataStr(mdateStr) == v
     const key = `${this.monthDataHKey}${mdateStr}`
     wx.setStorageSync(key, v)
-    this._changeLastUpdateKey(key)
+    if (isSync && !isEq) this._changeLastUpdateKey(key)
   },
   removeMonthData(mdateStr: string) {
     wx.removeStorageSync(`${this.monthDataHKey}${mdateStr}`)
@@ -186,11 +181,12 @@ export default {
       }
       return JSON.stringify(conf)
     }
+    console.log('getSyncData', key, wx.getStorageSync(key))
     return wx.getStorageSync(key)
   },
   // 同步方法更新本地数据
   setSyncData(key: string, v: string, t: number): boolean {
-    // console.log(key, v, t)
+    console.log('setSyncData', key, v, t)
     if (key == "conf") {
       try {
         let conf = JSON.parse(v)

@@ -4,30 +4,24 @@ import verify from './verify.js';
 import IOData from './IOData.js'
 import IMData from './IMData.js'
 import anim from './anim.js';
+import syncD from './syncData.js';
 import S from './storage.js';
 
 export default {
   sep: " | ",
 
   // app打开初始化数据
-  initData() {
-    const ver = conf.getDataVer()
-    if(ver != conf.currentDataVer) {
-      if(require('./verData.js').updata(ver)) {
-        conf.saveDataVer()
-      }
-    }
-
-    this.checkCurrentMonthData()
-
+  init() {
+    syncD.init()
     IMData.init()
+    this.checkCurrentMonthData()
   },
   // 检查当月数据并生成，返回当月数据
   checkCurrentMonthData(): any {
     let m = this.date2DataObj(dateU.getCurrentYearMonth(), 2)
     if (!m) {
       m = this.newMonthData()
-      IOData.saveMonthData(m)
+      IOData.saveMonthData(m, false)
     }
     return m
   },

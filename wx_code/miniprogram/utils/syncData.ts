@@ -6,12 +6,14 @@ import base64 from './base64.js'
 import MD5 from './md5.js'
 import md5 from './md5.js';
 import tags from './tags.js';
+import dataU from './data.js'
 import IMData from './IMData.js'
 
 let cos: any = null;
 
 export default {
   isSync: false,
+  startSyncCount: 0,
   userID: "",
   userID_tips: [{
     t: "请输入字母和数字组成的32位账号ID",
@@ -37,6 +39,7 @@ export default {
     // conf.setUserID("u9epehwzkgfud4nmsle9ce1rlv3vk1as")
     // conf.setDataPW("bwcrze5rs96a47hif2q8imxhndr0qfyf")
     this.isSync = conf.getIsSync()
+    this.startSyncCount = 0
     this.userID = conf.getUserID()
     this.dataPW = conf.getDataPW()
     this.userID_tips[0].f = this.vUserID
@@ -68,11 +71,12 @@ export default {
   clearOldUserData() {
     this.closeSync()
     wx.clearStorageSync()
-    this.init()
+    dataU.init()
   },
   // 开始同步
   startSync() {
-    if (!this.isSync) return
+    if (this.startSyncCount < 0) this.startSyncCount = 0
+    if (!this.isSync || this.startSyncCount++ > 0) return
     if (!cos) {
       cos = new COS({
         SecretId: 'AKIDJXjpxCXlUDrtoxDat5CC5nO4r0HzeEnJ',
@@ -80,15 +84,29 @@ export default {
         SimpleUploadMethod: 'putObject',
       });
     }
+    console.log("startSync")
     this.getCOSData('lastUpdate', (isOk: boolean, v: string) => {
-      if (isOk) this.sync(this.checkLastUpdate(v))
+      this.startSyncCount--
+      if (!isOk) return
+
+      this.sync(this.checkLastUpdate(v), (upKeyList: Array<string>, getKeyList: Array<string>) => {
+        wx.hideLoading()
+
+        if (upKeyList.length > 0) {
+          this.updateCOSLastUpdate(upKeyList)
+        } else {
+          this.startSyncCount--
+        }
+        if (getKeyList.length > 0) this.updatePageWithList(getKeyList)
+
+      })
     })
   },
   // 检查需要同步的数据
   checkLastUpdate(luJsonStr: string): any {
     this.cosLastUpdate = S.parseLastUpdate(luJsonStr)
     let keys = new Set([...Object.keys(S.lastUpdate), ...Object.keys(this.cosLastUpdate)])
-    // console.log(S.lastUpdate, this.cosLastUpdate, keys)
+    console.log(S.lastUpdate, this.cosLastUpdate, keys)
     let syncMap = <any>{}
     keys.forEach(k => {
       let cvv = 0
@@ -112,14 +130,18 @@ export default {
     return syncMap
   },
   // 同步操作
-  sync(map: any) {
+  sync(map: any, comp: any) {
     console.log(map)
     let okKeyList = <any>[]
     let upKeyList = <any>[]
     let getKeyList = <any>[]
     let keys = Object.keys(map)
     let upCount = keys.length
-    if (upCount > 0) wx.showLoading({ title: "同步中", mask: true })
+    if (upCount <= 0) {
+      comp && comp(upKeyList, getKeyList)
+      return
+    }
+    wx.showLoading({ title: "同步中", mask: true })
     keys.forEach(k => {
       const t = map[k].t
       if (t == 0) return
@@ -129,7 +151,7 @@ export default {
             okKeyList.push(k)
             upKeyList.push(k)
           }
-          if (--upCount <= 0) { this.updateCOS_LastUpdate(upKeyList, getKeyList) }
+          if (--upCount <= 0) { comp && comp(upKeyList, getKeyList) }
         })
       } else {
         // const v = map[k].v // 更新数据版本
@@ -138,20 +160,24 @@ export default {
             okKeyList.push(k)
             getKeyList.push(k)
           }
-          if (--upCount <= 0) { this.updateCOS_LastUpdate(upKeyList, getKeyList) }
+          if (--upCount <= 0) { comp && comp(upKeyList, getKeyList) }
         })
       }
     });
     // todo : 失败提示
     // console.log(okKeyList.length, keys.length)
   },
-  // 更新COS LastUpdate
-  updateCOS_LastUpdate(upKeyList: [], getKeyList: Array<string>) {
+  // 更新cosLastUpdate
+  updateCOSLastUpdate(upKeyList: Array<string>) {
     upKeyList.forEach(k => {
       this.cosLastUpdate[k] = `${S.lastUpdate[k]},${conf.currentDataVer}`
     });
     this.putCOSData('lastUpdate', JSON.stringify(this.cosLastUpdate), (_: boolean) => {
+      this.startSyncCount--
     })
+  },
+  // 根据key数组更新页面数据
+  updatePageWithList(getKeyList: Array<string>) {
     let upDateList = []
     if (getKeyList.length > 0) {
       if (getKeyList.includes("tags")) {
@@ -169,7 +195,6 @@ export default {
         }
       }
     }
-    wx.hideLoading()
     this.updatePage && this.updatePage(upDateList)
   },
   // 验证是否能启用同步
@@ -211,7 +236,6 @@ export default {
   },
   // 从cos获取数据
   getCOSData(key: string, complete: any) {
-    // console.log(`get ${key}`)
     cos.getObject({
       Key: this._getCOSPath(key),
       ...this._getCOS_OBJ_SSE()
@@ -227,7 +251,6 @@ export default {
   },
   // 向cos传递数据
   putCOSData(key: string, v: string, complete: any) {
-    // console.log(`put ${key}`)
     cos.putObject({
       Key: this._getCOSPath(key),
       Body: v,
