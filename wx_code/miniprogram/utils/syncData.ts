@@ -32,12 +32,16 @@ export default {
   // 初始化
   init() {
     S.initLastUpdate()
+    // conf.setUserID("rnexzihk41g5oij1t1vyu1cklv0gbp36")
+    // conf.setDataPW("d4d0ov9jcoeymgbm9p5ff5ek55xcec")
+    // conf.setUserID("u9epehwzkgfud4nmsle9ce1rlv3vk1as")
+    // conf.setDataPW("bwcrze5rs96a47hif2q8imxhndr0qfyf")
     this.isSync = conf.getIsSync()
     this.userID = conf.getUserID()
     this.dataPW = conf.getDataPW()
     this.userID_tips[0].f = this.vUserID
     this.dataPW_tips[0].f = this.vDataPW
-    this.startSync()
+    this.cosLastUpdate = {}
   },
   // 导入账号信息
   importUser(userID: string, dataPW: string) {
@@ -63,7 +67,8 @@ export default {
   // 清空原账号所有数据
   clearOldUserData() {
     this.closeSync()
-    console.log("clearOldUserData")
+    wx.clearStorageSync()
+    this.init()
   },
   // 开始同步
   startSync() {
@@ -78,13 +83,14 @@ export default {
     this.getCOSData('lastUpdate', (isOk: boolean, v: string) => {
       if (isOk) this.sync(this.checkLastUpdate(v))
     })
-    // this.putCOSData('test', "test", () => { console.log("ok") })
   },
   // 检查需要同步的数据
   checkLastUpdate(luJsonStr: string): any {
     this.cosLastUpdate = S.parseLastUpdate(luJsonStr)
+    let keys = new Set([...Object.keys(S.lastUpdate), ...Object.keys(this.cosLastUpdate)])
+    // console.log(S.lastUpdate, this.cosLastUpdate, keys)
     let syncMap = <any>{}
-    Object.keys(S.lastUpdate).forEach(k => {
+    keys.forEach(k => {
       let cvv = 0
       let cv = 0
       try {
@@ -92,22 +98,22 @@ export default {
         cvv = parseInt(cvL[1])
         cv = parseInt(cvL[0])
       } catch (error) {
-        syncMap[k] = 1
+        syncMap[k] = { t: -1 }
         return
       }
-      const v = S.lastUpdate[k]
-      if (isNaN(cvv) || isNaN(cv) || cvv < conf.getDataVer()) {
-        syncMap[k] = 1
-      } else {
-        const sv = v - cv
-        if (sv != 0) syncMap[k] = sv
+      if (isNaN(cv)) {
+        syncMap[k] = { t: -1 }
+        return
       }
+      const sv = S.lastUpdate[k] - cv
+      if (sv == 0) return
+      syncMap[k] = { t: sv > 0 ? -1 : cv, v: isNaN(cvv) ? 0 : cvv }
     })
     return syncMap
   },
   // 同步操作
   sync(map: any) {
-    // console.log(map)
+    console.log(map)
     let okKeyList = <any>[]
     let upKeyList = <any>[]
     let getKeyList = <any>[]
@@ -115,9 +121,9 @@ export default {
     let upCount = keys.length
     if (upCount > 0) wx.showLoading({ title: "同步中", mask: true })
     keys.forEach(k => {
-      const v = map[k]
-      if (v == 0) return
-      if (v > 0) {
+      const t = map[k].t
+      if (t == 0) return
+      if (t < 0) {
         this.putCOSData(k, S.getSyncData(k), (isOk: boolean) => {
           if (isOk) {
             okKeyList.push(k)
@@ -126,8 +132,9 @@ export default {
           if (--upCount <= 0) { this.updateCOS_LastUpdate(upKeyList, getKeyList) }
         })
       } else {
+        // const v = map[k].v // 更新数据版本
         this.getCOSData(k, (isOk: boolean, v: string) => {
-          if (isOk && S.setSyncData(k, v)) {
+          if (isOk && S.setSyncData(k, v, t)) {
             okKeyList.push(k)
             getKeyList.push(k)
           }
@@ -237,8 +244,9 @@ export default {
   },
   // 获取COS路径
   _getCOSPath(key: string): string {
+    let dn = encodeURI(md5.b64MD5(`${this.userID}${this.dataPW}`).replace(/\//g, 'b-'))
     let fn = encodeURI(md5.b64MD5(`${this.dataPW}${key}`).replace(/\//g, 'b-'))
-    return `Global/${this.userID}/${fn}==`
+    return `Global/${dn}/${fn}`
   },
   // 获取COS数据密码
   _getCOSDataPW(): string {

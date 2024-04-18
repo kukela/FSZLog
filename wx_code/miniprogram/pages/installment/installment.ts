@@ -90,6 +90,9 @@ Page({
       this.refListData(true)
     }
   },
+  onHide() {
+    syncD.updatePage = () => { }
+  },
   onShareAppMessage() {
     return {
       title: '反赊账记录器',

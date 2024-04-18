@@ -47,21 +47,23 @@ Page({
   // 启用同步切换按钮事件
   syncSwitchChange(e: any) {
     const v = e.detail.value
-    // todo : bug修改
-    syncD.importUser(this.data.userID, this.data.dataPW)
-    if (!v || !syncD.verifySync()) {
+    const d = this.data
+    if (!v || !syncD.verifySync(d.userID, d.dataPW)) {
       this.setData({
         userID_verify: true, dataPW_verify: true
       })
       this.closeSync()
       return
     }
-    this.openSync()
+    this.switchUserInfo(d.userID, d.dataPW, (_: number) => {
+      this.openSync()
+    })
   },
   // 打开同步
   openSync() {
     syncD.openSync()
     this.setData({ isSync: syncD.isSync })
+    syncD.startSync()
   },
   // 关闭同步
   closeSync() {
@@ -98,12 +100,19 @@ Page({
       wx.showToast({ title: '账号信息错误', icon: 'error', duration: 2000 })
       return
     }
+    this.switchUserInfo(userID, dataPW, (v: number) => {
+      if (v == 0) wx.showToast({ title: '账号相同', icon: 'none' })
+      else if (v == 2) this.openSync()
+    })
+  },
+  switchUserInfo(userID: string, dataPW: string, comp: any) {
     if (conf.getUserID() == userID && conf.getDataPW() == dataPW) {
-      wx.showToast({ title: '账号相同', icon: 'none' })
+      comp && comp(0)
       return
     }
     if (!conf.getUserID() || !conf.getDataPW()) {
       this.importUserInfo2(userID, dataPW)
+      comp && comp(1)
       return
     }
     const self = this
@@ -114,7 +123,8 @@ Page({
         if (!res.confirm) return
         syncD.clearOldUserData()
         self.importUserInfo2(userID, dataPW)
-        syncD.startSync()
+        wx.showToast({ title: '账号切换成功', icon: 'success' })
+        comp && comp(2)
       }
     })
   },
@@ -125,7 +135,6 @@ Page({
       dataPW: dataPW,
       isSync: syncD.isSync
     })
-    wx.showToast({ title: '账号切换成功', icon: 'success' })
   },
   // 拷贝账号信息到剪贴板
   copyUserInfo() {

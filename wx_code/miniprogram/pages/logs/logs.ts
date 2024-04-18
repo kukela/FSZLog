@@ -23,6 +23,9 @@ Page({
       this.refPageData(conf.getDefYear())
     }
   },
+  onHide() {
+    syncD.updatePage = () => { }
+  },
   onShareAppMessage() {
     return {
       title: '反赊账记录器',

@@ -12,7 +12,8 @@ App<IAppOption>({
         title: '测试环境', icon: 'error', duration: 3000
       })
     }
-    dataU.initData()
     syncD.init()
+    dataU.initData()
+    syncD.startSync()
   }
 })

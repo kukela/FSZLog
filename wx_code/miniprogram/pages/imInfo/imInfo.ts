@@ -66,6 +66,9 @@ Page({
       wx.navigateBack()
     }
   },
+  onHide() {
+    syncD.updatePage = () => { }
+  },
   onShareAppMessage() {
     return {
       title: '反赊账记录器',
@@ -200,7 +203,7 @@ Page({
     const d = this.data
     const om = d.m.o[d.cellSelIndex]
     const p = d.tqM_p ? d.tqM_p : om.p + om.ir
-    const s = `本期还款${util.price2Str(p)}，包含利息${util.price2Str(om.ir)}，剩余${util.price2Str(d.tqM.rp)}`
+    const s = `本期还款:${util.price2Str(p)}，包含利息:${util.price2Str(om.ir)}，剩余:${util.price2Str(d.tqM.rp)}`
     wx.setClipboardData({
       data: s,
       success() {

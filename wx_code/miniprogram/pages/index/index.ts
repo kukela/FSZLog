@@ -65,6 +65,9 @@ Page({
       this.updatePage()
     }
   },
+  onHide() {
+    syncD.updatePage = () => { }
+  },
   onShareAppMessage() {
     return {
       title: '反赊账记录器',
