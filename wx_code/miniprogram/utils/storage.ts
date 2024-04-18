@@ -160,7 +160,7 @@ export default {
   },
   _changeLastUpdateKey(key: string) {
     this.lastUpdate[key] = new Date().getTime();
-    console.log(`_changeLastUpdateKey: ${key} ${this.lastUpdate[key]}`)
+    // console.log(`_changeLastUpdateKey: ${key} ${this.lastUpdate[key]}`)
     this._saveLastUpdate()
     syncD.startSync()
   },
@@ -181,12 +181,12 @@ export default {
       }
       return JSON.stringify(conf)
     }
-    console.log('getSyncData', key, wx.getStorageSync(key))
+    // console.log('getSyncData', key, wx.getStorageSync(key))
     return wx.getStorageSync(key)
   },
   // 同步方法更新本地数据
   setSyncData(key: string, v: string, t: number): boolean {
-    console.log('setSyncData', key, v, t)
+    // console.log('setSyncData', key, v, t)
     if (key == "conf") {
       try {
         let conf = JSON.parse(v)

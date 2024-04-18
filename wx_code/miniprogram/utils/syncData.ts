@@ -1,7 +1,7 @@
 import verifyU from './verify.js';
 import conf from './conf.js'
 import S from './storage.js';
-import COS from './cos/cos-wx-sdk-v5.js'
+import COS from './cos/cos-wx-sdk-v5.min.js'
 import base64 from './base64.js'
 import MD5 from './md5.js'
 import md5 from './md5.js';
@@ -27,6 +27,8 @@ export default {
   // 云端数据最后更新时间
   cosLastUpdate: <any>{
     // conf: "0,3",
+  },
+  errCB: function () {
   },
   updatePage: function (kList: Array<string>) {
   },
@@ -84,7 +86,7 @@ export default {
         SimpleUploadMethod: 'putObject',
       });
     }
-    console.log("startSync")
+    // console.log("startSync")
     this.getCOSData('lastUpdate', (isOk: boolean, v: string) => {
       this.startSyncCount--
       if (!isOk) return
@@ -106,7 +108,7 @@ export default {
   checkLastUpdate(luJsonStr: string): any {
     this.cosLastUpdate = S.parseLastUpdate(luJsonStr)
     let keys = new Set([...Object.keys(S.lastUpdate), ...Object.keys(this.cosLastUpdate)])
-    console.log(S.lastUpdate, this.cosLastUpdate, keys)
+    // console.log(S.lastUpdate, this.cosLastUpdate, keys)
     let syncMap = <any>{}
     keys.forEach(k => {
       let cvv = 0
@@ -131,7 +133,7 @@ export default {
   },
   // 同步操作
   sync(map: any, comp: any) {
-    console.log(map)
+    // console.log(map)
     let okKeyList = <any>[]
     let upKeyList = <any>[]
     let getKeyList = <any>[]
@@ -164,8 +166,6 @@ export default {
         })
       }
     });
-    // todo : 失败提示
-    // console.log(okKeyList.length, keys.length)
   },
   // 更新cosLastUpdate
   updateCOSLastUpdate(upKeyList: Array<string>) {
@@ -239,15 +239,17 @@ export default {
     cos.getObject({
       Key: this._getCOSPath(key),
       ...this._getCOS_OBJ_SSE()
-    }, function (err: any, data: any) {
+    }, (err: any, data: any) => {
       if (err && err.statusCode != 404) {
         console.error(err)
         wx.showToast({ title: `获取失败${err.statusCode}`, icon: 'error' })
         complete && complete(false, null)
+        this.errCB && this.errCB()
         return
       }
       complete && complete(true, data ? data.Body : "")
     });
+    // todo : 失败提示
   },
   // 向cos传递数据
   putCOSData(key: string, v: string, complete: any) {
@@ -255,11 +257,12 @@ export default {
       Key: this._getCOSPath(key),
       Body: v,
       ...this._getCOS_OBJ_SSE()
-    }, function (err: any, data: any) {
+    }, (err: any, data: any) => {
       if (err || data.statusCode != 200) {
         console.error(err)
         wx.showToast({ title: `上传失败${err.statusCode}`, icon: 'error' })
         complete && complete(false)
+        this.errCB && this.errCB()
         return
       }
       complete && complete(true)

@@ -16,6 +16,7 @@ export default {
   init(tList: any = null) {
     this.list = []
     this.listC = []
+    this.imRefList = [1, 2]
     if (!tList) {
       tList = <any>[]
       try {
@@ -103,6 +104,7 @@ export default {
       ) return null
       m.type = this.str2TypeObj(tDList[3])
       if (!m.type) return null
+      // console.log(m)
       if (tDList.length > 7) {
         const tq = this.str2TQObj(tDList[7])
         if (tq) m.tq = tq
@@ -123,6 +125,8 @@ export default {
     m.o = []
     const stD = dateU.str2Date(m.st)
     const stDD = stD.getDate()
+    const stN = dateU.date2YMNum(stD)
+    if (m.tq) m.tq = m.tq.filter((q: any) => q.t < stN || q.t > m.etv)
     for (let i = 0; i < m.qs; i++) {
       dateU.monthPlus(stD, stDD)
       m.o.push({ t: dateU.date2YMNum(stD) })

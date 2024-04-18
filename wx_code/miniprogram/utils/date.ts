@@ -56,6 +56,12 @@ export default {
     return arr.join('')
   },
 
+  YMNum2DateTitle(v: number): string {
+    const m = v % 100
+    const y = parseInt("" + (v / 100))
+    return `${y}年${m}月`
+  },
+
   // 日期字符串转时间
   str2Date(v: string): Date {
     return new Date(Date.parse(v.replace(/-/g, '/')));

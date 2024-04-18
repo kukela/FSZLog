@@ -108,7 +108,7 @@ Page({
         tqM_t: om.t,
         tqM_p: tqm ? `${tqm.p}` : "",
         ['tqM.rp']: rpl - om.p,
-        ['tqM.rpt']: rpl + om.ir
+        ['tqM.rpt']: rpl + (om.ir ? om.ir : 0)
       })
     } catch (error) {
       wx.showToast({
@@ -202,8 +202,12 @@ Page({
   tqModalRPTap() {
     const d = this.data
     const om = d.m.o[d.cellSelIndex]
-    const p = d.tqM_p ? d.tqM_p : om.p + om.ir
-    const s = `本期还款:${util.price2Str(p)}，包含利息:${util.price2Str(om.ir)}，剩余:${util.price2Str(d.tqM.rp)}`
+    const p = d.tqM_p ? d.tqM_p : om.p + (om.ir ? om.ir : 0)
+    const ctn = dateU.date2YMNum(new Date())
+    let s = ctn == om.t ? "本期" : dateU.YMNum2DateTitle(om.t)
+    s += `还款:${util.price2Str(p)}`
+    if (om.ir) s += `，包含利息:${util.price2Str(om.ir)}`
+    s += `，剩余本金:${util.price2Str(d.tqM.rp)}`
     wx.setClipboardData({
       data: s,
       success() {

@@ -75,22 +75,18 @@ Page({
   },
   onLoad() {
     this.initAddModalData()
+    this.refListDataWithList([1, 2])
     this.setData({
-      "list[0].list": IMData.list,
-      "list[1].isData": IMData.isIMCList(),
       ["addM.st_rTips[1].f"]: this.verify_addM_st_r
     })
   },
   onShow() {
-    // this.refListDataWithList(IMData.imRefList)
-    // IMData.imRefList = []
-    // syncD.updatePage = (keyList: Array<string>) => {
-    //   if(!keyList.includes("IM")) return
-    //   this.refListData(false)
-    //   this.refListData(true)
-    // }
-    this.refListData(false)
-    this.refListData(true)
+    this.refListDataWithList(IMData.imRefList)
+    IMData.imRefList = []
+    syncD.updatePage = (keyList: Array<string>) => {
+      if(!keyList.includes("IM")) return
+      this.refListDataWithList([1, 2])
+    }
   },
   onHide() {
     syncD.updatePage = () => { }
@@ -149,10 +145,7 @@ Page({
   importModalConfirm() {
     const importTip = IOData.importIMListData(this.data.importM.list)
     if (!importTip) {
-      this.setData({
-        "list[0].list": IMData.list,
-        "list[1].isData": IMData.isIMCList(),
-      })
+      this.refListDataWithList([1, 2])
       wx.showToast({ title: '导入成功', icon: 'success' })
     } else {
       wx.showToast({ title: importTip, icon: 'error', duration: 2000 })
@@ -327,7 +320,7 @@ Page({
         "list[1].list": IMData.listC,
         "list[1].isData": IMData.isIMCList()
       })
-      anim.cellSubShowHide(this, `list[1]`, false, 1)
+      anim.cellSubShowHide(this, `list[1]`, false, 0)
     }
   },
   // 分期标题点击事件
@@ -393,15 +386,10 @@ Page({
   },
   // 显示数据点击事件
   onShowIMCListTap() {
-    this.setData({ "list[1].list": IMData.listC })
     const m = anim.cellSubShowHide(this, `list[1]`, false)
     if (m.isSS == false) {
       anim.setAllShowSub(IMData.listC, m.isSS)
     }
-    this.setData({
-      "list[1].list": IMData.listC,
-      "list[1].isData": IMData.isIMCList()
-    })
   },
   // 打开计算器键盘
   openMathKeyboard(_: any) {

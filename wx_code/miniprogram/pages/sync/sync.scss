@@ -50,6 +50,10 @@
   font-weight: bold;
   line-height: $def_input_height;
   margin: 20rpx 40rpx 0 40rpx;
+
+  &.disabled{
+    opacity: 0.7;
+  }
 }
 
 .info_msg {
