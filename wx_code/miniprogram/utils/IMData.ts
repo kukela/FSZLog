@@ -11,7 +11,7 @@ export default {
   list: <any>[],
   listC: <any>[],
 
-  init(tList: any = null) {
+  init(tList: any = null, isSync: boolean = true) {
     this.list = []
     this.listC = []
     if (!tList) {
@@ -34,7 +34,7 @@ export default {
         this.list.push(m)
       }
     });
-    this.saveList()
+    this.saveList(isSync)
 
     // console.log(this.list, this.listC)
     // console.log(util.roughSizeOfObject(tList)) // 1874 1628 1396
@@ -464,18 +464,11 @@ export default {
     });
   },
   // 保存数组
-  saveList(): string {
+  saveList(isSync: boolean = true): string {
     try {
-      // if (isC) {
-      //   this.sortList(this.listC, 2)
-      //   S.setInstallmentC(this.list2SaveStr(this.listC))
-      // } else {
-      // }
       const list = [...this.list, ...this.listC]
       this.sortList(list, 1)
-      const s = this.list2SaveStr(list)
-      console.log(s)
-      S.setInstallment(s)
+      S.setInstallment(this.list2SaveStr(list), isSync)
       return ""
     } catch (error) {
       return "保存失败"

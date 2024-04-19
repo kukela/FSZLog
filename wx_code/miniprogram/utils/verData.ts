@@ -86,7 +86,9 @@ module.exports = {
   },
 
   update_3_to_4() {
-    let im = `${wx.getStorageSync("installment")}\n${wx.getStorageSync("installmentC")}`
+    let im = `${wx.getStorageSync('installment')}`
+    const imc = wx.getStorageSync('installmentC')
+    if (imc) im += `\n${imc}`
     wx.setStorageSync("installment", im)
   }
 

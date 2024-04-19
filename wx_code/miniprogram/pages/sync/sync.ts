@@ -16,6 +16,7 @@ Page({
       { t: "5分钟", v: "5" },
       { t: "30分钟", v: "30" }
     ],
+    err: "",
   },
   onLoad() {
     this.setData({
@@ -31,8 +32,15 @@ Page({
       isSync: syncD.isSync,
       userID: syncD.userID,
       dataPW: syncD.dataPW,
+      err: syncD.err
     })
+    syncD.errCB = () => {
+      this.setData({ err: syncD.err })
+    }
     syncD.startSync()
+  },
+  onHide() {
+    syncD.errCB = () => { }
   },
   onShareAppMessage() {
     return {
@@ -167,4 +175,11 @@ Page({
   genDataPW() {
     this.setData({ dataPW: syncD.genDataPW() })
   },
+  errTap() {
+    if (!syncD.isSync) {
+      wx.showToast({ title: '同步未开启', icon: 'error', duration: 2000 })
+      return
+    }
+    syncD.startSync()
+  }
 })

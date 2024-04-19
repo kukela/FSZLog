@@ -300,3 +300,15 @@ modal-view {
     }
   }
 }
+
+.err_page_cell {
+  background-color: $textRedColor;
+
+  view {
+    padding: 10rpx 40rpx;
+    color: $bgCellColor;
+    font-size: 28rpx;
+    line-height: 36rpx;
+    white-space: pre-wrap;
+  }
+}

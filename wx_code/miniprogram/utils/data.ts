@@ -11,10 +11,12 @@ export default {
   sep: " | ",
 
   // app打开初始化数据
+  // 需要注意不同步到云
   init() {
     syncD.init()
-    IMData.init()
+    IMData.init(null, false)
     this.checkCurrentMonthData()
+    this.checkRepMonth()
   },
   // 检查当月数据并生成，返回当月数据
   checkCurrentMonthData(): any {
@@ -28,19 +30,38 @@ export default {
   // 获取下月数据
   getNextMonthData(): any {
     const ndKey = dateU.getYearMonth(dateU.monthPlus(new Date()))
-    let nm = this.newMonthData(ndKey)
-    return nm
+    return this.newMonthData(ndKey)
   },
-  // 新建当月的月份数据
-  newMonthData(key: String = ""): any {
-    if (!key) key = dateU.getCurrentYearMonth()
+  // 新建月份数据
+  newMonthData(date: String = "", budget: number = 0): any {
+    if (!date) date = dateU.getCurrentYearMonth()
+    if (budget <= 0) budget = conf.getDefBudget()
     const nm = {
-      budget: conf.getDefBudget(),
-      date: key,
+      budget: budget,
+      date: date,
       listS: ""
     }
     this.monthCalc(nm, 2)
     return nm
+  },
+  // 检查是否需要补月
+  checkRepMonth() {
+    const mList = this.getMonthDataKeys(true, 1)
+    if (mList.length < 2) return
+    const date = dateU.str2Date(mList[0])
+    const en = dateU.date2YMNum(dateU.str2Date(mList[mList.length - 1]))
+    let budget = conf.nullDefBudget
+    while (dateU.date2YMNum(date) < en) {
+      const mStr = dateU.getYearMonth(date)
+      dateU.monthPlus(date)
+      if (mList.includes(mStr)) {
+        const pm = this.date2DataObj(mStr, -1)
+        if (!isNaN(pm.budget)) budget = pm.budget
+        continue
+      }
+      const pm = this.newMonthData(mStr, budget)
+      IOData.saveMonthData(pm, false)
+    }
   },
   /**
    * 获取所有月数据key
@@ -62,7 +83,7 @@ export default {
       list.push(isMonth || sort > 0 ? m : v)
     })
     if (sort <= 0) return list
-    this.sortYearData(list, 2)
+    this.sortYearData(list, sort)
     if (!isMonth) {
       list.forEach((v, i) => {
         list[i] = v
@@ -73,7 +94,7 @@ export default {
   // 获取所有年 从大到小
   getAllYears(): string[] {
     const yM = new Set<string>()
-    const mList = this.getMonthDataKeys(true)
+    const mList = this.getMonthDataKeys(true, 2)
     mList.forEach(v => {
       yM.add(v.slice(0, 4))
     });

@@ -28,6 +28,7 @@ export default {
   cosLastUpdate: <any>{
     // conf: "0,3",
   },
+  err: "",
   errCB: function () {
   },
   updatePage: function (kList: Array<string>) {
@@ -121,13 +122,10 @@ export default {
         cvv = parseInt(cvL[1])
         cv = parseInt(cvL[0])
       } catch (error) {
-        syncMap[k] = { t: -1 }
-        return
+        // syncMap[k] = { t: -1 }
+        // return
       }
-      if (isNaN(cv)) {
-        syncMap[k] = { t: -1 }
-        return
-      }
+      if (isNaN(cv)) cv = 0
       const sv = S.lastUpdate[k] - cv
       if (sv == 0) return
       syncMap[k] = { t: sv > 0 ? -1 : cv, v: isNaN(cvv) ? 0 : cvv }
@@ -176,6 +174,7 @@ export default {
     upKeyList.forEach(k => {
       this.cosLastUpdate[k] = `${S.lastUpdate[k]},${conf.currentDataVer}`
     });
+    if (this.cosLastUpdate.installmentC) delete this.cosLastUpdate.installmentC
     this.putCOSData('lastUpdate', JSON.stringify(this.cosLastUpdate), (_: boolean) => {
       this.startSyncCount--
     })
@@ -245,15 +244,19 @@ export default {
       ...this._getCOS_OBJ_SSE()
     }, (err: any, data: any) => {
       if (err && err.statusCode != 404) {
+        this.err = err.error
         console.error(err)
-        wx.showToast({ title: `请求失败${err.statusCode}`, icon: 'error' })
+        wx.showToast({ title: `同步失败${err.statusCode}`, icon: 'error' })
         complete && complete(false, null)
         this.errCB && this.errCB()
         return
       }
+      if (this.err) {
+        this.err = ""
+        this.errCB && this.errCB()
+      }
       complete && complete(true, data ? data.Body : "")
     });
-    // todo : 失败提示
   },
   // 向cos传递数据
   putCOSData(key: string, v: string, complete: any) {
@@ -263,11 +266,16 @@ export default {
       ...this._getCOS_OBJ_SSE()
     }, (err: any, data: any) => {
       if (err || data.statusCode != 200) {
+        this.err = err.error
         console.error(err)
-        wx.showToast({ title: `上传失败${err.statusCode}`, icon: 'error' })
+        wx.showToast({ title: `同步失败${err.statusCode}`, icon: 'error' })
         complete && complete(false)
         this.errCB && this.errCB()
         return
+      }
+      if (this.err) {
+        this.err = ""
+        this.errCB && this.errCB()
       }
       complete && complete(true)
     });
