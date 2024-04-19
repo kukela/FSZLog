@@ -85,6 +85,9 @@ export default {
         SecretKey: 'Vet0fRDvWwWBxpwwnS1QfyNavvHrOnDj',
         SimpleUploadMethod: 'putObject',
       });
+      // this.getCOSData("2024-04", (isOk: boolean, v: string) => {
+      //   console.log(v)
+      // })
     }
     // console.log("startSync")
     this.getCOSData('lastUpdate', (isOk: boolean, v: string) => {
@@ -92,7 +95,7 @@ export default {
       if (!isOk) return
 
       this.sync(this.checkLastUpdate(v), (upKeyList: Array<string>, getKeyList: Array<string>) => {
-        wx.hideLoading()
+        wx.hideLoading({ noConflict: true })
 
         if (upKeyList.length > 0) {
           this.updateCOSLastUpdate(upKeyList)
@@ -133,7 +136,7 @@ export default {
   },
   // 同步操作
   sync(map: any, comp: any) {
-    // console.log(map)
+    console.log(map)
     let okKeyList = <any>[]
     let upKeyList = <any>[]
     let getKeyList = <any>[]
@@ -146,8 +149,9 @@ export default {
     wx.showLoading({ title: "同步中", mask: true })
     keys.forEach(k => {
       const t = map[k].t
-      if (t == 0) return
-      if (t < 0) {
+      if (t == 0) {
+        comp && comp(upKeyList, getKeyList)
+      } else if (t < 0) {
         this.putCOSData(k, S.getSyncData(k), (isOk: boolean) => {
           if (isOk) {
             okKeyList.push(k)

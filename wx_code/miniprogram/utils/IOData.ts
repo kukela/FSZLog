@@ -17,6 +17,7 @@ export default {
     const sep = this.sep
     data.sortYearData(nList, 2)
     nList.forEach((v: any) => {
+      if(v.isNMData) return
       str += `${this.budget_type2}${sep}${v.budget}${sep}${v.date}\n`
       data.sortMonthTagData(v, 2)
       v.list.forEach((vv: any) => {
@@ -54,6 +55,7 @@ export default {
   // 导入数组
   importListData(list: Array<any>): string {
     const mM: any = {}
+    console.log(list)
     list.forEach((v: any) => {
       const key = v.t.length > 7 ? v.t.slice(0, 7) : v.t
       let m = mM[key]
@@ -76,6 +78,7 @@ export default {
         m.budget = conf.getDefBudget()
       }
     });
+    console.log(mM)
     const keys = Object.keys(mM)
     if (keys.length < 1) return "没有数据可导入"
     let isAllOk = true

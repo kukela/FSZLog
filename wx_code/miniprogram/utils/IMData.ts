@@ -126,7 +126,7 @@ export default {
     const stD = dateU.str2Date(m.st)
     const stDD = stD.getDate()
     const stN = dateU.date2YMNum(stD)
-    if (m.tq) m.tq = m.tq.filter((q: any) => q.t < stN || q.t > m.etv)
+    if (isNaN(stN)) return false
     for (let i = 0; i < m.qs; i++) {
       dateU.monthPlus(stD, stDD)
       m.o.push({ t: dateU.date2YMNum(stD) })
@@ -166,6 +166,10 @@ export default {
       let eT = m.o[eTi]
       if (eT) m.etv = eT.t
       this.genThumList(m, qM)
+    }
+    if (m.tq) {
+      const etN = isNaN(m.etv) ? Number.MAX_VALUE : m.etv
+      m.tq = m.tq.filter((q: any) => q.t >= stN && q.t <= etN)
     }
     if (this.isCData(m)) {
       const et = `${dateU.YMNum2date(m.etv)}-${m.st.slice(-2)}`

@@ -51,7 +51,7 @@
       <tip-input type="digit" placeholder="请输入还款额" tips="{{tqM.tqPTips}}" model:value="{{tqM_p}}" verifyTips="{{tqM.verifyTips}}" unit="￥" bind:input="tqmPInputChange" />
     </view>
     <view class="modal_cell" hover-class="def_hover" hover-stay-time="150" bindtap="tqModalRPTap">
-      <text class="title">剩余还款额：{{u.p2s(tqM.rp)}} </text>
+      <text class="title">剩余本金：{{u.p2s(tqM.rp)}} </text>
     </view>
     <button wx:if="{{tqM.isEdit}}" class="del_btn" bindtap="cellDel" hover-class="def_hover" hover-stay-time="150">删除</button>
   </modal-view>

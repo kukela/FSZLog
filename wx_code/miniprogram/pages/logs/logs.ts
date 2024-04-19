@@ -108,20 +108,18 @@ ABCd | +100 | 2024-03-01 12:01:02
   },
   importModalConfirm() {
     const importTip = IOData.importListData(this.data.importM.list)
-    if (!importTip) {
-      const list = data.year2List(this.data.date, 2)
-      data.coverYearIsShowSub(list, this.data.list)
-      this.setData({
-        list: list
-      })
-      wx.showToast({ title: '导入成功', icon: 'success' })
-    } else {
-      wx.showToast({ title: importTip, icon: 'error', duration: 2000 })
-    }
     this.setData({
       ["importM.list"]: [],
       ["importM.show"]: false
     })
+    if (importTip) {
+      wx.showToast({ title: importTip, icon: 'error', duration: 2000 })
+      return
+    }
+    const list = data.year2List(this.data.date, 2)
+    data.coverYearIsShowSub(list, this.data.list)
+    wx.showToast({ title: '导入成功', icon: 'success' })
+    this.refPageData(conf.getDefYear())
   },
   // 年点击事件
   bindDateChange(e: any) {
