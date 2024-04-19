@@ -41,7 +41,6 @@ function initTestData() {
   // `
 
   // wx.removeStorageSync("installment")
-//   wx.removeStorageSync("installmentC")
 //   const testIM = `
 // 1 | 贷款1 | 10000 | 等额本息_3.99 | 36 | 2024-01-11 | 2024-02 | 202403_1000_1,202601_2000_1,202610_505_1
 // 2 | 贷款2 | 10000 | 等额本金_3.99 | 36 | 2022-11-11 | 2023-02 | 202503_2000_1

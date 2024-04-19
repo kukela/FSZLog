@@ -75,17 +75,15 @@ Page({
   },
   onLoad() {
     this.initAddModalData()
-    this.refListDataWithList([1, 2])
     this.setData({
       ["addM.st_rTips[1].f"]: this.verify_addM_st_r
     })
   },
   onShow() {
-    this.refListDataWithList(IMData.imRefList)
-    IMData.imRefList = []
+    this.refListData()
     syncD.updatePage = (keyList: Array<string>) => {
-      if(!keyList.includes("IM")) return
-      this.refListDataWithList([1, 2])
+      if (!keyList.includes("IM")) return
+      this.refListData()
     }
   },
   onHide() {
@@ -145,7 +143,7 @@ Page({
   importModalConfirm() {
     const importTip = IOData.importIMListData(this.data.importM.list)
     if (!importTip) {
-      this.refListDataWithList([1, 2])
+      this.refListData()
       wx.showToast({ title: '导入成功', icon: 'success' })
     } else {
       wx.showToast({ title: importTip, icon: 'error', duration: 2000 })
@@ -282,7 +280,6 @@ Page({
     if (d.addM.editIL.length) {
       IMData.editDataU(nm, this.addModalConfirmSucc)
     } else {
-      const tList = []
       const addT = IMData.addData(nm)
       if (addT == 0) {
         wx.showToast({ title: '添加失败！', icon: 'error', duration: 2000 })
@@ -292,36 +289,25 @@ Page({
         IMData.imArcDataU(nm, this.addModalConfirmSucc)
         return
       }
-      tList.push(addT)
-      this.addModalConfirmSucc(tList)
+      this.addModalConfirmSucc()
     }
   },
-  addModalConfirmSucc(refList: Array<number>) {
-    this.refListDataWithList(refList)
+  addModalConfirmSucc() {
+    this.refListData()
     this.setData({
       ["addM.show"]: false,
       ["addM.editIL"]: [],
     })
     this.initAddModalData()
   },
-  refListDataWithList(refList: Array<number>) {
-    if (!refList) return
-    refList.forEach(k => {
-      if (k != 2 && k != 1) return
-      this.refListData(k == 2)
-    });
-  },
   // 刷新数据
-  refListData(isC: boolean) {
-    if (!isC) {
-      this.setData({ "list[0].list": IMData.list })
-    } else {
-      this.setData({
-        "list[1].list": IMData.listC,
-        "list[1].isData": IMData.isIMCList()
-      })
-      anim.cellSubShowHide(this, `list[1]`, false, 0)
-    }
+  refListData() {
+    this.setData({
+      "list[0].list": IMData.list,
+      "list[1].list": IMData.listC,
+      "list[1].isData": IMData.isIMCList()
+    })
+    // anim.cellSubShowHide(this, `list[1]`, false, 0)
   },
   // 分期标题点击事件
   cellMainTap(e: any) {
@@ -360,7 +346,7 @@ Page({
           wx.showToast({ title: '删除失败！', icon: 'error', duration: 2000 })
           return
         }
-        self.refListData(delT == 2)
+        self.refListData()
         self.setData({
           ["addM.show"]: false,
           ["addM.editIL"]: [],

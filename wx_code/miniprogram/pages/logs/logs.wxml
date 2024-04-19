@@ -11,7 +11,7 @@
   <scroll-view class="list" scroll-y type="list">
     <view wx:for="{{list}}" wx:key="date" class="cell {{item.isSSA ? 'list_show' : 'list_hide'}}">
       <view class="main" hover-class="def_hover" hover-stay-time="150" data-i="{{index}}" bindtap="cellTitleTap">
-        <text class="title">{{index == 0 ? '下' : u.dateStr2MonthNum(item.date)}}月</text>
+        <text class="title">{{item.isNMData ? '下' : u.dateStr2MonthNum(item.date)}}月</text>
         <view class="num_box">
           <text class="num big {{item.sP < 0 ? 'l' : 'p'}}">{{u.p2IOs(item.sP)}}</text>
           <text wx:if="{{item.isSS}}" class="num">预算：{{item.budget}}，已消费：{{u.p2s(-item.aP)}}</text>

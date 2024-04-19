@@ -152,7 +152,7 @@ Page({
     nm.p = parseFloat(d.tqM_p)
     this.saveData()
   },
-  //  删除提前还款
+  // 删除提前还款
   cellDel() {
     const m = this.data.m
     const tqmt = this.data.tqM_t
@@ -188,7 +188,6 @@ Page({
       wx.navigateBack()
       return
     }
-    IMData.imRefList = refList
     const m = IMData.id2ImData(this.data.m.id)
     this.setData({
       m: m,

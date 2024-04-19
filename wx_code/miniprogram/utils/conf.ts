@@ -5,7 +5,7 @@ export default {
   // 0 正式环境
   env: 0,
   // 当前数据版本号
-  currentDataVer: 3,
+  currentDataVer: 4,
 
   // 本地数据版本
   getDataVer(): number {
@@ -29,10 +29,7 @@ export default {
   // 月预算
   getDefBudget(): number {
     let v = S.getDefBudget()
-    if (isNaN(v)) {
-      v = 3000
-      this.setDefBudget(v)
-    }
+    if (isNaN(v)) return 3000
     return v
   },
   setDefBudget(v: number) {

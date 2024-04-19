@@ -12,13 +12,13 @@ App<IAppOption>({
         title: '测试环境', icon: 'error', duration: 3000
       })
     }
-    dataU.init()
     const ver = conf.getDataVer()
     if (ver != conf.currentDataVer) {
       if (require('./utils/verData.js').updata(ver)) {
         conf.saveDataVer()
       }
     }
+    dataU.init()
     syncD.startSync()
   }
 })

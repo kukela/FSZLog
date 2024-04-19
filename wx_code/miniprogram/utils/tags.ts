@@ -10,12 +10,12 @@ export default {
     return { tt: title, t: new Date().getTime() }
   },
   addTagTitle(title: string): Array<any> {
-    const i = this.list.findIndex((v: any) => title == v.tt)
-    if (i >= 0) {
-      this.delTagWithIndex(i)
-    }
-    this.list.unshift(this.getTag(title))
-    return this.list
+    const list = this.list
+    const i = list.findIndex((v: any) => title == v.tt)
+    if (i >= 0) this.delTagWithIndex(i)
+    list.unshift(this.getTag(title))
+    if (list.length > 99) list.splice(99)
+    return list
   },
   delTagWithIndex(i: number) {
     this.list.splice(i, 1)

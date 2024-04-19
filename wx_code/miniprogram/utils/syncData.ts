@@ -188,7 +188,7 @@ export default {
         tags.init()
         upDateList.push("tags")
       }
-      if (getKeyList.includes("installment") || getKeyList.includes("installmentC")) {
+      if (getKeyList.includes("installment")) {
         IMData.init()
         upDateList.push("IM")
       }
@@ -246,7 +246,7 @@ export default {
     }, (err: any, data: any) => {
       if (err && err.statusCode != 404) {
         console.error(err)
-        wx.showToast({ title: `获取失败${err.statusCode}`, icon: 'error' })
+        wx.showToast({ title: `请求失败${err.statusCode}`, icon: 'error' })
         complete && complete(false, null)
         this.errCB && this.errCB()
         return

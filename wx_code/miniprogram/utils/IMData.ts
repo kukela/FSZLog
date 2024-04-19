@@ -11,20 +11,13 @@ export default {
   list: <any>[],
   listC: <any>[],
 
-  imRefList: <any>[],
-
   init(tList: any = null) {
     this.list = []
     this.listC = []
-    this.imRefList = [1, 2]
     if (!tList) {
       tList = <any>[]
       try {
-        tList.push(...this.getStorageList(false))
-      } catch (error) {
-      }
-      try {
-        tList.push(...this.getStorageList(true))
+        tList.push(...this.getStorageList())
       } catch (error) {
       }
     }
@@ -41,13 +34,11 @@ export default {
         this.list.push(m)
       }
     });
-    this.saveList(false)
-    this.saveList(true)
+    this.saveList()
 
     // console.log(this.list, this.listC)
     // console.log(util.roughSizeOfObject(tList)) // 1874 1628 1396
     // console.log(S.getInstallment())
-    // console.log(S.getInstallmentC())
   },
   // 归档分期数据
   arcData(m: any): boolean {
@@ -73,9 +64,9 @@ export default {
     return this.listC.length > 0
   },
   // 获取本地数据
-  getStorageList(isC: boolean): Array<any> {
+  getStorageList(): Array<any> {
     const list: Array<any> = []
-    let sList = isC ? S.getInstallment() : S.getInstallmentC()
+    let sList = S.getInstallment()
     sList.forEach((v: any) => {
       const m = this.str2IMDataObj(v)
       if (!m) return
@@ -278,7 +269,8 @@ export default {
       mm.ir = this.num2P(ap * irv)
       if (i != lastI && ap > 0) {
         const tqm = this.getTQData(m.tq, mm.t)
-        if (tqm && tqm.p > m_p) {
+        // if (tqm && tqm.p > m_p) {
+        if (tqm) {
           mm.p = tqm.p - mm.ir
           ap -= mm.p
           calcMP(m.qs - i - 1)
@@ -310,7 +302,8 @@ export default {
       mm.ir = this.num2P(ap * irv)
       if (i != lastI && ap > 0) {
         const tqm = this.getTQData(m.tq, mm.t)
-        if (tqm && tqm.p > m_p) {
+        // if (tqm && tqm.p > m_p) {
+        if (tqm) {
           mm.p = tqm.p - mm.ir
           ap -= mm.p
           calcMP(m.qs - i - 1)
@@ -349,7 +342,7 @@ export default {
       m.list.push(v)
       if (v.t == qM.c) {
         m.cp = v.ir ? v.p + v.ir : v.p
-        if (m.cp > 0) m.cqs = qi
+        m.cqs = qi
       }
       lastQI = v.qi
     });
@@ -368,7 +361,7 @@ export default {
     } else {
       this.list.push(m)
     }
-    this.saveList(isC)
+    this.saveList()
     return isC ? 2 : 1
   },
   genDataId(m: any) {
@@ -383,13 +376,13 @@ export default {
     let i = this.list.findIndex((v: any) => v.id == id)
     if (i >= 0) {
       this.list.splice(i, 1)
-      this.saveList(false)
+      this.saveList()
       return 1
     }
     i = this.listC.findIndex((v: any) => v.id == id)
     if (i >= 0) {
       this.listC.splice(i, 1)
-      this.saveList(true)
+      this.saveList()
       return 2
     }
     return 0
@@ -406,7 +399,7 @@ export default {
       return isOC ? [3, 2] : [3, 1]
     }
     if (isOC == isC) {
-      this.saveList(isC)
+      this.saveList()
       return isC ? [2] : [1]
     } else {
       this.delDataWithId(m.id)
@@ -415,7 +408,7 @@ export default {
       } else {
         this.list.push(m)
       }
-      this.saveList(isC)
+      this.saveList()
       return [1, 2]
     }
   },
@@ -471,15 +464,18 @@ export default {
     });
   },
   // 保存数组
-  saveList(isC: boolean): string {
+  saveList(): string {
     try {
-      if (isC) {
-        this.sortList(this.listC, 2)
-        S.setInstallmentC(this.list2SaveStr(this.listC))
-      } else {
-        this.sortList(this.list, 1)
-        S.setInstallment(this.list2SaveStr(this.list))
-      }
+      // if (isC) {
+      //   this.sortList(this.listC, 2)
+      //   S.setInstallmentC(this.list2SaveStr(this.listC))
+      // } else {
+      // }
+      const list = [...this.list, ...this.listC]
+      this.sortList(list, 1)
+      const s = this.list2SaveStr(list)
+      console.log(s)
+      S.setInstallment(s)
       return ""
     } catch (error) {
       return "保存失败"
@@ -510,7 +506,7 @@ export default {
   imTQ2SaveStr(tq: Array<any>): string {
     let s = ""
     tq.forEach((v: any) => {
-      s += `${v.t}_${v.p}_${v.m_t},`
+      if (v) s += `${v.t}_${v.p}_${v.m_t},`
     });
     return s
   },

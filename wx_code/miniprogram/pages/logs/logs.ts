@@ -46,9 +46,11 @@ Page({
     }
     const list = data.year2List(year, 2)
     data.coverYearIsShowSub(list, this.data.list)
-    const nmData = data.getNextMonthData()
-    nmData.isNMData = true
-    list.unshift(nmData)
+    if (year == endDate) {
+      const nmData = data.getNextMonthData()
+      nmData.isNMData = true
+      list.unshift(nmData)
+    }
     this.setData({
       date: year,
       startDate: startDate,
@@ -124,10 +126,7 @@ ABCd | +100 | 2024-03-01 12:01:02
   // 年点击事件
   bindDateChange(e: any) {
     const date = e.detail.value
-    this.setData({
-      date: date,
-      list: data.year2List(date, 2)
-    })
+    this.refPageData(date)
     conf.setDefYear(date)
   },
   // 列表展开
