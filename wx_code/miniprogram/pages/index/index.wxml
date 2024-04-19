@@ -3,7 +3,8 @@
   <view class="header_box" hover-class="def_hover" hover-stay-time="150" bindtap="budgetTap">
     <view class="num_box">
       <text class="num">预算:{{m.budget}}</text>
-      <text class="num big">剩余:{{u.p2s(m.sP)}}</text>
+      <text wx:if="{{m.sP >= 0}}" class="num big">剩余:{{u.p2s(m.sP)}}</text>
+      <text wx:else class="num big">超支:{{u.p2s(-m.sP)}}</text>
     </view>
     <view class="all_bar">
       <view class="h_bar _{{m.perType}}" style="width:{{m.per}}%;"></view>
@@ -35,21 +36,17 @@
     </view>
   </modal-view>
 
-  <modal-view show="{{editTagListM.show}}" title="编辑" class="edit_modal" bindconfirm="cellSubModalConfirm">
-    <pio-input class="modal_cell" p="{{editTagListM.p}}" pio="{{editTagListM.pio}}" tips="{{pioTips}}" model:v="{{editTagListM_v}}" verifyTips="{{editTagListM.verifyTips}}" data-t="edit" bind:inputTap="openMathKeyboard"></pio-input>
-    <button class="del_btn" bindtap="cellSubDel" hover-class="def_hover" hover-stay-time="150">删除</button>
-  </modal-view>
-
-  <modal-view show="{{addM.show}}" title="添加" bindconfirm="addModalConfirm">
-    <view class="modal_cell">
+  <modal-view show="{{addM.show}}" title="{{addM.isEdit ? '编辑' : '添加'}}" bindconfirm="addModalConfirm">
+    <view wx:if="{{!addM.isEdit}}" class="modal_cell">
       <tip-input type="text" maxlength="50" placeholder="请输入标题" tips="{{addM.title_tips}}" model:value="{{addM_title}}" verifyTips="{{addM.verifyTips}}"></tip-input>
     </view>
-    <scroll-view class="modal_cell" type="custom" scroll-y="true">
+    <scroll-view wx:if="{{!addM.isEdit}}" class="modal_cell" type="custom" scroll-y="true">
       <view class="item_box">
         <view wx:for="{{tagList}}" wx:key="*this" class="item" hover-class="def_hover" hover-stay-time="150" data-i="{{index}}" bindtap="tagTap" bind:longtap="tagLongTap">{{item.tt}}</view>
       </view>
     </scroll-view>
-    <pio-input class="modal_cell" p="{{addM.p}}" pio="{{addM.pio}}" tips="{{pioTips}}" model:v="{{addM_piov}}" verifyTips="{{addM.verifyTips}}" data-t="add" bind:inputTap="openMathKeyboard"></pio-input>
+    <pio-input class="modal_cell" p="{{addM.p}}" pio="{{addM.pio}}" tips="{{pioTips}}" model:v="{{addM_piov}}" verifyTips="{{addM.verifyTips}}" data-t="{{addM.isEdit ? 'edit' : 'add'}}" bind:inputTap="openMathKeyboard"></pio-input>
+    <button wx:if="{{addM.isEdit}}" class="del_btn" bindtap="cellSubDel" hover-class="def_hover" hover-stay-time="150">删除</button>
   </modal-view>
 
   <math-keyboard show="{{showKeyboard}}" model:v="{{mathKeyboardV}}" bind:ok="mathKeyboardOk"></math-keyboard>

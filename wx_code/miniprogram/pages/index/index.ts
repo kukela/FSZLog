@@ -26,18 +26,11 @@ Page({
       v: "",
     },
 
-    editTagListM: {
-      show: false,
-      verifyTips: false,
-      i: 0,
-      p: "",
-      pio: ""
-    },
-    editTagListM_v: "",
-
     tagList: <any>[],
     addM: {
       show: false,
+      isEdit: false,
+      editI: 0,
       verifyTips: false,
       p: "",
       pio: "out",
@@ -143,29 +136,30 @@ Page({
       return
     }
     const pM = util.pio2Obj(tag.p)
-    const etlM = this.data.editTagListM
-    etlM.show = true
-    etlM.verifyTips = false
-    etlM.i = i
-    etlM.p = pM.p
-    etlM.pio = pM.pio
-    this.setData({ editTagListM: etlM })
+    this.setData({
+      ["addM.show"]: true,
+      ["addM.isEdit"]: true,
+      ["addM.verifyTips"]: false,
+      ["addM.editI"]: i,
+      ["addM.p"]: pM.p,
+      ["addM.pio"]: pM.pio
+    })
   },
   // 编辑数据弹窗确定
   cellSubModalConfirm() {
-    this.setData({ ["editTagListM.verifyTips"]: true })
+    this.setData({ ["addM.verifyTips"]: true })
     const d = this.data
-    const pM = util.pio2Obj(d.editTagListM_v)
+    const pM = util.pio2Obj(d.addM_piov)
     if (verifyU.vTips(d.pioTips, pM.p)) {
       return
     }
-    const etlM = this.data.editTagListM
+    const etlM = this.data.addM
     try {
-      const eM = d.m.list[etlM.i]
-      eM.p = parseFloat(d.editTagListM_v)
+      const eM = d.m.list[etlM.editI]
+      eM.p = parseFloat(d.addM_piov)
       this.setData({
         m: this.monthDataChange(d.m),
-        ["editTagListM.show"]: false
+        ["addM.show"]: false
       })
       this.saveData()
     } catch (e) {
@@ -181,11 +175,11 @@ Page({
       success(res) {
         if (!res.confirm) return
         try {
-          const index = d.editTagListM.i
+          const index = d.addM.editI
           d.m.list.splice(index, 1)
           self.setData({
             m: self.monthDataChange(d.m),
-            ["editTagListM.show"]: false
+            ["addM.show"]: false
           })
           self.saveData()
         } catch (error) {
@@ -200,6 +194,7 @@ Page({
     if (this.data.tagList.length <= 0) tags.init()
     this.setData({
       ["addM.show"]: true,
+      ["addM.isEdit"]: false,
       ["addM.verifyTips"]: false,
       ["addM.p"]: "",
       ["addM.pio"]: "out",
@@ -231,8 +226,12 @@ Page({
   },
   // 添加弹窗确定事件
   addModalConfirm() {
-    this.setData({ ["addM.verifyTips"]: true })
     const d = this.data
+    if (d.addM.isEdit) {
+      this.cellSubModalConfirm()
+      return
+    }
+    this.setData({ ["addM.verifyTips"]: true })
     const aTitle = IOData.strDes(d.addM_title)
     if (verifyU.vTips(d.addM.title_tips, aTitle) ||
       verifyU.vTips(d.pioTips, d.addM_piov)) {
@@ -264,7 +263,7 @@ Page({
         mathKeyboardV = parseFloat(this.data.addM.p)
         break;
       case "edit":
-        mathKeyboardV = parseFloat(this.data.editTagListM.p)
+        mathKeyboardV = parseFloat(this.data.addM.p)
         break;
       default:
         break;
@@ -285,7 +284,7 @@ Page({
         this.setData({ ["addM.p"]: `${v}` })
         break;
       case "edit":
-        this.setData({ ["editTagListM.p"]: `${v}` })
+        this.setData({ ["addM.p"]: `${v}` })
         break;
       default:
         break;
