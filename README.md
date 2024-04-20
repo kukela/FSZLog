@@ -23,3 +23,9 @@ App正在开发中
 为了保证用户数据安全，策略只开放了获取和上传两个接口，并且采取AES和MD5的方式加密数据和文件名，确保在用户密码不泄漏的情况下，无法获取别人的数据，也不知道别人的文件夹名。
 
 ![x](img/7.jpg) 
+
+---
+
+### 您的支持是我不断贡献的动力
+
+![捐赠](https://kukela-images.oss-cn-shanghai.aliyuncs.com/globle/shoukuan.png)
