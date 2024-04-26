@@ -1,0 +1,26 @@
+@import "../theme.scss";
+@import "../anim.scss";
+
+:host {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.picker {
+  flex: 1;
+}
+
+.r_img_btn {
+  width: $def_input_height;
+  height: 100%;
+  margin-left: 20rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .img {
+    width: 36rpx;
+    height: 36rpx;
+  }
+}

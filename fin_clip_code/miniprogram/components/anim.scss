@@ -1,0 +1,78 @@
+.def_hover {
+  opacity: 0.75;
+  transform: scale(0.98);
+}
+
+// 列表
+
+.list_show {
+  // transition: max-height 0.2s ease;
+  // max-height: 100%;
+  // grid-template-rows: 1fr !important;
+}
+
+.list_hide {
+  // transition: max-height 0.2s ease;
+  // max-height: 0;
+  // grid-template-rows: 0fr !important;
+}
+
+// 背景遮罩
+
+.mask_show {
+  animation: mask_show 0.2s ease;
+}
+
+.mask_hide {
+  animation: mask_hide 0.2s ease;
+}
+
+@keyframes mask_show {
+  from {
+    opacity: 0.3;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes mask_hide {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0.2;
+  }
+}
+
+// 弹窗
+
+.modal_show {
+  animation: modal_show 0.2s ease;
+}
+
+.modal_hide {
+  animation: modal_hide 0.2s ease;
+}
+
+@keyframes modal_show {
+  from {
+    transform: translateY(100%);
+  }
+
+  to {
+    transform: none;
+  }
+}
+
+@keyframes modal_hide {
+  from {
+    transform: none;
+  }
+
+  to {
+    transform: translateY(100%);
+  }
+}

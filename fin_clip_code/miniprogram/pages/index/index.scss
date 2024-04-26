@@ -1,0 +1,73 @@
+@import "../../components/theme.scss";
+@import "../../components/anim.scss";
+
+.list {
+  position: absolute;
+  top: 160rpx;
+  bottom: 1rpx;
+
+  .cell_bs {
+    height: 150rpx;
+  }
+}
+
+.header_box {
+  position: relative;
+  height: 160rpx;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  margin: 0 $page-lr-margin;
+
+  .num_box {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .all_bar {
+    background-color: $bgCellColor;
+    border-radius: 10rpx;
+    width: 100%;
+    font-size: 0;
+    line-height: 0;
+    margin: 20rpx 0;
+    padding: 6rpx 4rpx;
+    box-sizing: border-box;
+
+    .h_bar {
+      background-color: $textGreenColor;
+      height: 30rpx;
+      border-radius: 10rpx;
+      display: inline-block;
+
+      &._2 {
+        background-color: $textYellowColor;
+      }
+
+      &._3 {
+        background-color: $textRedColor;
+      }
+    }
+  }
+}
+
+.add_btn[plain] {
+  position: fixed;
+  bottom: 40rpx;
+  right: $page-lr-margin;
+  padding: 0;
+  border: none;
+  width: 120rpx;
+  height: 120rpx;
+
+  image {
+    width: 110rpx;
+    height: 110rpx;
+  }
+}
+
+.space_b {
+  height: 160rpx;
+}

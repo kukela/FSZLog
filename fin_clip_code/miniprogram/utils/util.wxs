@@ -1,0 +1,46 @@
+// 价格转字符串
+var p2s = function (v, type) {
+  var vv = isNaN(v) ? parseFloat(v) : v
+  if (isNaN(vv)) return ""
+  return vv % 1 === 0 ? vv.toFixed(0) : vv.toFixed(2)
+}
+
+// 价格转+-字符串
+var p2IOs = function (v, type) {
+  var vs = p2s(v, type)
+  return parseFloat(vs) > 0 ? "+" + vs : vs
+}
+
+// 日期字符串转月份数字
+var dateStr2MonthNum = function (v) {
+  return parseInt(v.split("-", 2)[1])
+}
+
+// 年月num转日期
+var YMNum2date = function (v) {
+  var arr = ("" + v).split('')
+  if (arr.length >= 6) arr.splice(4, 0, "-")
+  return arr.join('')
+}
+
+// 分期类型转字符串
+var imType2Str = function(type) {
+  if (!type.t) return ""
+  return type.ir ? type.t + "_" + type.ir : type.t
+}
+
+// 分期数据转class
+var imListData2State = function(item, st_rv, ctv) {
+  if(item.t < st_rv || item.p <= 0) return "dis"
+  if(item.t < ctv) return "off"
+  return ""
+}
+
+module.exports = {
+  p2s: p2s,
+  p2IOs: p2IOs,
+  dateStr2MonthNum: dateStr2MonthNum,
+  YMNum2date: YMNum2date,
+  imType2Str: imType2Str,
+  imListData2State: imListData2State
+}

@@ -1,0 +1,24 @@
+@import "../../components/theme.scss";
+
+.header_bar {
+
+  picker {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .sel_year {
+    font-size: 48rpx;
+    text-align: end;
+    line-height: 100rpx;
+    color: $textMainColor;
+    padding: 0 40rpx;
+  }
+}
+
+.list {
+
+  .cell_bs {
+    height: 60rpx;
+  }
+}

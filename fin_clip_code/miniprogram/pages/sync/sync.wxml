@@ -1,0 +1,28 @@
+<view class="page">
+  <view wx:if="{{err}}" class="err_page_cell">
+    <view hover-class="def_hover" hover-stay-time="150" bind:tap="errTap">同步出错了(点击重试): {{'\n' + err}}</view>
+  </view>
+  <view class="page_cell switch">
+    <text class="title">启用同步：</text>
+    <switch model:checked="{{isSync}}" bindchange="syncSwitchChange" />
+  </view>
+  <text class="cell_title">账号ID：</text>
+  <view class="page_cell">
+    <tip-input type="pcalc" disabled="{{isSync}}" maxlength="32" placeholder="点击从剪贴板读取账号信息" tips="{{userID_tips}}" model:value="{{userID}}" verifyTips="{{userID_verify}}" bind:inputTap="importUserInfoTap" />
+    <button class="btn" disabled="{{isSync}}" hover-class="def_hover" hover-stay-time="150" bind:tap="genUserID">生成</button>
+  </view>
+  <text class="cell_title">数据密码：</text>
+  <view class="page_cell">
+    <tip-input type="text" disabled="{{isSync}}" maxlength="32" placeholder="请输入7~32位密码" tips="{{dataPW_tips}}" model:value="{{dataPW}}" verifyTips="{{dataPW_verify}}" password="true" />
+    <button class="btn" disabled="{{isSync}}" hover-class="def_hover" hover-stay-time="150" bind:tap="genDataPW">生成</button>
+  </view>
+  <view wx:if="{{isSync}}" class="text_btn" hover-class="def_hover" hover-stay-time="150" bind:tap="copyUserInfo">复制账号信息到剪贴板</view>
+  <text wx:else class="text_btn disabled">复制账号信息到剪贴板</text>
+  <text class="info_msg">{{'重要提示：\n请妥善保存账号信息，'}}<text>丢失后无法获取原账号所有数据。</text></text>
+  <!-- <text class="cell_title">同步间隔：</text> -->
+  <!-- <view class="page_cell">
+    <sel-input placeholder="请选择同步间隔" mode="selector" range="{{syncTypeList}}" model:value="{{syncType}}" />
+    <view class="btn" hover-class="def_hover" hover-stay-time="150" bind:tap="imSync">立即同步</view>
+  </view> -->
+  <view class="space"></view>
+</view>
