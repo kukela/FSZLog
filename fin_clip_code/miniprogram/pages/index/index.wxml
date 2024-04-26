@@ -45,7 +45,7 @@
         <view wx:for="{{tagList}}" wx:key="*this" class="item" hover-class="def_hover" hover-stay-time="150" data-i="{{index}}" bindtap="tagTap" bind:longtap="tagLongTap">{{item.tt}}</view>
       </view>
     </scroll-view>
-    <pio-input class="modal_cell" p="{{addM.p}}" pio="{{addM.pio}}" tips="{{pioTips}}" model:v="{{addM_piov}}" verifyTips="{{addM.verifyTips}}" data-t="{{addM.isEdit ? 'edit' : 'add'}}" bind:inputTap="openMathKeyboard"></pio-input>
+    <pio-input class="modal_cell" p="{{addM.p}}" pio="{{addM.pio}}" tips="{{pioTips}}" bind:v="addModalPiovChange" verifyTips="{{addM.verifyTips}}" data-t="{{addM.isEdit ? 'edit' : 'add'}}" bind:inputTap="openMathKeyboard"></pio-input>
     <button wx:if="{{addM.isEdit}}" class="del_btn" bindtap="cellSubDel" hover-class="def_hover" hover-stay-time="150">删除</button>
   </modal-view>
 

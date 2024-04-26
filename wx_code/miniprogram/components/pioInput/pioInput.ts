@@ -3,7 +3,6 @@ Component({
   properties: {
     pio: String,
     p: String,
-    v: String,
     tips: Array,
     verifyTips: {
       type: Boolean,
@@ -53,7 +52,8 @@ Component({
       } else {
         v = `-${v}`
       }
-      this.setData({ v: v })
+      // this.setData({ v: v })
+      this.triggerEvent('v', { value: v })
     }
   }
 })

@@ -224,6 +224,9 @@ Page({
       }
     })
   },
+  addModalPiovChange: function (e: any) {
+    this.setData({ addM_piov: e.detail.value })
+  },
   // 添加弹窗确定事件
   addModalConfirm() {
     const d = this.data

@@ -5,6 +5,11 @@
     "include": []
   },
   "setting": {
+    "es6": true,
+    "minify": true,
+    "minifyWXSS": false,
+    "autoPrefixWXSS": false,
+    "obfuscate": false,
     "packNpmManually": true,
     "packNpmRelationList": [],
     "useCompilerPlugins": [
@@ -24,12 +29,12 @@
     "ignoreUploadUnusedFiles": true,
     "compileHotReLoad": false,
     "skylineRenderEnable": true,
-    "es6": true,
-    "condition": true
+    "condition": true,
+    "urlCheck": true
   },
   "compileType": "miniprogram",
   "projectType": 0,
-  "appid": "",
+  "appid": "662a70d82233de000188d862",
   "projectname": "FSZLog",
   "isGameTourist": false,
   "isFulljs": false,
