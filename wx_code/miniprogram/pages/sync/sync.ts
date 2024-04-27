@@ -28,12 +28,8 @@ Page({
     if (!syncD.verifySync()) {
       this.closeSync()
     }
-    this.setData({
-      isSync: syncD.isSync,
-      userID: syncD.userID,
-      dataPW: syncD.dataPW,
-      err: syncD.err
-    })
+    this.refPage()
+    this.setData({ err: syncD.err })
     syncD.errCB = () => {
       this.setData({ err: syncD.err })
     }
@@ -52,14 +48,19 @@ Page({
       title: '反赊账记录器',
     }
   },
+  refPage() {
+    this.setData({
+      userID: syncD.userID,
+      dataPW: syncD.dataPW,
+      isSync: syncD.isSync
+    })
+  },
   // 启用同步切换按钮事件
   syncSwitchChange(e: any) {
     const v = e.detail.value
     const d = this.data
     if (!v || !syncD.verifySync(d.userID, d.dataPW)) {
-      this.setData({
-        userID_verify: true, dataPW_verify: true
-      })
+      this.setData({ userID_verify: true, dataPW_verify: true })
       this.closeSync()
       return
     }
@@ -145,11 +146,7 @@ Page({
   },
   importUserInfo2(userID: string, dataPW: string) {
     syncD.importUser(userID, dataPW)
-    this.setData({
-      userID: userID,
-      dataPW: dataPW,
-      isSync: syncD.isSync
-    })
+    this.refPage()
   },
   // 拷贝账号信息到剪贴板
   copyUserInfo() {
@@ -165,6 +162,25 @@ Page({
       },
       fail() {
         wx.showToast({ title: '复制失败！', icon: 'error', duration: 2000 })
+      }
+    })
+  },
+  // 注销账号
+  signOutUser() {
+    let self = this;
+    wx.showModal({
+      title: '重要提示',
+      confirmText: "取消",
+      cancelText: "注销",
+      content: '注销账号后，云端和本地数据会【全部删除】。是否执行注销操作？',
+      success(res) {
+        if (!res.cancel) return
+        syncD.putCOSData("lastUpdate", "", (isOk: boolean) => {
+          if (!isOk) return
+          syncD.clearOldUserData()
+          self.setData({ userID_verify: false, dataPW_verify: false })
+          self.refPage()
+        })
       }
     })
   },

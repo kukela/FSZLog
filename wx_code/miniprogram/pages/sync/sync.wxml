@@ -16,13 +16,13 @@
     <tip-input type="text" disabled="{{isSync}}" maxlength="32" placeholder="请输入7~32位密码" tips="{{dataPW_tips}}" model:value="{{dataPW}}" verifyTips="{{dataPW_verify}}" password="true" />
     <button class="btn" disabled="{{isSync}}" hover-class="def_hover" hover-stay-time="150" bind:tap="genDataPW">生成</button>
   </view>
-  <view wx:if="{{isSync}}" class="text_btn" hover-class="def_hover" hover-stay-time="150" bind:tap="copyUserInfo">复制账号信息到剪贴板</view>
-  <text wx:else class="text_btn disabled">复制账号信息到剪贴板</text>
+  <view class="btn_box">
+    <view wx:if="{{isSync}}" class="text_btn" hover-class="def_hover" hover-stay-time="150" bind:tap="copyUserInfo">复制账号信息到剪贴板</view>
+    <text wx:else class="text_btn disabled">复制账号信息到剪贴板</text>
+    <text>、</text>
+    <view wx:if="{{isSync}}" class="out_btn" hover-class="def_hover" hover-stay-time="150" bind:tap="signOutUser">注销账户</view>
+    <text wx:else class="out_btn disabled">注销账户</text>
+  </view>
   <text class="info_msg">{{'重要提示：\n请妥善保存账号信息，'}}<text>丢失后无法获取原账号所有数据。</text></text>
-  <!-- <text class="cell_title">同步间隔：</text> -->
-  <!-- <view class="page_cell">
-    <sel-input placeholder="请选择同步间隔" mode="selector" range="{{syncTypeList}}" model:value="{{syncType}}" />
-    <view class="btn" hover-class="def_hover" hover-stay-time="150" bind:tap="imSync">立即同步</view>
-  </view> -->
   <view class="space"></view>
 </view>

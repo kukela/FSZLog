@@ -44,14 +44,27 @@
   align-items: center;
 }
 
-.text_btn {
+.btn_box {
+  display: flex;
+  margin: 20rpx 40rpx 0 40rpx;
+  color: $textMainColor;
   font-size: 32rpx;
+  line-height: $def_input_height;
+}
+
+.text_btn {
   color: $mainColor;
   font-weight: bold;
-  line-height: $def_input_height;
-  margin: 20rpx 40rpx 0 40rpx;
 
-  &.disabled{
+  &.disabled {
+    opacity: 0.7;
+  }
+}
+
+.out_btn {
+  color: $textNumColor;
+
+  &.disabled {
     opacity: 0.7;
   }
 }

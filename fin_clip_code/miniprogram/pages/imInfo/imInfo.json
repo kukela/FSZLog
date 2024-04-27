@@ -1,7 +1,0 @@
-{
-  "usingComponents": {
-    "modal-view": "../../components/modal/modal",
-    "tip-input": "../../components/tipInput/tipInput",
-    "sel-input": "../../components/selInput/selInput"
-  }
-}

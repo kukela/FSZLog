@@ -247,8 +247,8 @@ export default {
       ...this._getCOS_OBJ_SSE()
     }, (err: any, data: any) => {
       if (err && err.statusCode != 404) {
-        this.err = err.error
         console.error(err)
+        this.err = err.error
         wx.showToast({ title: `同步失败${err.statusCode}`, icon: 'error' })
         complete && complete(false, null)
         this.errCB && this.errCB()
@@ -267,10 +267,10 @@ export default {
       Key: this._getCOSPath(key),
       Body: v,
       ...this._getCOS_OBJ_SSE()
-    }, (err: any, data: any) => {
-      if (err || data.statusCode != 200) {
-        this.err = err.error
+    }, (err: any, _: any) => {
+      if (err) {
         console.error(err)
+        this.err = err ? err.error : "未知错误"
         wx.showToast({ title: `同步失败${err.statusCode}`, icon: 'error' })
         complete && complete(false)
         this.errCB && this.errCB()
