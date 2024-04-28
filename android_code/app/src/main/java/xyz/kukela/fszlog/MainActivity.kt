@@ -4,6 +4,9 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import com.blankj.utilcode.util.FileUtils
+import com.blankj.utilcode.util.LogUtils
+import com.blankj.utilcode.util.ResourceUtils
 import com.finogeeks.lib.applet.client.FinAppClient.appletApiManager
 import com.finogeeks.lib.applet.sdk.api.request.IFinAppletRequest
 
@@ -40,9 +43,16 @@ class MainActivity : ComponentActivity() {
 
     // 打开小程序
     private fun startApp() {
+        val filePath = filesDir.path
+        val libPath = "$filesDir/framework-3.3.2.zip"
+        val appPath = "$filesDir/fszlog-1.0.2.zip"
+        if (!FileUtils.isFileExists(libPath) || !FileUtils.isFileExists(appPath)) {
+            ResourceUtils.copyFileFromAssets("fin", filePath)
+        }
         appletApiManager.startApplet(
             this,
-            IFinAppletRequest.Companion.fromAppId("662a70d82233de000188d862"),
+            IFinAppletRequest.Companion.fromAppId("662a70d82233de000188d862")
+                .setOfflineParams(libPath, appPath),
             null
         )
         finish()
