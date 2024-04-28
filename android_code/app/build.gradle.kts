@@ -12,7 +12,7 @@ android {
         minSdk = 21
         targetSdk = 34
         versionCode = 1
-        versionName = "1.0"
+        versionName = "1.0.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -76,6 +76,15 @@ android {
         jniLibs.keepDebugSymbols.add("*/arm64-v8a/libsdkcore.so")
     }
 
+    applicationVariants.all {
+        outputs.all {
+            if (this is com.android.build.gradle.internal.api.ApkVariantOutputImpl) {
+                this.outputFileName =
+                    "FSZLog_" + android.defaultConfig.versionName + ".apk"
+            }
+        }
+    }
+
 }
 
 dependencies {
@@ -100,4 +109,5 @@ dependencies {
     implementation("com.blankj:utilcodex:1.31.1")
     // 小程序
     implementation("com.finogeeks.lib:finapplet:2.44.1")
+    implementation("com.finogeeks.mop:clipboard:2.44.1")
 }

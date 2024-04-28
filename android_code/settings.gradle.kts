@@ -26,5 +26,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "My Application"
+rootProject.name = "FSZLog"
 include(":app")
