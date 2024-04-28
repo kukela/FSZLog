@@ -1,20 +1,20 @@
 package xyz.kukela.fszlog
 
 import android.app.Application
-import android.graphics.Color
-import android.util.Log
 import android.widget.Toast
+import com.blankj.utilcode.util.LogUtils
 import com.finogeeks.lib.applet.client.FinAppClient
 import com.finogeeks.lib.applet.client.FinAppConfig
-import com.finogeeks.lib.applet.client.FinAppConfig.UIConfig
 import com.finogeeks.lib.applet.interfaces.FinCallback
 
 
 open class App : Application() {
+    val env = 0
 
     override fun onCreate() {
         super.onCreate()
 
+        this.initLogUtils()
         this.initFunApp()
     }
 
@@ -29,7 +29,12 @@ open class App : Application() {
             .setSdkSecret("e11da60e07364490")
             .setApiUrl("https://api.finclip.com")
             .setEncryptionType(FinAppConfig.ENCRYPTION_TYPE_SM)
-//            .setDebugMode(true)
+            .setDebugMode(env != 0)
+            .setEnableXLogConsole(env != 0)
+//            .setAppletDebugMode(FinAppConfig.AppletDebugMode.appletDebugModeEnable)
+            .setMaxRunningApplet(1)
+            .setBindAppletWithMainProcess(true)
+            .setPrivacyHandlerClass(PrivacyHandler::class.java)
             .build()
 
         config.uiConfig.apply {
@@ -47,13 +52,18 @@ open class App : Application() {
             }
 
             override fun onError(code: Int, error: String) {
-                Log.e("FinApp", "SDK初始化失败: $code _ $error")
+                LogUtils.e("SDK初始化失败: $code _ $error")
                 Toast.makeText(this@App, "初始化失败 $code", Toast.LENGTH_LONG).show()
             }
 
             override fun onProgress(status: Int, error: String) {}
         })
 
+    }
+
+    // 初始化log
+    private fun initLogUtils() {
+        LogUtils.getConfig().setBorderSwitch(false).setLogSwitch(env != 0)
     }
 
 }

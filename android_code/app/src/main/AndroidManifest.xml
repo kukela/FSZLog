@@ -7,7 +7,6 @@
 <!--    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />-->
 <!--    <uses-permission android:name="android.permission.READ_ANDROID_ID" />-->
 <!--    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />-->
-
 <!--    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"-->
 <!--        android:maxSdkVersion="32" />-->
 
@@ -32,6 +31,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".PrivacyActivity"
+            android:screenOrientation="sensorPortrait" />
+
     </application>
 
 </manifest>

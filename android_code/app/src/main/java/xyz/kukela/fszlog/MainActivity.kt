@@ -1,53 +1,53 @@
 package xyz.kukela.fszlog
 
-import android.content.ClipboardManager
-import android.content.Context
+import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.activity.compose.setContent
 import com.finogeeks.lib.applet.client.FinAppClient.appletApiManager
 import com.finogeeks.lib.applet.sdk.api.request.IFinAppletRequest
-import xyz.kukela.fszlog.ui.theme.MyApplicationTheme
-
 
 class MainActivity : ComponentActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val request = IFinAppletRequest.Companion.fromAppId("662a70d82233de000188d862")
-        // 打开小程序
-        appletApiManager.startApplet(this, request, null)
+        actionBar?.hide()
 
-//        setContent {
-//            MyApplicationTheme {
-//                // A surface container using the 'background' color from the theme
-//                Surface(
-//                    modifier = Modifier.fillMaxSize(),
-//                    color = MaterialTheme.colorScheme.background
-//                ) {
-//                    Greeting("Android")
-//                }
-//            }
-//        }
+        if (Conf.isShowPrivacyDialog()) {
+            setContent {
+                PrivacyDialog.ShowDialog(object : PrivacyDialog.Listener {
+                    override fun dialogExit() {
+                        finish()
+                    }
+
+                    override fun dialogNext() {
+                        Conf.setIsShowPrivacyDialog(false)
+                        startApp()
+                    }
+
+                    override fun openWebView(url: String) {
+                        startActivity(Intent(this@MainActivity, PrivacyActivity::class.java))
+                    }
+                })
+            }
+        } else {
+            startApp()
+        }
+
+//        startActivity(Intent(this, PrivacyActivity::class.java))
     }
-}
 
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    MyApplicationTheme {
-        Greeting("Android")
+    // 打开小程序
+    private fun startApp() {
+        appletApiManager.startApplet(
+            this,
+            IFinAppletRequest.Companion.fromAppId("662a70d82233de000188d862"),
+            null
+        )
+        finish()
     }
+
+
 }
+
