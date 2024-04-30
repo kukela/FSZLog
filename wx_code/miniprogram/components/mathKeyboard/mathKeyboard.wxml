@@ -1,11 +1,12 @@
 <view wx:if='{{show2}}' class="keyboard_mask {{show ? 'mask_show' : 'mask_hide' }}">
+  <view class="s_box" bind:tap="cancel"></view>
   <view class="box {{show ? 'modal_show' : 'modal_hide' }}">
-    <textarea wx:if="{{isExtKeyboard}}" class="textarea" type="text" auto-height focus="{{isExtKeyboard}}" disabled="{{!isExtKeyboard}}" value="{{inputValue}}" cursor="{{inputCursor}}" bindfocus="onFocus" bindblur="onBlur" bindinput="onInput" bindconfirm="onInputConfirm" bindkeyboardheightchange="onKeyboardHeightChange"></textarea>
+    <textarea wx:if="{{isExtKeyboard}}" class="textarea" auto-height focus="{{isExtKeyboard}}" disabled="{{!isExtKeyboard}}" value="{{inputValue}}" cursor="{{inputCursor}}" bindfocus="onFocus" bindblur="onBlur" bindinput="onInput" bindconfirm="onInputConfirm" bindkeyboardheightchange="onKeyboardHeightChange" maxlength="-1" adjust-position="false" show-confirm-bar="false"></textarea>
     <scroll-view wx:else class="c_input_sv" scroll-y="true">
-      <view class="c_input" bind:longtap="cInputLongTap">
+      <view class="c_input" bind:longpress="cInputLongTap">
         <block wx:for="{{inputList}}" wx:key="index">
           <view wx:if="{{inputCursor == index}}" class="cursor"></view>
-          <view data-i="{{index}}" class="t {{(index >= stRS && index <= stRE) ? 'r' : ''}}" bind:tap="inputTap">{{item}}</view>
+          <view data-i="{{index}}" class="t {{(index+1 >= stRS && index+1 <= stRE) ? 'r' : ''}}" bind:tap="inputTap">{{item}}</view>
         </block>
         <view wx:if="{{inputCursor == inputList.length || inputCursor < 0}}" class="cursor"></view>
         <view class="space" data-i="{{inputList.length}}" bind:tap="inputTap"></view>

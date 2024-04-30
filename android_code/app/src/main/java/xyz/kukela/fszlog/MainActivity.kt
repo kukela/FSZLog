@@ -44,7 +44,7 @@ class MainActivity : ComponentActivity() {
     private fun startApp() {
         val filePath = filesDir.path
         val libPath = "$filesDir/framework-3.3.2.zip"
-        val appPath = "$filesDir/fszlog-1.0.2.zip"
+        val appPath = "$filesDir/app-1.0.3.zip"
         if (!FileUtils.isFileExists(libPath) || !FileUtils.isFileExists(appPath)) {
             ResourceUtils.copyFileFromAssets("fin", filePath)
         }
