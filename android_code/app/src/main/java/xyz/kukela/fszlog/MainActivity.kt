@@ -5,7 +5,6 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import com.blankj.utilcode.util.FileUtils
-import com.blankj.utilcode.util.LogUtils
 import com.blankj.utilcode.util.ResourceUtils
 import com.finogeeks.lib.applet.client.FinAppClient.appletApiManager
 import com.finogeeks.lib.applet.sdk.api.request.IFinAppletRequest

@@ -1,4 +1,7 @@
 import evalM from './eval_math.js';
+import S from './storage.js';
+
+let iCursor = -1
 
 Component({
   properties: {
@@ -12,6 +15,7 @@ Component({
     },
   },
   data: {
+    isExtKeyboard: false,
     show2: false,
     list: [
       {
@@ -43,16 +47,24 @@ Component({
         ]
       },
     ],
+    isVErr: false,
     isShowEQ: false,
-    inputList1: <any>[],
-    inputList2: <any>[]
+    inputValue: "",
+    inputCursor: -1,
+    keyBtnBC: <any>{},
+    inputList: <any>[],
+    stRS: 0,
+    stRE: 0
   },
   observers: {
     'show': function (v) {
       if (this.data.show2 == v) return
       if (v) {
-        this.initInputList()
+        this.initInputData()
         wx.hideTabBar({})
+        S.setKeyboardType(1)
+        this.setData({ isExtKeyboard: false })
+        // this.checkExtKeyboard()
       } else {
         wx.showTabBar({})
       }
@@ -62,20 +74,109 @@ Component({
     }
   },
   methods: {
+    reCheckExtKeyboard() {
+      S.setKeyboardType(-1)
+      this.checkExtKeyboard()
+      setTimeout(() => {
+        if (S.getKeyboardType() == 1) return
+        wx.showToast({ title: "支持物理键盘", icon: "none" })
+      }, 500);
+    },
+    checkExtKeyboard() {
+      const kType = S.getKeyboardType()
+      const d = this.data
+      if (!d.isExtKeyboard) {
+        this.setInputV(d.inputList, [])
+      }
+      this.setData({ isExtKeyboard: kType != 1 })
+      if (kType >= 0) return
+      S.setKeyboardType(0)
+    },
+    onFocus() {
+      // console.log("onFocus", inputCursor)
+    },
+    onKeyboardHeightChange() {
+      wx.hideKeyboard()
+      this.setData({ isExtKeyboard: false })
+      S.setKeyboardType(1)
+      this.setInputVList() 
+      wx.showToast({ title: "无物理键盘", icon: "none" })
+    },
+    onBlur(e: any) {
+      const d = this.data
+      if (d.isExtKeyboard) {
+        iCursor = e.detail.cursor
+        if (typeof d.keyBtnBC == "function") d.keyBtnBC()
+        this.setData({ isExtKeyboard: true })
+      }
+      console.log("onBlur", iCursor)
+    },
+    onInput(e: any) {
+      let value = e.detail.value
+      const regex = /[^0-9+\-\*\/\.\(\)]/g
+      const v = value.replace(regex, '');
+      this.setData({ inputValue: v })
+      if (value != v) {
+        let kv = value.match(regex).join('')
+        let kvE = encodeURIComponent(kv)
+        switch (kvE) {
+          case "%0A":
+            this.onKey("确定")
+            return
+          case "w": case "W":
+            iCursor = e.detail.cursor - 1
+            this.onKey("万")
+            return
+        }
+        this.showKeyError(kv)
+        return
+      }
+      this.calcInput()
+    },
+    onInputConfirm(_: any) {
+      this.onKey("确定")
+    },
     inputTap(e: any) {
-      const i = e.currentTarget.dataset.i 
-      const inputList = this.getInputList()
+      iCursor = e.currentTarget.dataset.i
+      if (iCursor < 0) iCursor = 0
+      if (isNaN(iCursor)) iCursor = -1
       this.setData({
-        inputList1: inputList.slice(0, i),
-        inputList2: inputList.slice(i)
+        inputCursor: iCursor,
       })
-      // console.log(this.data.inputList1, this.data.inputList2)
+      // console.log(iCursor)
+    },
+    cInputLongTap() {
+      this.setData({
+        stRS: 0,
+        stRE: this.data.inputList.length - 1
+      })
+      // wx.getSelectedTextRange({
+      //   complete: (res: any) => {
+      //     console.log('getSelectedTextRange res', res)
+      //   }
+      // })
     },
     btnTap(e: any) {
       const v = e.currentTarget.dataset.v
-      let inputList1 = this.data.inputList1
-      let inputList2 = this.data.inputList2
-      // console.log(v)
+      if (this.data.isExtKeyboard) {
+        let bc = () => {
+          this.setData({ keyBtnBC: null })
+          this.onKey(v)
+        }
+        this.setData({ keyBtnBC: bc })
+        return
+      }
+      this.onKey(v)
+    },
+    onKey(v: string) {
+      let d = this.data
+      if (d.isExtKeyboard) {
+        this.setInputVList()
+      }
+      const list = this.data.inputList
+      if (iCursor < 0) iCursor = list.length
+      let list1 = list.slice(0, iCursor)
+      let list2 = list.slice(iCursor)
       switch (v) {
         case "取消":
           this.defData()
@@ -86,48 +187,78 @@ Component({
           this.defData()
           return;
         case "万":
-          inputList1 = this.wan(inputList1)
+          list1 = this.wan(list1)
           break;
         case "<":
-          inputList1.pop()
+          list1.pop()
           break;
+        case "0": case "1": case "2": case "3": case "4": case "5":
+        case "6": case "7": case "8": case "9": case ".": case "+":
+        case "-": case "*": case "/": case "(": case ")":
+          list1.push(v)
+          break
         default:
-          inputList1.push(v)
-          break;
+          this.showKeyError(v)
+          return;
       }
-      this.setData({ inputList1: inputList1, inputList2: inputList2 })
-      const inputList = this.getInputList()
-      // console.log(inputList.join(''))
-      const sv = evalM.evalMath(inputList.join(''))
-      if (!isNaN(sv)) {
-        this.setData({ v: parseFloat(sv.toFixed(10)), isShowEQ: true })
-        return
+      if (d.isExtKeyboard) {
+        this.setInputV(list1, list2)
+      } else {
+        iCursor = list1.length
+        this.setData({ inputList: [...list1, ...list2], inputCursor: iCursor })
       }
-      if (inputList.length == 0) this.setData({ v: 0, isShowEQ: false })
+      this.calcInput()
     },
-    btnLongTap(e: any) {
-      const v = e.currentTarget.dataset.v
-      if (v == "<") {
-        this.defData()
-      }
+    showKeyError(k: string) {
+      wx.showToast({ title: `${k}键不支持`, icon: "error" })
     },
-    initInputList() {
-      if (this.data.v == 0) return
+    setInputVList() {
+      let iv = this.data.inputValue
+      if (iCursor > iv.length || iCursor < 0) iCursor = iv.length
       this.setData({
-        inputList1: `${this.data.v}`.split(''),
-        inputList2: []
+        inputList: iv.split(''),
+        inputCursor: iCursor
+      })
+    },
+    setInputV(list1: Array<String>, list2: Array<String>) {
+      const nv = [...list1, ...list2].join('')
+      iCursor = list1.length
+      this.setData({ inputValue: nv, inputCursor: iCursor })
+    },
+    calcInput() {
+      const d = this.data
+      const inputV = d.isExtKeyboard ? d.inputValue : d.inputList.join('')
+      const sv = evalM.evalMath(inputV)
+      if (isNaN(sv)) {
+        this.setData({ v: 0, isShowEQ: false, isVErr: inputV.length != 0 })
+      } else {
+        this.setData({ v: parseFloat(sv.toFixed(10)), isShowEQ: true, isVErr: false })
+      }
+    },
+    initInputData() {
+      const v = this.data.v
+      if (v == 0) return
+      const vs = `${v}`
+      this.setData({
+        inputValue: vs,
+        inputCursor: iCursor = -1,
+        keyBtnBC: null,
+        isVErr: false,
+        inputList: vs.split('')
       })
     },
     defData() {
       this.setData({
         isShowEQ: false,
-        inputList1: [], inputList2: [],
-        v: 0
+        isVErr: false,
+        inputValue: "",
+        inputCursor: iCursor = -1,
+        keyBtnBC: null,
+        inputList: [],
+        stRS: 0,
+        stRE: 0,
+        v: 0,
       })
-    },
-    getInputList(): any[] {
-      const d = this.data
-      return [...d.inputList1, ...d.inputList2]
     },
     wan(list: any[]): any[] {
       if (list.length <= 0) return list
@@ -149,7 +280,7 @@ Component({
       let v = parseFloat(list.slice(nI).join(''))
       if (isNaN(v)) return list
       const nList = list.slice(0, nI)
-      v *= 10000
+      v = parseFloat((v * 10000.0).toFixed(10))
       const vsList = `${v}`.split('')
       nList.push(...vsList)
       // console.log(nList)

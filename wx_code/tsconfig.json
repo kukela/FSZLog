@@ -23,7 +23,7 @@
   },
   "include": [
     "./**/*.ts"
-  ],
+, "miniprogram/components/mathKeyboard/eval_math.js"  ],
   "exclude": [
     "node_modules"
   ]

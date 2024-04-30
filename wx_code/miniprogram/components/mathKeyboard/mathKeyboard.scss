@@ -27,12 +27,23 @@ $border_height: 1rpx;
   max-height: 99%;
   background-color: $bgCellColor;
   border-radius: 40rpx 40rpx 0 0;
+  padding-top: 40rpx;
 }
 
-.c_input_sv {
-  margin-top: 40rpx;
+.c_input_sv,
+.textarea {
   max-height: calc(99vh - 910rpx);
   min-height: 100rpx;
+}
+
+.textarea {
+  width: auto;
+  padding: 5rpx 40rpx;
+  line-height: 90rpx;
+  font-size: 72rpx;
+  color: $textMainColor;
+  box-sizing: border-box;
+  caret-color: $mainColor;
 }
 
 .c_input {
@@ -148,6 +159,18 @@ $border_height: 1rpx;
 
 .fs {
   height: 100rpx;
+  display: flex;
+  justify-content: center;
+
+  .coek_btn {
+    flex-shrink: 0;
+    line-height: 80rpx;
+    height: 80rpx;
+    margin: 10rpx 0;
+    padding: 0 20rpx;
+    font-size: 28rpx;
+    color: $textNumColor;
+  }
 }
 
 @keyframes cursorH {
