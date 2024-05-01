@@ -11,8 +11,7 @@
     "selectedColor": "@tabBarSelectedColor",
     "borderStyle": "@tabBarBorderStyle",
     "backgroundColor": "@tabBarBackgroundColor",
-    "list": [
-      {
+    "list": [{
         "pagePath": "pages/index/index",
         "text": "本月",
         "iconPath": "@iconPathBy",

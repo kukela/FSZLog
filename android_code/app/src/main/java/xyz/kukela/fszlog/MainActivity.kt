@@ -1,13 +1,18 @@
 package xyz.kukela.fszlog
 
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import com.blankj.utilcode.util.FileUtils
+import com.blankj.utilcode.util.LogUtils
 import com.blankj.utilcode.util.ResourceUtils
 import com.finogeeks.lib.applet.client.FinAppClient.appletApiManager
+import com.finogeeks.lib.applet.interfaces.FinCallback
 import com.finogeeks.lib.applet.sdk.api.request.IFinAppletRequest
+import java.util.Timer
+import java.util.TimerTask
 
 class MainActivity : ComponentActivity() {
 
@@ -52,11 +57,27 @@ class MainActivity : ComponentActivity() {
             this,
             IFinAppletRequest.Companion.fromAppId("662a70d82233de000188d862")
                 .setOfflineParams(libPath, appPath),
-            null
+            object : FinCallback<String?> {
+                override fun onSuccess(msg: String?) {
+                    LogUtils.eTag("eee", msg)
+                    Timer().schedule(object : TimerTask() {
+                        override fun run() {
+//                            <item name="android:navigationBarColor">@android:color/transparent</item>-->
+                            window.navigationBarColor = Color.TRANSPARENT
+                        }
+                    }, 1000)
+                }
+
+                override fun onError(code: Int, error: String) {
+                }
+
+                override fun onProgress(status: Int, err: String?) {
+                }
+            }
         )
         finish()
-    }
 
+    }
 
 }
 
