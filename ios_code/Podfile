@@ -1,0 +1,9 @@
+source 'https://mirrors.tuna.tsinghua.edu.cn/git/CocoaPods/Specs.git'
+platform :ios, "14.0"
+
+inhibit_all_warnings!
+
+target 'FSZLog' do
+	pod 'FinApplet'
+	pod 'FinAppletClipBoard'
+end

@@ -1,0 +1,714 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		0B6CAA1832FBB25C04458BD0 /* libPods-FSZLog.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B5CA7A82A1E15F433AD8D75 /* libPods-FSZLog.a */; };
+		126757132BE3892300875DC1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126757122BE3892300875DC1 /* AppDelegate.swift */; };
+		126C46182BE330E100D73B99 /* FSZLogApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126C46172BE330E100D73B99 /* FSZLogApp.swift */; };
+		126C461A2BE330E100D73B99 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126C46192BE330E100D73B99 /* MainView.swift */; };
+		126C461E2BE330E200D73B99 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 126C461D2BE330E200D73B99 /* Assets.xcassets */; };
+		126C46222BE330E200D73B99 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 126C46212BE330E200D73B99 /* Preview Assets.xcassets */; };
+		126C462C2BE330E200D73B99 /* FSZLogTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126C462B2BE330E200D73B99 /* FSZLogTests.swift */; };
+		126C46362BE330E200D73B99 /* FSZLogUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126C46352BE330E200D73B99 /* FSZLogUITests.swift */; };
+		126C46382BE330E200D73B99 /* FSZLogUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126C46372BE330E200D73B99 /* FSZLogUITestsLaunchTests.swift */; };
+		12933A542BE3C87C00F79719 /* FAViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12933A532BE3C87C00F79719 /* FAViewController.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		126C46282BE330E200D73B99 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 126C460C2BE330E100D73B99 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 126C46132BE330E100D73B99;
+			remoteInfo = FSZLog;
+		};
+		126C46322BE330E200D73B99 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 126C460C2BE330E100D73B99 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 126C46132BE330E100D73B99;
+			remoteInfo = FSZLog;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		126757122BE3892300875DC1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		126C46142BE330E100D73B99 /* FSZLog.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FSZLog.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		126C46172BE330E100D73B99 /* FSZLogApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FSZLogApp.swift; sourceTree = "<group>"; };
+		126C46192BE330E100D73B99 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
+		126C461D2BE330E200D73B99 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		126C461F2BE330E200D73B99 /* FSZLog.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = FSZLog.entitlements; sourceTree = "<group>"; };
+		126C46212BE330E200D73B99 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		126C46272BE330E200D73B99 /* FSZLogTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FSZLogTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		126C462B2BE330E200D73B99 /* FSZLogTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FSZLogTests.swift; sourceTree = "<group>"; };
+		126C46312BE330E200D73B99 /* FSZLogUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FSZLogUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		126C46352BE330E200D73B99 /* FSZLogUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FSZLogUITests.swift; sourceTree = "<group>"; };
+		126C46372BE330E200D73B99 /* FSZLogUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FSZLogUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		12933A532BE3C87C00F79719 /* FAViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FAViewController.swift; sourceTree = "<group>"; };
+		12C0DBBA2BE37E3B0079AE52 /* FSZLog-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "FSZLog-Bridging-Header.h"; sourceTree = "<group>"; };
+		7B5CA7A82A1E15F433AD8D75 /* libPods-FSZLog.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-FSZLog.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		960B3ECE96345B265937740D /* Pods-FSZLog.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FSZLog.debug.xcconfig"; path = "Target Support Files/Pods-FSZLog/Pods-FSZLog.debug.xcconfig"; sourceTree = "<group>"; };
+		CA57194B24CD523BE04CEB91 /* Pods-FSZLog.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FSZLog.release.xcconfig"; path = "Target Support Files/Pods-FSZLog/Pods-FSZLog.release.xcconfig"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		126C46112BE330E100D73B99 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0B6CAA1832FBB25C04458BD0 /* libPods-FSZLog.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		126C46242BE330E200D73B99 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		126C462E2BE330E200D73B99 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		126C460B2BE330E100D73B99 = {
+			isa = PBXGroup;
+			children = (
+				126C46162BE330E100D73B99 /* FSZLog */,
+				126C462A2BE330E200D73B99 /* FSZLogTests */,
+				126C46342BE330E200D73B99 /* FSZLogUITests */,
+				126C46152BE330E100D73B99 /* Products */,
+				669EBE1B276CECAB87120C20 /* Pods */,
+				31A541569A0A6137D9F060CA /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		126C46152BE330E100D73B99 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				126C46142BE330E100D73B99 /* FSZLog.app */,
+				126C46272BE330E200D73B99 /* FSZLogTests.xctest */,
+				126C46312BE330E200D73B99 /* FSZLogUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		126C46162BE330E100D73B99 /* FSZLog */ = {
+			isa = PBXGroup;
+			children = (
+				126C46172BE330E100D73B99 /* FSZLogApp.swift */,
+				126C46192BE330E100D73B99 /* MainView.swift */,
+				126C461D2BE330E200D73B99 /* Assets.xcassets */,
+				126C461F2BE330E200D73B99 /* FSZLog.entitlements */,
+				126C46202BE330E200D73B99 /* Preview Content */,
+				12C0DBBA2BE37E3B0079AE52 /* FSZLog-Bridging-Header.h */,
+				126757122BE3892300875DC1 /* AppDelegate.swift */,
+				12933A532BE3C87C00F79719 /* FAViewController.swift */,
+			);
+			path = FSZLog;
+			sourceTree = "<group>";
+		};
+		126C46202BE330E200D73B99 /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				126C46212BE330E200D73B99 /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		126C462A2BE330E200D73B99 /* FSZLogTests */ = {
+			isa = PBXGroup;
+			children = (
+				126C462B2BE330E200D73B99 /* FSZLogTests.swift */,
+			);
+			path = FSZLogTests;
+			sourceTree = "<group>";
+		};
+		126C46342BE330E200D73B99 /* FSZLogUITests */ = {
+			isa = PBXGroup;
+			children = (
+				126C46352BE330E200D73B99 /* FSZLogUITests.swift */,
+				126C46372BE330E200D73B99 /* FSZLogUITestsLaunchTests.swift */,
+			);
+			path = FSZLogUITests;
+			sourceTree = "<group>";
+		};
+		31A541569A0A6137D9F060CA /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				7B5CA7A82A1E15F433AD8D75 /* libPods-FSZLog.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		669EBE1B276CECAB87120C20 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				960B3ECE96345B265937740D /* Pods-FSZLog.debug.xcconfig */,
+				CA57194B24CD523BE04CEB91 /* Pods-FSZLog.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		126C46132BE330E100D73B99 /* FSZLog */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 126C463B2BE330E200D73B99 /* Build configuration list for PBXNativeTarget "FSZLog" */;
+			buildPhases = (
+				6C3B2C412F9DF896C494306D /* [CP] Check Pods Manifest.lock */,
+				126C46102BE330E100D73B99 /* Sources */,
+				126C46112BE330E100D73B99 /* Frameworks */,
+				126C46122BE330E100D73B99 /* Resources */,
+				30D7A2FD91962CBE60CF4C5B /* [CP] Embed Pods Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = FSZLog;
+			productName = FSZLog;
+			productReference = 126C46142BE330E100D73B99 /* FSZLog.app */;
+			productType = "com.apple.product-type.application";
+		};
+		126C46262BE330E200D73B99 /* FSZLogTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 126C463E2BE330E200D73B99 /* Build configuration list for PBXNativeTarget "FSZLogTests" */;
+			buildPhases = (
+				126C46232BE330E200D73B99 /* Sources */,
+				126C46242BE330E200D73B99 /* Frameworks */,
+				126C46252BE330E200D73B99 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				126C46292BE330E200D73B99 /* PBXTargetDependency */,
+			);
+			name = FSZLogTests;
+			productName = FSZLogTests;
+			productReference = 126C46272BE330E200D73B99 /* FSZLogTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		126C46302BE330E200D73B99 /* FSZLogUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 126C46412BE330E200D73B99 /* Build configuration list for PBXNativeTarget "FSZLogUITests" */;
+			buildPhases = (
+				126C462D2BE330E200D73B99 /* Sources */,
+				126C462E2BE330E200D73B99 /* Frameworks */,
+				126C462F2BE330E200D73B99 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				126C46332BE330E200D73B99 /* PBXTargetDependency */,
+			);
+			name = FSZLogUITests;
+			productName = FSZLogUITests;
+			productReference = 126C46312BE330E200D73B99 /* FSZLogUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		126C460C2BE330E100D73B99 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1530;
+				LastUpgradeCheck = 1530;
+				TargetAttributes = {
+					126C46132BE330E100D73B99 = {
+						CreatedOnToolsVersion = 15.3;
+						LastSwiftMigration = 1530;
+					};
+					126C46262BE330E200D73B99 = {
+						CreatedOnToolsVersion = 15.3;
+						TestTargetID = 126C46132BE330E100D73B99;
+					};
+					126C46302BE330E200D73B99 = {
+						CreatedOnToolsVersion = 15.3;
+						TestTargetID = 126C46132BE330E100D73B99;
+					};
+				};
+			};
+			buildConfigurationList = 126C460F2BE330E100D73B99 /* Build configuration list for PBXProject "FSZLog" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 126C460B2BE330E100D73B99;
+			productRefGroup = 126C46152BE330E100D73B99 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				126C46132BE330E100D73B99 /* FSZLog */,
+				126C46262BE330E200D73B99 /* FSZLogTests */,
+				126C46302BE330E200D73B99 /* FSZLogUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		126C46122BE330E100D73B99 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				126C46222BE330E200D73B99 /* Preview Assets.xcassets in Resources */,
+				126C461E2BE330E200D73B99 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		126C46252BE330E200D73B99 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		126C462F2BE330E200D73B99 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		30D7A2FD91962CBE60CF4C5B /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-FSZLog/Pods-FSZLog-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-FSZLog/Pods-FSZLog-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-FSZLog/Pods-FSZLog-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		6C3B2C412F9DF896C494306D /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-FSZLog-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		126C46102BE330E100D73B99 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				126757132BE3892300875DC1 /* AppDelegate.swift in Sources */,
+				126C461A2BE330E100D73B99 /* MainView.swift in Sources */,
+				126C46182BE330E100D73B99 /* FSZLogApp.swift in Sources */,
+				12933A542BE3C87C00F79719 /* FAViewController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		126C46232BE330E200D73B99 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				126C462C2BE330E200D73B99 /* FSZLogTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		126C462D2BE330E200D73B99 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				126C46362BE330E200D73B99 /* FSZLogUITests.swift in Sources */,
+				126C46382BE330E200D73B99 /* FSZLogUITestsLaunchTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		126C46292BE330E200D73B99 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 126C46132BE330E100D73B99 /* FSZLog */;
+			targetProxy = 126C46282BE330E200D73B99 /* PBXContainerItemProxy */;
+		};
+		126C46332BE330E200D73B99 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 126C46132BE330E100D73B99 /* FSZLog */;
+			targetProxy = 126C46322BE330E200D73B99 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		126C46392BE330E200D73B99 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 12.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		126C463A2BE330E200D73B99 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 12.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SWIFT_COMPILATION_MODE = wholemodule;
+			};
+			name = Release;
+		};
+		126C463C2BE330E200D73B99 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 960B3ECE96345B265937740D /* Pods-FSZLog.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = FSZLog/FSZLog.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
+				DEVELOPMENT_ASSET_PATHS = "\"FSZLog/Preview Content\"";
+				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GENERATE_INFOPLIST_FILE = YES;
+				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphoneos*]" = UIStatusBarStyleDefault;
+				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
+				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = xyz.kukela.fszlog;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "FSZLog/FSZLog-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		126C463D2BE330E200D73B99 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = CA57194B24CD523BE04CEB91 /* Pods-FSZLog.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = FSZLog/FSZLog.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
+				DEVELOPMENT_ASSET_PATHS = "\"FSZLog/Preview Content\"";
+				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GENERATE_INFOPLIST_FILE = YES;
+				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphoneos*]" = YES;
+				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphonesimulator*]" = YES;
+				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphoneos*]" = UIStatusBarStyleDefault;
+				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
+				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = xyz.kukela.fszlog;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "FSZLog/FSZLog-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		126C463F2BE330E200D73B99 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.4;
+				MACOSX_DEPLOYMENT_TARGET = 14.4;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = xyz.kukela.FSZLogTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/FSZLog.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/FSZLog";
+			};
+			name = Debug;
+		};
+		126C46402BE330E200D73B99 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.4;
+				MACOSX_DEPLOYMENT_TARGET = 14.4;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = xyz.kukela.FSZLogTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/FSZLog.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/FSZLog";
+			};
+			name = Release;
+		};
+		126C46422BE330E200D73B99 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.4;
+				MACOSX_DEPLOYMENT_TARGET = 14.4;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = xyz.kukela.FSZLogUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = FSZLog;
+			};
+			name = Debug;
+		};
+		126C46432BE330E200D73B99 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.4;
+				MACOSX_DEPLOYMENT_TARGET = 14.4;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = xyz.kukela.FSZLogUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = FSZLog;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		126C460F2BE330E100D73B99 /* Build configuration list for PBXProject "FSZLog" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				126C46392BE330E200D73B99 /* Debug */,
+				126C463A2BE330E200D73B99 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		126C463B2BE330E200D73B99 /* Build configuration list for PBXNativeTarget "FSZLog" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				126C463C2BE330E200D73B99 /* Debug */,
+				126C463D2BE330E200D73B99 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		126C463E2BE330E200D73B99 /* Build configuration list for PBXNativeTarget "FSZLogTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				126C463F2BE330E200D73B99 /* Debug */,
+				126C46402BE330E200D73B99 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		126C46412BE330E200D73B99 /* Build configuration list for PBXNativeTarget "FSZLogUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				126C46422BE330E200D73B99 /* Debug */,
+				126C46432BE330E200D73B99 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 126C460C2BE330E100D73B99 /* Project object */;
+}

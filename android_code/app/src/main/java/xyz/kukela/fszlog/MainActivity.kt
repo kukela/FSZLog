@@ -19,8 +19,6 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        actionBar?.hide()
-
         if (Conf.isShowPrivacyDialog()) {
             setContent {
                 PrivacyDialog.ShowDialog(object : PrivacyDialog.Listener {
@@ -49,7 +47,7 @@ class MainActivity : ComponentActivity() {
     private fun startApp() {
         val filePath = filesDir.path
         val libPath = "$filesDir/framework-3.3.2.zip"
-        val appPath = "$filesDir/app-1.0.3.zip"
+        val appPath = "$filesDir/app-1.0.4.zip"
         if (!FileUtils.isFileExists(libPath) || !FileUtils.isFileExists(appPath)) {
             ResourceUtils.copyFileFromAssets("fin", filePath)
         }
@@ -59,13 +57,12 @@ class MainActivity : ComponentActivity() {
                 .setOfflineParams(libPath, appPath),
             object : FinCallback<String?> {
                 override fun onSuccess(msg: String?) {
-                    LogUtils.eTag("eee", msg)
-                    Timer().schedule(object : TimerTask() {
-                        override fun run() {
-//                            <item name="android:navigationBarColor">@android:color/transparent</item>-->
-                            window.navigationBarColor = Color.TRANSPARENT
-                        }
-                    }, 1000)
+//                    LogUtils.eTag("eee", msg)
+//                    Timer().schedule(object : TimerTask() {
+//                        override fun run() {
+//                            window.navigationBarColor = Color.TRANSPARENT
+//                        }
+//                    }, 1000)
                 }
 
                 override fun onError(code: Int, error: String) {

@@ -64,7 +64,9 @@ export default {
 
   // 日期字符串转时间
   str2Date(v: string): Date {
-    return new Date(Date.parse(v.replace(/-/g, '/')));
+    let tt = v.replace(/-/g, '/')
+    if (tt.length <= 7) tt += "/01"
+    return new Date(Date.parse(tt));
   },
   str2Time(v: string): number {
     return this.str2Date(v).getTime();
@@ -91,7 +93,7 @@ export default {
   },
 
   // 计算两个日期相差天数
-   getDaysBetween(startDate: Date, enDate: Date): number {
+  getDaysBetween(startDate: Date, enDate: Date): number {
     const sDate = startDate.getTime()
     const eDate = enDate.getTime()
     return (eDate - sDate) / (1 * 24 * 60 * 60 * 1000)

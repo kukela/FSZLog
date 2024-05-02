@@ -1,0 +1,21 @@
+PODS:
+  - FinApplet (2.44.3)
+  - FinAppletClipBoard (2.44.3):
+    - FinApplet (= 2.44.3)
+
+DEPENDENCIES:
+  - FinApplet
+  - FinAppletClipBoard
+
+SPEC REPOS:
+  https://mirrors.tuna.tsinghua.edu.cn/git/CocoaPods/Specs.git:
+    - FinApplet
+    - FinAppletClipBoard
+
+SPEC CHECKSUMS:
+  FinApplet: 2820c89cbd11eaf680b4b0ed6d8524663445b25d
+  FinAppletClipBoard: 745c963e461800e5ba8da21d3dca40812fc76a1a
+
+PODFILE CHECKSUM: 8459667cf093b68b35b1b3fecbfe51f2793e2511
+
+COCOAPODS: 1.15.2
