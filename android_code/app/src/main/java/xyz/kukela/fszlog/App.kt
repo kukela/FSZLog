@@ -11,7 +11,7 @@ import com.finogeeks.lib.applet.interfaces.FinCallback
 
 
 open class App : Application() {
-    val env = 0
+    val env = 1
 
     override fun onCreate() {
         super.onCreate()
@@ -43,7 +43,6 @@ open class App : Application() {
             .setFinStoreConfigs(storeConfigs)
             .setDebugMode(BuildConfig.DEBUG)
             .setAppletIntervalUpdateLimit(0)
-            .setMaxRunningApplet(1)
             .setBindAppletWithMainProcess(true)
             .setPrivacyHandlerClass(PrivacyHandler::class.java)
             .setDisableGetSuperviseInfo(true)

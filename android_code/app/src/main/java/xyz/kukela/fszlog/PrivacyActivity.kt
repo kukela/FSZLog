@@ -38,25 +38,26 @@ class PrivacyActivity : ComponentActivity() {
         return super.onOptionsItemSelected(item)
     }
 
+    @Composable
+    fun Greeting(url: String) {
+        AndroidView(factory = { context ->
+            WebView(context).apply {
+                layoutParams = ViewGroup.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.MATCH_PARENT
+                )
+                webViewClient = WebViewClient()
+                settings.javaScriptEnabled = true
+                loadUrl(url)
+            }
+        })
+    }
+
 }
 
-@Composable
-fun Greeting(url: String) {
-    AndroidView(factory = { context ->
-        WebView(context).apply {
-            layoutParams = ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT
-            )
-            webViewClient = WebViewClient()
-            settings.javaScriptEnabled = true
-            loadUrl(url)
-        }
-    })
-}
 
 @Preview(showBackground = true)
 @Composable
 fun PrivacyActivityPreview() {
-    Greeting("file:///android_asset/privacy_agreement.html")
+    PrivacyActivity().Greeting("file:///android_asset/privacy_agreement.html")
 }
