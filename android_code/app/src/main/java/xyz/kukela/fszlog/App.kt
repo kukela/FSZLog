@@ -11,7 +11,7 @@ import com.finogeeks.lib.applet.interfaces.FinCallback
 
 
 open class App : Application() {
-    val env = 1
+    val env = 0
 
     override fun onCreate() {
         super.onCreate()
@@ -55,7 +55,6 @@ open class App : Application() {
             isHideForwardMenu = true
             isHideSettingMenu = true
             isAutoAdaptDarkMode = true
-//            isHideFeedbackAndComplaints = true
             capsuleConfig.apply {
                 capsuleCornerRadius = 15.5f
             }

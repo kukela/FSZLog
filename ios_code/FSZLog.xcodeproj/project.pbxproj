@@ -16,7 +16,7 @@
 		126C462C2BE330E200D73B99 /* FSZLogTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126C462B2BE330E200D73B99 /* FSZLogTests.swift */; };
 		126C46362BE330E200D73B99 /* FSZLogUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126C46352BE330E200D73B99 /* FSZLogUITests.swift */; };
 		126C46382BE330E200D73B99 /* FSZLogUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126C46372BE330E200D73B99 /* FSZLogUITestsLaunchTests.swift */; };
-		12933A542BE3C87C00F79719 /* FAViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12933A532BE3C87C00F79719 /* FAViewController.swift */; };
+		129D670E2BE4CD5C00877036 /* fin.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 129D670D2BE4CD5C00877036 /* fin.bundle */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,7 +49,7 @@
 		126C46312BE330E200D73B99 /* FSZLogUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FSZLogUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		126C46352BE330E200D73B99 /* FSZLogUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FSZLogUITests.swift; sourceTree = "<group>"; };
 		126C46372BE330E200D73B99 /* FSZLogUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FSZLogUITestsLaunchTests.swift; sourceTree = "<group>"; };
-		12933A532BE3C87C00F79719 /* FAViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FAViewController.swift; sourceTree = "<group>"; };
+		129D670D2BE4CD5C00877036 /* fin.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = fin.bundle; sourceTree = "<group>"; };
 		12C0DBBA2BE37E3B0079AE52 /* FSZLog-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "FSZLog-Bridging-Header.h"; sourceTree = "<group>"; };
 		7B5CA7A82A1E15F433AD8D75 /* libPods-FSZLog.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-FSZLog.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		960B3ECE96345B265937740D /* Pods-FSZLog.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FSZLog.debug.xcconfig"; path = "Target Support Files/Pods-FSZLog/Pods-FSZLog.debug.xcconfig"; sourceTree = "<group>"; };
@@ -114,7 +114,7 @@
 				126C46202BE330E200D73B99 /* Preview Content */,
 				12C0DBBA2BE37E3B0079AE52 /* FSZLog-Bridging-Header.h */,
 				126757122BE3892300875DC1 /* AppDelegate.swift */,
-				12933A532BE3C87C00F79719 /* FAViewController.swift */,
+				129D670D2BE4CD5C00877036 /* fin.bundle */,
 			);
 			path = FSZLog;
 			sourceTree = "<group>";
@@ -268,6 +268,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				129D670E2BE4CD5C00877036 /* fin.bundle in Resources */,
 				126C46222BE330E200D73B99 /* Preview Assets.xcassets in Resources */,
 				126C461E2BE330E200D73B99 /* Assets.xcassets in Resources */,
 			);
@@ -339,7 +340,6 @@
 				126757132BE3892300875DC1 /* AppDelegate.swift in Sources */,
 				126C461A2BE330E100D73B99 /* MainView.swift in Sources */,
 				126C46182BE330E100D73B99 /* FSZLogApp.swift in Sources */,
-				12933A542BE3C87C00F79719 /* FAViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

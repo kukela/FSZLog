@@ -75,32 +75,29 @@ class MainActivity : ComponentActivity() {
         if (!FileUtils.isFileExists(libPath) || !FileUtils.isFileExists(appPath)) {
             ResourceUtils.copyFileFromAssets("fin", filePath)
         }
-        appletApiManager.startApplet(
-            this,
-            IFinAppletRequest.Companion.fromAppId("662a70d82233de000188d862")
-                .setOfflineParams(libPath, appPath)
-                .setProcessMode(IFinAppletRequest.ProcessMode.SINGLE)
-                .setTaskMode(IFinAppletRequest.TaskMode.SINGLE),
-            object : FinCallback<String?> {
-                override fun onSuccess(msg: String?) {
-                    LogUtils.dTag("startApplet", msg)
-                    stateStr.value = "加载成功。"
-                    finish()
-                }
-
-                override fun onError(code: Int, error: String) {
-                    LogUtils.eTag("startApplet", code, error)
-                    stateStr.value = "加载失败：$code $error"
-                    Toast.makeText(this@MainActivity, "打开失败 $code $error", Toast.LENGTH_LONG)
-                        .show()
-                }
-
-                override fun onProgress(status: Int, err: String?) {
-                    stateStr.value = "加载中：$status $err"
-                    LogUtils.dTag("startApplet", status, err)
-                }
+        val req = IFinAppletRequest.Companion.fromAppId("662a70d82233de000188d862")
+            .setOfflineParams(libPath, appPath)
+            .setProcessMode(IFinAppletRequest.ProcessMode.SINGLE)
+            .setTaskMode(IFinAppletRequest.TaskMode.SINGLE)
+        appletApiManager.startApplet(this, req, object : FinCallback<String?> {
+            override fun onSuccess(msg: String?) {
+                LogUtils.dTag("startApplet", msg)
+                stateStr.value = "加载成功。"
+                finish()
             }
-        )
+
+            override fun onError(code: Int, error: String) {
+                LogUtils.eTag("startApplet", code, error)
+                stateStr.value = "加载失败：$code $error"
+                Toast.makeText(this@MainActivity, "打开失败 $code $error", Toast.LENGTH_LONG)
+                    .show()
+            }
+
+            override fun onProgress(status: Int, err: String?) {
+                stateStr.value = "加载中：$status $err"
+                LogUtils.dTag("startApplet", status, err)
+            }
+        })
 
     }
 
