@@ -108,6 +108,6 @@ dependencies {
     // 通用库
     implementation("com.blankj:utilcodex:1.31.1")
     // 小程序
-    implementation("com.finogeeks.lib:finapplet:2.44.1")
-    implementation("com.finogeeks.mop:clipboard:2.44.1")
+    implementation("com.finogeeks.lib:finapplet:2.44.3")
+    implementation("com.finogeeks.mop:clipboard:2.44.3")
 }

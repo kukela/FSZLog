@@ -2,9 +2,11 @@ package xyz.kukela.fszlog
 
 import android.app.Application
 import android.widget.Toast
+import com.blankj.utilcode.BuildConfig
 import com.blankj.utilcode.util.LogUtils
 import com.finogeeks.lib.applet.client.FinAppClient
 import com.finogeeks.lib.applet.client.FinAppConfig
+import com.finogeeks.lib.applet.client.FinStoreConfig
 import com.finogeeks.lib.applet.interfaces.FinCallback
 
 
@@ -24,23 +26,36 @@ open class App : Application() {
             return
         }
 
+        val storeConfigs: MutableList<FinStoreConfig> = ArrayList()
+        val storeConfig1 = FinStoreConfig(
+            sdkKey = "RoD3eJmOwrcXAwhqN2rhJLscAb47O260ikXGAklpBkY=",
+            sdkSecret = "e11da60e07364490",
+            apiServer = "https://api.finclip.com",
+            "",
+            "",
+            "",
+            "md5"
+        )
+        storeConfig1.enablePreloadFramework = false
+        storeConfigs.add(storeConfig1)
+
         val config = FinAppConfig.Builder()
-            .setSdkKey("RoD3eJmOwrcXAwhqN2rhJLscAb47O260ikXGAklpBkY=")
-            .setSdkSecret("e11da60e07364490")
-            .setApiUrl("https://api.finclip.com")
-            .setEncryptionType(FinAppConfig.ENCRYPTION_TYPE_SM)
-            .setDebugMode(env != 0)
-            .setEnableXLogConsole(env != 0)
-//            .setAppletDebugMode(FinAppConfig.AppletDebugMode.appletDebugModeEnable)
+            .setFinStoreConfigs(storeConfigs)
+            .setDebugMode(BuildConfig.DEBUG)
+            .setAppletIntervalUpdateLimit(0)
             .setMaxRunningApplet(1)
             .setBindAppletWithMainProcess(true)
             .setPrivacyHandlerClass(PrivacyHandler::class.java)
+            .setDisableGetSuperviseInfo(true)
+//            .setAppletDebugMode(FinAppConfig.AppletDebugMode.appletDebugModeEnable)
             .build()
 
         config.uiConfig.apply {
             isHideCapsuleCloseButton = true
             isHideBackHome = true
             isHideForwardMenu = true
+            isHideSettingMenu = true
+            isAutoAdaptDarkMode = true
 //            isHideFeedbackAndComplaints = true
             capsuleConfig.apply {
                 capsuleCornerRadius = 15.5f
@@ -49,6 +64,7 @@ open class App : Application() {
 
         FinAppClient.init(this, config, object : FinCallback<Any?> {
             override fun onSuccess(result: Any?) {
+                LogUtils.d("SDK初始化成功: $result")
             }
 
             override fun onError(code: Int, error: String) {

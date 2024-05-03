@@ -1,8 +1,8 @@
 package xyz.kukela.fszlog
 
 import android.content.Intent
-import android.graphics.Color
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import com.blankj.utilcode.util.FileUtils
@@ -11,8 +11,6 @@ import com.blankj.utilcode.util.ResourceUtils
 import com.finogeeks.lib.applet.client.FinAppClient.appletApiManager
 import com.finogeeks.lib.applet.interfaces.FinCallback
 import com.finogeeks.lib.applet.sdk.api.request.IFinAppletRequest
-import java.util.Timer
-import java.util.TimerTask
 
 class MainActivity : ComponentActivity() {
 
@@ -54,25 +52,26 @@ class MainActivity : ComponentActivity() {
         appletApiManager.startApplet(
             this,
             IFinAppletRequest.Companion.fromAppId("662a70d82233de000188d862")
-                .setOfflineParams(libPath, appPath),
+                .setOfflineParams(libPath, appPath)
+                .setProcessMode(IFinAppletRequest.ProcessMode.SINGLE)
+                .setTaskMode(IFinAppletRequest.TaskMode.SINGLE),
             object : FinCallback<String?> {
                 override fun onSuccess(msg: String?) {
-//                    LogUtils.eTag("eee", msg)
-//                    Timer().schedule(object : TimerTask() {
-//                        override fun run() {
-//                            window.navigationBarColor = Color.TRANSPARENT
-//                        }
-//                    }, 1000)
+                    LogUtils.dTag("startApplet", msg)
+                    finish()
                 }
 
                 override fun onError(code: Int, error: String) {
+                    LogUtils.eTag("startApplet", code, error)
+                    Toast.makeText(this@MainActivity, "打开失败 $code $error", Toast.LENGTH_LONG)
+                        .show()
                 }
 
                 override fun onProgress(status: Int, err: String?) {
+                    LogUtils.dTag("startApplet", status, err)
                 }
             }
         )
-        finish()
 
     }
 
