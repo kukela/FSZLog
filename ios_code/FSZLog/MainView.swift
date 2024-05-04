@@ -6,20 +6,45 @@
 //
 
 import SwiftUI
-//import UIKit
 //import SwiftData
 
-struct MainView: View {
+struct MainView: View, PrivacyDialog.Delegate {
+    
+//    @Environment(\.colorScheme) var colorScheme
     
     @State private var stateStr = "加载中..."
-    @State private var isShowAlert = false
+    @State private var isStateAlert = false
+    @State private var isPrivacyAlert = true
+    
     
     var body: some View {
-        Text(stateStr).onAppear() {
-            startApplet()
-        }.alert(isPresented: self.$isShowAlert) {
+        VStack() {
+            Text(stateStr)
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+            Button("测试") {
+                isPrivacyAlert = true
+            }
+        }
+        .alert(isPresented: self.$isStateAlert) {
             Alert(title: Text("提示"), message: Text(stateStr))
         }
+        .privacyDialog(isShow: self.$isPrivacyAlert, delegate: self)
+        .onAppear() {
+//            startApplet()
+        }
+       
+    }
+    
+    func dialogExit() {
+        UIApplication.shared.perform(#selector(NSXPCConnection.suspend))
+    }
+    
+    func dialogNext() {
+        startApplet()
+    }
+    
+    func openURL(_: String) {
+        print("----")
     }
     
     func startApplet() {
@@ -43,7 +68,7 @@ struct MainView: View {
                 stateStr = "加载失败：" + (error?.localizedDescription ?? "未知错误")
             }
             print("打开小程序:", stateStr)
-            isShowAlert = true
+            isStateAlert = true
         } closeCompletion: {
             print("关闭小程序")
             stateStr = "小程序关闭"

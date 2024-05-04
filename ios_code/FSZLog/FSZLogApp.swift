@@ -15,7 +15,7 @@ struct FSZLogApp: App {
     
     var body: some Scene {
         WindowGroup {
-            MainView().onAppear()
+            MainView()
         }
         
     }

@@ -17,6 +17,7 @@
 		126C46362BE330E200D73B99 /* FSZLogUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126C46352BE330E200D73B99 /* FSZLogUITests.swift */; };
 		126C46382BE330E200D73B99 /* FSZLogUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126C46372BE330E200D73B99 /* FSZLogUITestsLaunchTests.swift */; };
 		129D670E2BE4CD5C00877036 /* fin.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 129D670D2BE4CD5C00877036 /* fin.bundle */; };
+		12E297D42BE61DBF00AB3474 /* PrivacyDialog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12E297D32BE61DBF00AB3474 /* PrivacyDialog.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,6 +52,8 @@
 		126C46372BE330E200D73B99 /* FSZLogUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FSZLogUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		129D670D2BE4CD5C00877036 /* fin.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = fin.bundle; sourceTree = "<group>"; };
 		12C0DBBA2BE37E3B0079AE52 /* FSZLog-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "FSZLog-Bridging-Header.h"; sourceTree = "<group>"; };
+		12E297D32BE61DBF00AB3474 /* PrivacyDialog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyDialog.swift; sourceTree = "<group>"; };
+		12F9D7E12BE67D0E00C3C3AB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		7B5CA7A82A1E15F433AD8D75 /* libPods-FSZLog.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-FSZLog.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		960B3ECE96345B265937740D /* Pods-FSZLog.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FSZLog.debug.xcconfig"; path = "Target Support Files/Pods-FSZLog/Pods-FSZLog.debug.xcconfig"; sourceTree = "<group>"; };
 		CA57194B24CD523BE04CEB91 /* Pods-FSZLog.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FSZLog.release.xcconfig"; path = "Target Support Files/Pods-FSZLog/Pods-FSZLog.release.xcconfig"; sourceTree = "<group>"; };
@@ -107,6 +110,7 @@
 		126C46162BE330E100D73B99 /* FSZLog */ = {
 			isa = PBXGroup;
 			children = (
+				12F9D7E12BE67D0E00C3C3AB /* Info.plist */,
 				126C46172BE330E100D73B99 /* FSZLogApp.swift */,
 				126C46192BE330E100D73B99 /* MainView.swift */,
 				126C461D2BE330E200D73B99 /* Assets.xcassets */,
@@ -115,6 +119,7 @@
 				12C0DBBA2BE37E3B0079AE52 /* FSZLog-Bridging-Header.h */,
 				126757122BE3892300875DC1 /* AppDelegate.swift */,
 				129D670D2BE4CD5C00877036 /* fin.bundle */,
+				12E297D32BE61DBF00AB3474 /* PrivacyDialog.swift */,
 			);
 			path = FSZLog;
 			sourceTree = "<group>";
@@ -179,6 +184,8 @@
 			dependencies = (
 			);
 			name = FSZLog;
+			packageProductDependencies = (
+			);
 			productName = FSZLog;
 			productReference = 126C46142BE330E100D73B99 /* FSZLog.app */;
 			productType = "com.apple.product-type.application";
@@ -245,13 +252,15 @@
 			};
 			buildConfigurationList = 126C460F2BE330E100D73B99 /* Build configuration list for PBXProject "FSZLog" */;
 			compatibilityVersion = "Xcode 14.0";
-			developmentRegion = en;
+			developmentRegion = "zh-Hans";
 			hasScannedForEncodings = 0;
 			knownRegions = (
-				en,
 				Base,
+				"zh-Hans",
 			);
 			mainGroup = 126C460B2BE330E100D73B99;
+			packageReferences = (
+			);
 			productRefGroup = 126C46152BE330E100D73B99 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -337,6 +346,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				12E297D42BE61DBF00AB3474 /* PrivacyDialog.swift in Sources */,
 				126757132BE3892300875DC1 /* AppDelegate.swift in Sources */,
 				126C461A2BE330E100D73B99 /* MainView.swift in Sources */,
 				126C46182BE330E100D73B99 /* FSZLogApp.swift in Sources */,
@@ -511,6 +521,7 @@
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = FSZLog/Info.plist;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -553,6 +564,7 @@
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = FSZLog/Info.plist;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
