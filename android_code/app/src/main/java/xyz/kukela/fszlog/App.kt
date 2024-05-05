@@ -11,7 +11,7 @@ import com.finogeeks.lib.applet.interfaces.FinCallback
 
 
 open class App : Application() {
-    val env = 1
+    val env = 0
 
     override fun onCreate() {
         super.onCreate()
