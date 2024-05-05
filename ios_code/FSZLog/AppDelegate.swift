@@ -33,11 +33,13 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         uiConfig.hideSettingMenu = true
         uiConfig.autoAdaptDarkMode = true
         uiConfig.hideBackToHome = true
+        uiConfig.hideClearCacheMenu = true
+        uiConfig.hideRefreshMenu = true
+        uiConfig.hideTransitionCloseButton = true
         
         let capsuleConfig = uiConfig.capsuleConfig
         capsuleConfig?.hideCapsuleCloseButton = true
         capsuleConfig?.capsuleCornerRadius = 15.5
-        
         
         do {
             try FATClient.shared().initWith(config, uiConfig: uiConfig)

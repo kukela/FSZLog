@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-//import SwiftData
 
 @main
 struct FSZLogApp: App {
@@ -15,7 +14,7 @@ struct FSZLogApp: App {
     
     var body: some Scene {
         WindowGroup {
-            MainView()
+            MainPage()
         }
         
     }

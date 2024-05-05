@@ -8,9 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		0B6CAA1832FBB25C04458BD0 /* libPods-FSZLog.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B5CA7A82A1E15F433AD8D75 /* libPods-FSZLog.a */; };
+		123C721B2BE711560017D9F0 /* Conf.swift in Sources */ = {isa = PBXBuildFile; fileRef = 123C721A2BE711560017D9F0 /* Conf.swift */; };
+		123C721D2BE719790017D9F0 /* PrivacyPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 123C721C2BE719790017D9F0 /* PrivacyPage.swift */; };
 		126757132BE3892300875DC1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126757122BE3892300875DC1 /* AppDelegate.swift */; };
 		126C46182BE330E100D73B99 /* FSZLogApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126C46172BE330E100D73B99 /* FSZLogApp.swift */; };
-		126C461A2BE330E100D73B99 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126C46192BE330E100D73B99 /* MainView.swift */; };
+		126C461A2BE330E100D73B99 /* MainPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126C46192BE330E100D73B99 /* MainPage.swift */; };
 		126C461E2BE330E200D73B99 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 126C461D2BE330E200D73B99 /* Assets.xcassets */; };
 		126C46222BE330E200D73B99 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 126C46212BE330E200D73B99 /* Preview Assets.xcassets */; };
 		126C462C2BE330E200D73B99 /* FSZLogTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126C462B2BE330E200D73B99 /* FSZLogTests.swift */; };
@@ -38,10 +40,12 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		123C721A2BE711560017D9F0 /* Conf.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Conf.swift; sourceTree = "<group>"; };
+		123C721C2BE719790017D9F0 /* PrivacyPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyPage.swift; sourceTree = "<group>"; };
 		126757122BE3892300875DC1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		126C46142BE330E100D73B99 /* FSZLog.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FSZLog.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		126C46172BE330E100D73B99 /* FSZLogApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FSZLogApp.swift; sourceTree = "<group>"; };
-		126C46192BE330E100D73B99 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
+		126C46192BE330E100D73B99 /* MainPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainPage.swift; sourceTree = "<group>"; };
 		126C461D2BE330E200D73B99 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		126C461F2BE330E200D73B99 /* FSZLog.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = FSZLog.entitlements; sourceTree = "<group>"; };
 		126C46212BE330E200D73B99 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
@@ -112,7 +116,7 @@
 			children = (
 				12F9D7E12BE67D0E00C3C3AB /* Info.plist */,
 				126C46172BE330E100D73B99 /* FSZLogApp.swift */,
-				126C46192BE330E100D73B99 /* MainView.swift */,
+				126C46192BE330E100D73B99 /* MainPage.swift */,
 				126C461D2BE330E200D73B99 /* Assets.xcassets */,
 				126C461F2BE330E200D73B99 /* FSZLog.entitlements */,
 				126C46202BE330E200D73B99 /* Preview Content */,
@@ -120,6 +124,8 @@
 				126757122BE3892300875DC1 /* AppDelegate.swift */,
 				129D670D2BE4CD5C00877036 /* fin.bundle */,
 				12E297D32BE61DBF00AB3474 /* PrivacyDialog.swift */,
+				123C721A2BE711560017D9F0 /* Conf.swift */,
+				123C721C2BE719790017D9F0 /* PrivacyPage.swift */,
 			);
 			path = FSZLog;
 			sourceTree = "<group>";
@@ -347,8 +353,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				12E297D42BE61DBF00AB3474 /* PrivacyDialog.swift in Sources */,
+				123C721D2BE719790017D9F0 /* PrivacyPage.swift in Sources */,
 				126757132BE3892300875DC1 /* AppDelegate.swift in Sources */,
-				126C461A2BE330E100D73B99 /* MainView.swift in Sources */,
+				126C461A2BE330E100D73B99 /* MainPage.swift in Sources */,
+				123C721B2BE711560017D9F0 /* Conf.swift in Sources */,
 				126C46182BE330E100D73B99 /* FSZLogApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

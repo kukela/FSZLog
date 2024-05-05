@@ -54,6 +54,8 @@ open class App : Application() {
             isHideBackHome = true
             isHideForwardMenu = true
             isHideSettingMenu = true
+            isHideClearCacheMenu = true
+            isHideRefreshMenu = true
             isAutoAdaptDarkMode = true
             capsuleConfig.apply {
                 capsuleCornerRadius = 15.5f
