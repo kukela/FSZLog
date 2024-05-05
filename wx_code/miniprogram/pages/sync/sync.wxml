@@ -25,4 +25,12 @@
   </view>
   <text class="info_msg">{{'重要提示：\n请妥善保存账号信息，'}}<text>丢失后无法获取原账号所有数据。</text></text>
   <view class="space"></view>
+
+  <modal-view show="{{signOutUserM.show}}" title="注销账号" bindconfirm="signOutUserMConfirm">
+    <view class="tip">注销账号后，云端和本地数据会【全部删除】。若要执行注销操作，请在下方输入“删除全部数据”并点击确定按钮。</view>
+    <view class="modal_cell">
+      <tip-input type="text" placeholder="删除全部数据" tips="{{signOutUserM.vTips}}" model:value="{{signOutUserM_v}}" verifyTips="{{signOutUserM.verifyTips}}"></tip-input>
+    </view>
+  </modal-view>
+
 </view>

@@ -1,6 +1,7 @@
 import conf from '../../utils/conf.js'
 import syncData from '../../utils/syncData.js'
 import syncD from '../../utils/syncData.js'
+import verifyU from '../../utils/verify.js';
 
 Page({
   data: {
@@ -17,6 +18,17 @@ Page({
       { t: "30分钟", v: "30" }
     ],
     err: "",
+    signOutUserM: {
+      show: false,
+      verifyTips: false,
+      vTips: [{
+        t: "请输入“删除全部数据”",
+        f: function (v: string): boolean {
+          return v != "删除全部数据"
+        },
+      }]
+    },
+    signOutUserM_v: ""
   },
   onLoad() {
     this.setData({
@@ -167,21 +179,25 @@ Page({
   },
   // 注销账号
   signOutUser() {
-    let self = this;
-    wx.showModal({
-      title: '重要提示',
-      confirmText: "取消",
-      cancelText: "注销",
-      content: '注销账号后，云端和本地数据会【全部删除】。是否执行注销操作？',
-      success(res) {
-        if (!res.cancel) return
-        syncD.putCOSData("lastUpdate", "", (isOk: boolean) => {
-          if (!isOk) return
-          syncD.clearOldUserData()
-          self.setData({ userID_verify: false, dataPW_verify: false })
-          self.refPage()
-        })
-      }
+    this.setData({ 'signOutUserM.show': true })
+  },
+  signOutUserMConfirm() {
+    this.setData({ 'signOutUserM.verifyTips': true })
+    const d = this.data
+    const v = d.signOutUserM_v
+    if (verifyU.vTips(d.signOutUserM.vTips, v)) {
+      return
+    }
+    this.setData({
+      "signOutUserM.show": false,
+      'signOutUserM.verifyTips': false,
+      "signOutUserM_v": ""
+    })
+    syncD.putCOSData("lastUpdate", "", (isOk: boolean) => {
+      if (!isOk) return
+      syncD.clearOldUserData()
+      this.setData({ userID_verify: false, dataPW_verify: false })
+      this.refPage()
     })
   },
   // 账号

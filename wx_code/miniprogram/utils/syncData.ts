@@ -58,7 +58,7 @@ export default {
   },
   // 导出账号信息
   exportUserInfo(): string {
-    return `fszlog_uinfo:${this.userID}${this.dataPW}`
+    return `fszlog_uinfo_${this.userID}${this.dataPW}`
   },
   // 打开同步
   openSync() {

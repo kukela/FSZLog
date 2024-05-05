@@ -2,6 +2,7 @@
   "navigationBarTitleText": "云同步",
   "usingComponents": {
     "tip-input": "../../components/tipInput/tipInput",
-    "sel-input": "../../components/selInput/selInput"
+    "sel-input": "../../components/selInput/selInput",
+    "modal-view": "../../components/modal/modal"
   }
 }

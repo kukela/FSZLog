@@ -15,7 +15,9 @@ struct PrivacyPage: View {
         
         NavigationView {
             WebView(webview: web.webview)
-        }.navigationBarTitle("隐私政策", displayMode: .inline)
+        }
+        .navigationViewStyle(.stack)
+        .navigationBarTitle("隐私政策", displayMode: .inline)
         
     }
     

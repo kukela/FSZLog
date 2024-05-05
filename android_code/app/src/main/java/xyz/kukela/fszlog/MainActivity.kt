@@ -2,7 +2,6 @@ package xyz.kukela.fszlog
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Space
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -16,11 +15,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import com.blankj.utilcode.util.FileUtils
 import com.blankj.utilcode.util.LogUtils
@@ -29,7 +25,6 @@ import com.finogeeks.lib.applet.client.FinAppClient.appletApiManager
 import com.finogeeks.lib.applet.interfaces.FinCallback
 import com.finogeeks.lib.applet.sdk.api.request.IFinAppletRequest
 import xyz.kukela.fszlog.ui.theme.MyApplicationTheme
-import xyz.kukela.fszlog.ui.theme.darkTextMain
 
 class MainActivity : ComponentActivity() {
 
@@ -69,10 +64,11 @@ class MainActivity : ComponentActivity() {
     // 打开小程序
     private fun startApp() {
         stateStr.value = "加载中..."
-        val filePath = filesDir.path
+        val filePath = "${filesDir.path}/fin"
         val libPath = "$filesDir/framework-3.3.2.zip"
-        val appPath = "$filesDir/app-1.0.4.zip"
+        val appPath = "$filesDir/app-1.0.5.zip"
         if (!FileUtils.isFileExists(libPath) || !FileUtils.isFileExists(appPath)) {
+            FileUtils.deleteAllInDir(filePath)
             ResourceUtils.copyFileFromAssets("fin", filePath)
         }
         val req = IFinAppletRequest.Companion.fromAppId("662a70d82233de000188d862")

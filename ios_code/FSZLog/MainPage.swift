@@ -37,6 +37,7 @@ struct MainPage: View, PrivacyDialog.Delegate {
                 }
             }
         }
+        .navigationViewStyle(.stack)
     }
     
     func dialogExit() {
@@ -61,7 +62,7 @@ struct MainPage: View, PrivacyDialog.Delegate {
         let request = FATAppletRequest.init()
         request.appletId = "662a70d82233de000188d862"
         request.offlineFrameworkZipPath = finBundle!.path(forResource: "framework-3.3.2", ofType: "zip")
-        request.offlineMiniprogramZipPath = finBundle!.path(forResource: "app-1.0.4", ofType: "zip")
+        request.offlineMiniprogramZipPath = finBundle!.path(forResource: "app-1.0.5", ofType: "zip")
         request.presentationConfig = FATAppletPresentationConfig.currentContext()
         
         FATClient().startApplet(with: request, inParentViewController: rootCtr) { (result, error) in
