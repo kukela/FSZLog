@@ -1,5 +1,8 @@
 .DS_Store
+**/.DS_Store
+
 img_y
 up/img/450p
 up/img/1080p
 wx_code/taroConvert
+**/*.bkp
