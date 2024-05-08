@@ -6,3 +6,6 @@ up/img/450p
 up/img/1080p
 wx_code/taroConvert
 **/*.bkp
+doc/drawio
+doc/img
+**/*.drawio
